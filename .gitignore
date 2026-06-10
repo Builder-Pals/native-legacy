@@ -1,0 +1,16 @@
+# Project place file
+/sneaks.rbxlx
+
+# Roblox Studio lock files
+/*.rbxlx.lock
+/*.rbxl.lock
+
+# Wally
+Packages
+wally.lock
+
+# Rojo
+sourcemap.json
+
+# Darklua output
+/dist

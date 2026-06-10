@@ -1,0 +1,77 @@
+--!strict
+
+local Players = game:GetService("Players")
+
+local remotes = require("@layer/network/remotes")
+local instance_pool_remote = require("./instance_pool_remote")
+local new_server_pool_factory = require("./new_server_pool_factory")
+
+local function class_exists(className: string)
+    return pcall(function()
+        -- selene: allow(must_use)
+        Instance.new(className)
+    end) == true
+end
+
+local function runtime_server()
+    local warehouses = {}
+
+    local function on_player_added(player: Player)
+        local container = Instance.new("ScreenGui")
+        container.ResetOnSpawn = false
+        container.Name = "PoolFactory"
+        container.Enabled = false
+        container.Parent = player:WaitForChild("PlayerGui")
+        warehouses[player] = new_server_pool_factory(container)
+    end
+
+    local function on_player_removing(player: Player)
+        if warehouses[player] then
+            warehouses[player] = nil
+        end
+    end
+
+    Players.PlayerAdded:Connect(on_player_added)
+    Players.PlayerRemoving:Connect(on_player_removing)
+
+    for _, player in Players:GetPlayers() do
+        task.spawn(on_player_added, player)
+    end
+
+    instance_pool_remote.OnServerInvoke = function(player: Player, class_name: any): Instance?
+        assert(typeof(class_name) == "string")
+        local warehouse = warehouses[player]
+
+        if not warehouse then
+            return nil
+        end
+
+        if class_exists(class_name) then
+            return warehouse.pop(class_name)
+        end
+
+        return nil
+    end
+
+    remotes.reliable.server.subscribe({}, remotes.ids.reliable.instance_pool.pop, function(player: Player, instance: unknown, parent: unknown, expand: unknown)
+        assert(typeof(instance) == "Instance")
+        
+        local warehouse = warehouses[player]
+
+        if not warehouse then
+            return
+        end
+
+        if expand then
+            warehouse.expand(instance.ClassName)
+        end
+
+        warehouse.remove(instance)
+
+        if typeof(parent) == "Instance" then
+            instance.Parent = parent
+        end
+    end)
+end
+
+return runtime_server

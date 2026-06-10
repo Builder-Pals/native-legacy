@@ -1,0 +1,15 @@
+{
+    "name": "nl-build",
+    "emitLegacyScripts": false,
+    "tree": {
+        "$className": "DataModel",
+
+        "ReplicatedStorage": {
+            "$className": "ReplicatedStorage",
+
+            "nostalgic_layer": {
+                "$path": "dist/"
+            }
+        }
+    }
+}

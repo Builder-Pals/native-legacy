@@ -1,0 +1,7 @@
+{
+    "languageMode": "strict",
+    "aliases": {
+        "layer": "./src",
+        "packages": "./Packages/"
+    }
+}
