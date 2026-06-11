@@ -4,10 +4,8 @@
 # Stop execution if any tasks fail
 set -e
 
-# If Packages aren't installed, install them.
-if [ ! -d "Packages" ]; then
-    sh scripts/install-packages.sh
-fi
+# Creates the dist/ directory if darklua hasn't already created it
+mkdir -p dist/
 
 rojo serve build.project.json \
     & rojo sourcemap default.project.json -o sourcemap.json --watch \

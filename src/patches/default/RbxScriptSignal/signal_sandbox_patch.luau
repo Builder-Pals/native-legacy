@@ -3,6 +3,7 @@ local patch_module_creator = require("@layer/patching/patch_module_creator")
 local sandbox_types = require("@layer/sandbox/sandbox_types")
 local sandboxer = require("@layer/sandbox/sandboxer")
 
+--- Ensures values passed through RBXScriptSignals are sandboxed
 local patch = patch_creator.new_getter_patch({
     classes = {},
     types = { "RBXScriptSignal" },

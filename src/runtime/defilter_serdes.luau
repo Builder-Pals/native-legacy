@@ -28,7 +28,7 @@ function defilter_serdes.serialize_payload(payload: DeserializedPayload): Serial
     return serialized
 end
 
-function defilter_serdes.read_serialized_payload(payload: SerializedPayload, processor: (instance: Instance, property: string, value: any) -> ())
+function defilter_serdes.deserialize_payload(payload: SerializedPayload, processor: (instance: Instance, property: string, value: any) -> ())
     for _, chunk in payload do
         local instance = chunk[1]
         
