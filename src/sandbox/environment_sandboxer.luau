@@ -5,7 +5,9 @@ local instance_pool = require("./instance_pool")
 local sandbox_types = require("./sandbox_types")
 local sandboxer = require("./sandboxer")
 
-local DEFAULT_PATCHES_FOLDER = script.Parent:WaitForChild("patches"):WaitForChild("default")
+local DEFAULT_PATCHES_FOLDER = script.Parent.Parent:WaitForChild("patches"):WaitForChild("default")
+
+local runtime
 
 --[=[
     Pulls environments (`getfenv()`) into the sandbox
@@ -41,7 +43,8 @@ function environment_sandboxer.sandbox_environment(environment: any, context: sa
 
     -- future: maybe this should be constructed elsewhere and passed in, instance pool creation
     -- this kindaa feels like a weird side effect.
-    local instance_pool_runtime = if RunService:IsClient() then instance_pool.start_client() else instance_pool.start_server()
+    local instance_pool_runtime = if runtime then runtime else if RunService:IsClient() then instance_pool.start_client() else instance_pool.start_server()
+    runtime = instance_pool_runtime
     
     environment.Instance = instance_pool.new_lib(context, instance_pool_runtime)
 end

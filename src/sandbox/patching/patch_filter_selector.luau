@@ -1,6 +1,6 @@
-local patch_types = require("./patch_types")
+local sandbox_types = require("@layer/sandbox/sandbox_types")
 
-type PatchFilter = patch_types.Patch
+type PatchFilter = sandbox_types.Patch
 
 local NEGATIVE_PRIORITY_OFFSET = 10000000
 
@@ -45,7 +45,7 @@ function patch_filter_selector.is_patch_for_object(filter: PatchFilter, value: a
 end
 
 --- Creates a filtering function for finding patches that apply to an object.
-function patch_filter_selector.find_patches(patches: { patch_types.Patch })
+function patch_filter_selector.find_patches(patches: { sandbox_types.Patch })
     --- Filters for any patches that belong to the given object.
     return function(x: any)
         local filtered = {}
@@ -60,10 +60,10 @@ function patch_filter_selector.find_patches(patches: { patch_types.Patch })
     end
 end
 
-function patch_filter_selector.sort_patches(patches: { patch_types.Patch })
+function patch_filter_selector.sort_patches(patches: { sandbox_types.Patch })
     local sorted = table.clone(patches)
 
-    table.sort(sorted, function(a: patch_types.Patch, b: patch_types.Patch)
+    table.sort(sorted, function(a: sandbox_types.Patch, b: sandbox_types.Patch)
         local priority_a = a.priority or 1
         local priority_b = b.priority or 1
         assert(priority_a < NEGATIVE_PRIORITY_OFFSET, `Priorities cannot be above {NEGATIVE_PRIORITY_OFFSET}`)

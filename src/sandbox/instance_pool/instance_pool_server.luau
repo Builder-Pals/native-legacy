@@ -1,10 +1,13 @@
 --!strict
 
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
 local remotes = require("@layer/network/remotes")
 local instance_pool_remote = require("./instance_pool_remote")
 local new_server_pool_factory = require("./new_server_pool_factory")
+
+local isRunning = false
 
 local function class_exists(className: string)
     return pcall(function()
@@ -14,9 +17,17 @@ local function class_exists(className: string)
 end
 
 local function runtime_server()
+    if isRunning then
+        return {}
+    end
+
+    assert(RunService:IsServer(), "runtime_server should only be called on the server!")
+    isRunning = true
+
     local warehouses = {}
 
     local function on_player_added(player: Player)
+        print("making a new pool factory for player", player)
         local container = Instance.new("ScreenGui")
         container.ResetOnSpawn = false
         container.Name = "PoolFactory"
@@ -72,6 +83,8 @@ local function runtime_server()
             instance.Parent = parent
         end
     end)
+
+    return {}
 end
 
 return runtime_server

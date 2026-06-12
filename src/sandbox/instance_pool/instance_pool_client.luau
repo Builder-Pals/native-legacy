@@ -18,6 +18,7 @@ local function runtime_client()
             
             if not instance then
                 expand = true
+                print(`waiting for expansion of {className} pool...`)
                 instance = class_container.ChildAdded:Wait()
                 task.defer(coroutine.running())
                 coroutine.yield()
@@ -39,17 +40,20 @@ local function runtime_client()
 
             return instance
         elseif class_requests[className] then
+            print(`already waiting for {className} pool expansion, yielding...`)
             table.insert(class_requests[className], coroutine.running())
             coroutine.yield()
             return pop(className, parent, expand)
         else
             class_requests[className] = {}
+            print(`requesting expansion of {className} pool from server...`)
             instance_pool_remote:InvokeServer(className)
 
             for _, thread in class_requests[className] do
                 coroutine.resume(thread)
             end
 
+            print("resuming threads!")
             return pop(className, parent, expand)
         end
     end

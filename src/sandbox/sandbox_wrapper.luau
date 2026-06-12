@@ -1,27 +1,26 @@
-local patch_filter_selector = require("@layer/patching/patch_filter_selector")
+local patch_filter_selector = require("@layer/sandbox/patching/patch_filter_selector")
 local new_symbol = require("@layer/util/new_symbol")
-local patch_symbols = require("@layer/patching/patch_symbols")
-local patch_types = require("@layer/patching/patch_types")
-local s = require("@layer/patching/patch_symbols")
+local patch_symbols = require("./patching/patch_symbols")
 local sandbox_types = require("./sandbox_types")
+local unsandbox = require("./unsandbox")
 
 local function get_setter_patches(self)
-    return rawget(self, s.SETTER_PATCHES_SYMBOL) :: { sandbox_types.SetterPatch }
+    return rawget(self, patch_symbols.SETTER_PATCHES_SYMBOL) :: { sandbox_types.SetterPatch }
 end
 
 local function get_getter_patches(self)
-    return rawget(self, s.GETTER_PATCHES_SYMBOL) :: { sandbox_types.GetterPatch }
+    return rawget(self, patch_symbols.GETTER_PATCHES_SYMBOL) :: { sandbox_types.GetterPatch }
 end
 
 local function get_storage(self)
-    return rawget(self, s.PATCH_STORAGE_SYMBOL) :: { [patch_types.Patch]: any }
+    return rawget(self, patch_symbols.PATCH_STORAGE_SYMBOL) :: { [sandbox_types.Patch]: any }
 end
 
 local function get_sandbox_context(self)
-    return rawget(self, s.SANDBOX_CONTEXT) :: sandbox_types.SandboxContext
+    return rawget(self, patch_symbols.SANDBOX_CONTEXT) :: sandbox_types.SandboxContext
 end
 
-local function should_run_on_key(patch: patch_types.Patch, key: any, met_conditions: { [patch_types.PatchCondition]: true })
+local function should_run_on_key(patch: sandbox_types.Patch, key: any, met_conditions: { [sandbox_types.PatchCondition]: true })
     local matched = patch.keys == nil or table.find(patch.keys, key)
 
     if not matched then
@@ -39,7 +38,7 @@ local function should_run_on_key(patch: patch_types.Patch, key: any, met_conditi
     return true
 end
 
-local function get_storage_for_patch(self, patch: patch_types.Patch)
+local function get_storage_for_patch(self, patch: sandbox_types.Patch)
     local storage = get_storage(self)
 
     if storage[patch] then
@@ -51,13 +50,13 @@ local function get_storage_for_patch(self, patch: patch_types.Patch)
 end
 
 local function get_unsandboxed_object(self)
-    return rawget(self, s.UNSANDBOXED_OBJECT) :: any
+    return rawget(self, patch_symbols.UNSANDBOXED_OBJECT) :: any
 end
 
 local metatable = {}
 
 function metatable:__tostring()
-    return `{get_unsandboxed_object(self)} ;)`
+    return `{get_unsandboxed_object(self)} [nl]`
 end
 
 function metatable:__index(key: any)
@@ -104,7 +103,7 @@ function metatable:__newindex(key: any, value: any)
     end
 
     if mutated_key ~= nil then
-        unsandboxed_object[mutated_key] = mutated_value
+        unsandboxed_object[mutated_key] = unsandbox(value)
     end
 end
 
@@ -147,11 +146,11 @@ return function(context: sandbox_types.SandboxContext, value: any)
     end
 
     local sandboxed: { [new_symbol.Symbol]: any } = {
-        [s.SETTER_PATCHES_SYMBOL] = setter_patches,
-        [s.GETTER_PATCHES_SYMBOL] = getter_patches,
-        [s.PATCH_STORAGE_SYMBOL] = {},
-        [s.UNSANDBOXED_OBJECT] = value,
-        [s.SANDBOX_CONTEXT] = context
+        [patch_symbols.SETTER_PATCHES_SYMBOL] = setter_patches,
+        [patch_symbols.GETTER_PATCHES_SYMBOL] = getter_patches,
+        [patch_symbols.PATCH_STORAGE_SYMBOL] = {},
+        [patch_symbols.UNSANDBOXED_OBJECT] = value,
+        [patch_symbols.SANDBOX_CONTEXT] = context
     }
 
     return setmetatable(sandboxed, metatable)

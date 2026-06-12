@@ -9,6 +9,22 @@
 
             "native_legacy": {
                 "$path": "dist/"
+            },
+
+            "server": {
+                "$className": "Script",
+                "$properties": {
+                    "RunContext": "Server",
+                    "Source": "require(game:GetService('ReplicatedStorage').native_legacy).boot()"
+                }
+            },
+
+            "client": {
+                "$className": "Script",
+                "$properties": {
+                    "RunContext": "Client",
+                    "Source": "require(game:GetService('ReplicatedStorage').native_legacy).boot()"
+                }
             }
         }
     }

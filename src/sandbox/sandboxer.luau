@@ -1,6 +1,6 @@
-local patch_symbols = require("@layer/sandbox/patching/patch_symbols")
 local sandbox_types = require("./sandbox_types")
 local sandbox_wrapper = require("./sandbox_wrapper")
+local unsandbox = require("./unsandbox")
 
 --- For pulling values in/out of the Sandbox
 local sandboxer = {}
@@ -10,21 +10,7 @@ function sandboxer.sandbox(context: sandbox_types.SandboxContext, value: unknown
     return sandbox_wrapper(context, value)
 end
 
---- Gets the underlying value from a sandboxed object.
---- If its not sandboxed, the same object will be returned.
-function sandboxer.unsandbox<T>(value: T)
-    if typeof(value) ~= "table" then
-        return value
-    end
-
-    local success, unsandboxed_object = xpcall(function()
-        return rawget(value :: { [any]: any }, patch_symbols.UNSANDBOXED_OBJECT)
-    end, function()
-        warn(debug.traceback("Failed to retrieve unsandboxed object"))
-    end)
-
-    return if success then unsandboxed_object else value
-end
+sandboxer.unsandbox = unsandbox
 
 --- Sandboxes multiple values
 function sandboxer.sandbox_tuple(context: sandbox_types.SandboxContext)
