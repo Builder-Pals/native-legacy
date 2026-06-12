@@ -8,7 +8,7 @@
         {
             "rule": "convert_require",
             "current": {
-                "name": "path",
+                "name": "luau",
                 "sources": {
                     "@packages": "Packages/",
                     "@layer": "src/"

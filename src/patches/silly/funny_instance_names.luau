@@ -1,14 +1,14 @@
-local patch_creator = require("@layer/patching/patch_creator")
-local patch_module_creator = require("@layer/patching/patch_module_creator")
-local sandbox_types = require("@layer/sandbox/sandbox_types")
+local sandbox = require("@layer/sandbox")
+local patching = sandbox.patching
 
--- Set instance name's will always have '!!' appended to the end
-local patch = patch_creator.new_setter_patch({
-    types = { "Instance" },
-    keys = { "Name", "name" },
-    run = function(context: sandbox_types.PatchedContext, _key: any, value: any)
-        context.unsandboxed_object.Name = `{value}!!`
-    end
-} :: patch_creator.SetterPatchInfo)
+-- Scripts can set instance names, but exclamation marks will be added to the end
+local patch = patching.setter_patch {
+	types = { "Instance" },
+	keys = { "Name", "name" },
+	run = function(context: sandbox.PatchedContext, _key: any, value: any)
+		context.unsandboxed_object.Name = `{value}!!`
+        return nil
+    end,
+}
 
-return patch_module_creator.simple(patch)
+return patching.module(patch)

@@ -1,8 +1,8 @@
-local patch_symbols = require("@layer/patching/patch_symbols")
+local patch_symbols = require("@layer/sandbox/patching/patch_symbols")
 local sandbox_types = require("./sandbox_types")
 local sandbox_wrapper = require("./sandbox_wrapper")
 
---- Takes values in/out of the Sandbox
+--- For pulling values in/out of the Sandbox
 local sandboxer = {}
 
 --- Puts a value into the sandbox, applying any relevant patches.

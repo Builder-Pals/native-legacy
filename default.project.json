@@ -7,7 +7,7 @@
         "ReplicatedStorage": {
             "$className": "ReplicatedStorage",
 
-            "nostalgic_layer": {
+            "native_legacy": {
                 "$path": "src/"
             }
         }

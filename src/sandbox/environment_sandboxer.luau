@@ -1,17 +1,21 @@
-
-local start_instance_pool = require("@layer/instance_pool/start_instance_pool")
-local patch_filter_selector = require("@layer/patching/patch_filter_selector")
-local patch_module_selector = require("@layer/patching/patch_module_selector")
-local new_sandboxed_instance_constructor = require("./new_sandboxed_instance_constructor")
+local RunService = game:GetService("RunService")
+local patch_filter_selector = require("./patching/patch_filter_selector")
+local patch_module_selector = require("./patching/patch_module_selector")
+local instance_pool = require("./instance_pool")
 local sandbox_types = require("./sandbox_types")
 local sandboxer = require("./sandboxer")
 
+local DEFAULT_PATCHES_FOLDER = script.Parent:WaitForChild("patches"):WaitForChild("default")
+
+--[=[
+    Pulls environments (`getfenv()`) into the sandbox
+]=]
 local environment_sandboxer = {}
 
 function environment_sandboxer.sandbox_environment_default(environment: any)
     local patches = {}
 
-    for _, patch in script.Parent.Parent.patches.default:GetDescendants() do
+    for _, patch in DEFAULT_PATCHES_FOLDER:GetDescendants() do
         if not patch:IsA("ModuleScript") then
             continue
         end
@@ -34,7 +38,12 @@ function environment_sandboxer.sandbox_environment(environment: any, context: sa
     environment.game = sandboxed_game
     environment.Game = sandboxed_game
     environment.script = sandboxer.sandbox(context, environment.script)
-    environment.Instance = new_sandboxed_instance_constructor(context, start_instance_pool())
+
+    -- future: maybe this should be constructed elsewhere and passed in, instance pool creation
+    -- this kindaa feels like a weird side effect.
+    local instance_pool_runtime = if RunService:IsClient() then instance_pool.start_client() else instance_pool.start_server()
+    
+    environment.Instance = instance_pool.new_lib(context, instance_pool_runtime)
 end
 
 return environment_sandboxer

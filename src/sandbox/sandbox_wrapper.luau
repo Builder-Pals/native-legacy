@@ -21,7 +21,7 @@ local function get_sandbox_context(self)
     return rawget(self, s.SANDBOX_CONTEXT) :: sandbox_types.SandboxContext
 end
 
-local function should_run_on_key(patch: patch_types.Patch, key: any, met_conditions: { [patch_types.SpecialCondition]: true })
+local function should_run_on_key(patch: patch_types.Patch, key: any, met_conditions: { [patch_types.PatchCondition]: true })
     local matched = patch.keys == nil or table.find(patch.keys, key)
 
     if not matched then
