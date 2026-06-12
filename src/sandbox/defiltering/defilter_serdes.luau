@@ -17,12 +17,13 @@ function defilter_serdes.serialize_payload(payload: DeserializedPayload): Serial
     
     for instance, properties in payload do
         local t: { any } = { instance }
-        table.insert(serialized, t)
         
         for property, value in properties do
             table.insert(t, property)
             table.insert(t, pack_value(value))
         end
+
+        table.insert(serialized, t)
     end
 
     return serialized
@@ -32,9 +33,11 @@ function defilter_serdes.deserialize_payload(payload: SerializedPayload, process
     for _, chunk in payload do
         local instance = chunk[1]
         
-        for i = 2, 2, #chunk do
-            local property = chunk[i]
-            local value = chunk[i + 1]
+        -- iterate backwards to preserve setting property order
+        -- probably doesn't matter, but better safe than sorry :P
+        for i = #chunk, 2, -2 do
+            local value = chunk[i]
+            local property = chunk[i - 1]
             processor(instance, property, unpack_value(value))
         end
     end

@@ -16,7 +16,9 @@ local function new_sandboxed_instance_lib(sandbox_context: sandbox_types.Sandbox
     end
 
     --- https://devforum.roblox.com/t/instancelock-instanceunlock-removal/49923
+    --- https://devforum.roblox.com/t/what-are-instancelock-and-instanceunlock/31878/2
     --- Deprecated function that prevented other clients from replicating changes to an instance until unlock is called.
+    --- future: restore functionality properly.
     function library.Lock(_instance)
         -- instance = sandbox.unsandbox(instance)
         -- assert(typeof(instance) == "Instance")
@@ -26,6 +28,8 @@ local function new_sandboxed_instance_lib(sandbox_context: sandbox_types.Sandbox
         -- else
         --     return remotes.networkLock.establishLock:InvokeServer(instance)
         -- end
+
+        return true
     end
 
     function library.Unlock(_instance)

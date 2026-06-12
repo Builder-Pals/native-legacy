@@ -17,10 +17,13 @@ return function()
 	end)
 
 	local function update()
-		remotes.reliable.client.send(
-			remotes.ids.reliable.defiltering.send_properties,
-			defilter_serdes.serialize_payload(queue)
-		)
+		if next(queue) then
+			remotes.reliable.client.send(
+				remotes.ids.reliable.defiltering.send_properties,
+				defilter_serdes.serialize_payload(queue)
+			)
+		end
+
 		table.clear(queue)
 		task.delay(UPDATE_RATE, update)
 	end

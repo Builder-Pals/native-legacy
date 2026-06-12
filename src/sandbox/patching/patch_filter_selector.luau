@@ -1,7 +1,9 @@
+local RunService = game:GetService("RunService")
 local sandbox_types = require("@layer/sandbox/sandbox_types")
 
 type PatchFilter = sandbox_types.Patch
 
+local RUN_CONTEXT = if RunService:IsClient() then "client" else "server" 
 local NEGATIVE_PRIORITY_OFFSET = 10000000
 
 local patch_filter_selector = {}
@@ -51,6 +53,10 @@ function patch_filter_selector.find_patches(patches: { sandbox_types.Patch })
         local filtered = {}
         
         for _, patch in patches do
+            if patch.enabled ~= nil and not patch.enabled then
+                continue
+            end
+
             if patch_filter_selector.is_patch_for_object(patch, x) then
                 table.insert(filtered, patch)
             end

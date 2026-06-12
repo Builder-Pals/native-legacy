@@ -1,5 +1,6 @@
 local network = require("./network")
 local sandbox = require("./sandbox")
+local defiltering = require("./sandbox/defiltering")
 local RunService = game:GetService("RunService")
 
 local external_boot_prefab = script.Parent.external_boot
@@ -10,15 +11,13 @@ return function()
 	print("booting nl...")
 
 	if IS_CLIENT then
-		print("init network")
 		network.init()
-		print("init client")
 		sandbox.instance_pool.start_client()
+		defiltering.start_client()
 	else
-		print("init network")
 		network.init()
-		print("init server")
 		sandbox.instance_pool.start_server()
+		defiltering.start_server()
 	end
 
 	-- Create a module underneath game that's easy to call from sandboxed scripts

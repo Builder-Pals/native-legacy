@@ -44,6 +44,7 @@ export type Patch = {
     classes: { string }?,
     special_conditions: { PatchCondition }?,
     priority: number?,
+    enabled: boolean?
 }
 
 type PatchInfoBase = {
