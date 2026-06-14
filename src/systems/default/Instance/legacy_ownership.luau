@@ -28,18 +28,6 @@ local function migrate_ownership(part: BasePart)
 	end
 end
 
-local function apply(instance: any, property: any, value: any)
-	print(`{instance}.{property} = {value}`)
-
-	if property == "__r" then
-		instance.Parent = nil
-	elseif property == "__d" then
-		instance:Destroy()
-	else
-		instance[property] = value
-	end
-end
-
 -- server
 -- tags all player characters for convenience
 app.add_system(NAME, function()
