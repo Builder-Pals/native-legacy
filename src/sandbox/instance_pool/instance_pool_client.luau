@@ -1,12 +1,15 @@
 --!strict
 
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
 local remotes = require("@layer/network/remotes")
+local sandbox_types = require("../sandbox_types")
 local instance_pool_remote = require("./instance_pool_remote")
 local LOCAL_PLAYER = Players.LocalPlayer
 
-local function runtime_client()
+local function instance_pool_client(_app: sandbox_types.App)
+    assert(RunService:IsClient(), "instance_pool_client is running on the server!")
     local container = LOCAL_PLAYER:WaitForChild("PlayerGui"):WaitForChild("PoolFactory")
     local class_requests: { [string]: { thread } } = {}
 
@@ -63,6 +66,4 @@ local function runtime_client()
     }
 end
 
-export type RuntimeClient = typeof(runtime_client())
-
-return runtime_client
+return instance_pool_client

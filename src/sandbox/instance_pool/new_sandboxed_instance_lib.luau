@@ -1,13 +1,18 @@
 local RunService = game:GetService("RunService")
 
-local instance_pool_client = require("./instance_pool_client")
 local sandbox_types = require("../sandbox_types")
 local sandboxer = require("../sandboxer")
 
 local DONT_REPLICATE = { "Dragger" }
 
 --- Creates a sandboxed version of Roblox's `Instance` library
-local function new_sandboxed_instance_lib(sandbox_context: sandbox_types.SandboxContext, pool: instance_pool_client.RuntimeClient?)
+local function new_sandboxed_instance_lib(app: sandbox_types.App)
+    local instance_pool
+
+    if RunService:IsClient() then
+        instance_pool = app.bag.get(app.bag.entries.client_instance_pool)
+    end
+
     local library = {}
 
     -- This was added in 2025 so it hasn't been implemented, but it could be in the future
@@ -46,11 +51,9 @@ local function new_sandboxed_instance_lib(sandbox_context: sandbox_types.Sandbox
 
             local instance = Instance.new(className)
             instance.Parent = parent
-            return sandboxer.sandbox(sandbox_context, instance)
+            return sandboxer.sandbox(app, instance)
         end
     else
-        assert(pool)
-
         function library.new(className: string, parent: Instance?)
             if parent then
                 parent = sandboxer.unsandbox(parent)
@@ -59,20 +62,22 @@ local function new_sandboxed_instance_lib(sandbox_context: sandbox_types.Sandbox
             if table.find(DONT_REPLICATE, className) then
                 local instance = Instance.new(className)
                 instance.Parent = parent
-                return sandboxer.sandbox(sandbox_context, instance)
+                return sandboxer.sandbox(app, instance)
             end
     
-            local instance = pool.pop(className, parent)
+            assert(instance_pool)
+            local instance = instance_pool.pop(className, parent)
             
             if parent ~= nil then
                 instance.Parent = parent
             end
 
-            return sandboxer.sandbox(sandbox_context, instance)
+            return sandboxer.sandbox(app, instance)
         end
     end
 
     return setmetatable(library, {
+        -- lie our asses off
         __index = function() error("attempt to modify a readonly table") end,
         __newindex = function() error("attempt to modify a readonly table") end
     })

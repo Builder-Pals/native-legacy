@@ -6,14 +6,14 @@ local unsandbox = require("./unsandbox")
 local sandboxer = {}
 
 --- Puts a value into the sandbox, applying any relevant patches.
-function sandboxer.sandbox(context: sandbox_types.SandboxContext, value: unknown)
+function sandboxer.sandbox(context: sandbox_types.App, value: unknown)
     return sandbox_wrapper(context, value)
 end
 
 sandboxer.unsandbox = unsandbox
 
 --- Sandboxes multiple values
-function sandboxer.sandbox_tuple(context: sandbox_types.SandboxContext)
+function sandboxer.sandbox_tuple(context: sandbox_types.App)
     return function(...: any)
         local packed = table.pack(...)
         local result = {}

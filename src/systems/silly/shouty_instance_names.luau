@@ -1,7 +1,8 @@
+local app = require("@layer/app")
 local sandbox = require("@layer/sandbox")
 local patching = sandbox.patching
 
--- Scripts can set instance names, but exclamation marks will be added to the end
+-- scripts can set instance names, but exclamation marks will be added to the end
 local patch = patching.setter_patch {
 	types = { "Instance" },
 	keys = { "Name", "name" },
@@ -11,4 +12,4 @@ local patch = patching.setter_patch {
     end,
 }
 
-return patching.module(patch)
+return app.add_patch("shouty_instance_names", patch, false)

@@ -1,52 +1,42 @@
-local RunService = game:GetService("RunService")
-local patch_filter_selector = require("./patching/patch_filter_selector")
-local patch_module_selector = require("./patching/patch_module_selector")
 local instance_pool = require("./instance_pool")
+local patch_symbols = require("./patching/patch_symbols")
 local sandbox_types = require("./sandbox_types")
 local sandboxer = require("./sandboxer")
 
-local DEFAULT_PATCHES_FOLDER = script.Parent.Parent:WaitForChild("patches"):WaitForChild("default")
+return function(app: sandbox_types.App)
+	--[=[
+        Pulls environments (generally grabbed with `getfenv()`) into the sandbox
+    ]=]
+	local environment_sandboxer = {} :: sandbox_types.EnvironmentSandboxer
 
-local runtime
+	function environment_sandboxer.sandbox_environment(environment: any)
+		local sandboxed_workspace = sandboxer.sandbox(app, workspace)
+		local sandboxed_game = sandboxer.sandbox(app, game)
 
---[=[
-    Pulls environments (`getfenv()`) into the sandbox
-]=]
-local environment_sandboxer = {}
+		environment.workspace = sandboxed_workspace
+		environment.Workspace = sandboxed_workspace
+		environment.game = sandboxed_game
+		environment.Game = sandboxed_game
+		environment.script = sandboxer.sandbox(app, environment.script)
+        
+        environment.typeof = function(x)
+            if typeof(x) == "table" then
+                return rawget(x, patch_symbols.FAKE_TYPEOF) or typeof(sandboxer.unsandbox(x))
+            end
 
-function environment_sandboxer.sandbox_environment_default(environment: any)
-    local patches = {}
-
-    for _, patch in DEFAULT_PATCHES_FOLDER:GetDescendants() do
-        if not patch:IsA("ModuleScript") then
-            continue
+            return typeof(x)
         end
 
-        for _, sub_patch in patch_module_selector.get_patches(require(patch) :: any) do
-            table.insert(patches, sub_patch)
+        environment.type = function(x)
+            if type(x) == "table" then
+                return rawget(x, patch_symbols.FAKE_TYPE) or type(sandboxer.unsandbox(x))
+            end
+
+            return type(x)
         end
-    end
 
-    patches = patch_filter_selector.sort_patches(patches)
-    environment_sandboxer.sandbox_environment(environment, { patches = patches })
+		environment.Instance = instance_pool.new_lib(app)
+	end
+
+	return environment_sandboxer
 end
-
-function environment_sandboxer.sandbox_environment(environment: any, context: sandbox_types.SandboxContext)
-    local sandboxed_workspace = sandboxer.sandbox(context, workspace)
-    local sandboxed_game = sandboxer.sandbox(context, game)
-
-    environment.workspace = sandboxed_workspace
-    environment.Workspace = sandboxed_workspace
-    environment.game = sandboxed_game
-    environment.Game = sandboxed_game
-    environment.script = sandboxer.sandbox(context, environment.script)
-
-    -- future: maybe this should be constructed elsewhere and passed in, instance pool creation
-    -- this kindaa feels like a weird side effect.
-    local instance_pool_runtime = if runtime then runtime else if RunService:IsClient() then instance_pool.start_client() else instance_pool.start_server()
-    runtime = instance_pool_runtime
-    
-    environment.Instance = instance_pool.new_lib(context, instance_pool_runtime)
-end
-
-return environment_sandboxer

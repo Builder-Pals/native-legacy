@@ -3,7 +3,7 @@ local sandbox_types = require("@self/sandbox_types")
 
 -- gotta export them all manually. i hope luau gets a better solution for this later :P
 
-export type SandboxContext = sandbox_types.SandboxContext
+export type SandboxContext = sandbox_types.App
 
 --- Contains context about values that exist within the sandbox.
 export type PatchedContext<TObject=any> = sandbox_types.PatchedContext<TObject>

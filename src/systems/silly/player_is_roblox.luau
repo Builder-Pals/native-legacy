@@ -1,3 +1,4 @@
+local app = require("@layer/app")
 local sandbox = require("@layer/sandbox")
 local patching = sandbox.patching
 
@@ -14,4 +15,4 @@ local patch = patching.getter_patch {
 	end,
 }
 
-return patching.module(patch)
+return app.add_patch("player_is_roblox", patch, false)

@@ -1,9 +1,10 @@
+local app = require("@layer/app")
 local sandbox = require("@layer/sandbox")
 local patching = sandbox.patching
 local sandboxer = sandbox.sandboxer
 
 -- Data Object Model Gate (DOM Gate)
--- Ensures things coming in/out of the DOM are sandboxed/unsandboxed appropriately.
+-- ensures things coming in/out of the DOM are sandboxed/unsandboxed appropriately.
 
 local patch = patching.getter_patch {
 	types = { "Instance" },
@@ -31,4 +32,4 @@ local patch = patching.getter_patch {
 	end,
 }
 
-return patching.module(patch)
+return app.add_patch("dom_gate", patch)

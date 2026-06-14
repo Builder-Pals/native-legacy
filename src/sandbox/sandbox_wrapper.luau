@@ -17,7 +17,7 @@ local function get_storage(self)
 end
 
 local function get_sandbox_context(self)
-    return rawget(self, patch_symbols.SANDBOX_CONTEXT) :: sandbox_types.SandboxContext
+    return rawget(self, patch_symbols.SANDBOX_CONTEXT) :: sandbox_types.App
 end
 
 local function should_run_on_key(patch: sandbox_types.Patch, key: any, met_conditions: { [sandbox_types.PatchCondition]: true })
@@ -98,12 +98,12 @@ function metatable:__newindex(key: any, value: any)
                 storage = get_storage_for_patch(self, patch)
             }
             
-            mutated_key, mutated_value = patch.run(context, key, value)
+            mutated_key, mutated_value = patch.run(context, key, mutated_value)
         end
     end
 
     if mutated_key ~= nil then
-        unsandboxed_object[mutated_key] = unsandbox(value)
+        unsandboxed_object[mutated_key] = unsandbox(mutated_value)
     end
 end
 
@@ -124,7 +124,7 @@ function metatable:__iter()
     return iterate
 end
 
-return function(context: sandbox_types.SandboxContext, value: any)
+return function(context: sandbox_types.App, value: any)
     local filtered_patches = patch_filter_selector.find_patches(context.patches)(value)
     
     if #filtered_patches == 0 then

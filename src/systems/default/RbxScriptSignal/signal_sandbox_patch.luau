@@ -1,8 +1,9 @@
+local app = require("@layer/app")
 local sandbox = require("@layer/sandbox")
 local patching = sandbox.patching
 local sandboxer = sandbox.sandboxer
 
---- Ensures values passed through RBXScriptSignals are sandboxed
+--- sandboxes values passed through RBXScriptSignals.
 local patch = patching.getter_patch {
 	classes = patching.ALL_CLASSES,
 	types = { "RBXScriptSignal" },
@@ -21,4 +22,4 @@ local patch = patching.getter_patch {
 	end,
 }
 
-return patching.module(patch)
+return app.add_patch("signal_sandbox", patch)

@@ -1,6 +1,8 @@
 local network = require("./network")
 local sandbox = require("./sandbox")
 local defiltering = require("./sandbox/defiltering")
+local app = require("@layer/app")
+
 local RunService = game:GetService("RunService")
 
 local external_boot_prefab = script.Parent.external_boot
@@ -8,11 +10,15 @@ local external_boot_prefab = script.Parent.external_boot
 local IS_CLIENT = RunService:IsClient()
 
 return function()
+	print("----")
 	print("booting nl...")
+
+	print("starting app...")
+	app.start()
 
 	if IS_CLIENT then
 		network.init()
-		sandbox.instance_pool.start_client()
+		sandbox.instance_pool.start_client(app.context)
 		defiltering.start_client()
 	else
 		network.init()
@@ -31,5 +37,6 @@ return function()
 
 	external_boot.Parent = game
 
-    print("nl layer booted!")
+    print("nl is now running!")
+	print("----")
 end

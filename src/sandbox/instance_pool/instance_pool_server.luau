@@ -16,12 +16,12 @@ local function class_exists(className: string)
     end) == true
 end
 
-local function runtime_server()
+local function instance_pool_server()
     if isRunning then
         return {}
     end
 
-    assert(RunService:IsServer(), "runtime_server should only be called on the server!")
+    assert(RunService:IsServer(), "instance_pool_server should only run on the server!")
     isRunning = true
 
     local warehouses = {}
@@ -87,4 +87,4 @@ local function runtime_server()
     return {}
 end
 
-return runtime_server
+return instance_pool_server
