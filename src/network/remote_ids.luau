@@ -11,6 +11,7 @@ local remote_ids = {
 	unreliable = {
 		target_point = {
 			update = next_id(),
+			tool_activate = next_id()
 		},
 
 		defiltering = {

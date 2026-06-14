@@ -49,7 +49,7 @@ end
 function app.add_patch(id: string, patch: sandbox_types.Patch, enabled: OptionalSwitch?): sandbox_types.PatchGroup
 	local patch_group: sandbox_types.PatchGroup = {
 		id = id,
-		enabled = enabled,
+		enabled = if enabled ~= nil then enabled else patch.enabled,
 		patches = { patch },
 	}
 

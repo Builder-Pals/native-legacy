@@ -1,9 +1,7 @@
-local RunService = game:GetService("RunService")
 local sandbox_types = require("@layer/sandbox/sandbox_types")
 
 type PatchFilter = sandbox_types.Patch
 
-local RUN_CONTEXT = if RunService:IsClient() then "client" else "server" 
 local NEGATIVE_PRIORITY_OFFSET = 10000000
 
 local patch_filter_selector = {}

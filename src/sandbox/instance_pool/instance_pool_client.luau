@@ -6,6 +6,7 @@ local RunService = game:GetService("RunService")
 local remotes = require("@layer/network/remotes")
 local sandbox_types = require("../sandbox_types")
 local instance_pool_remote = require("./instance_pool_remote")
+
 local LOCAL_PLAYER = Players.LocalPlayer
 
 local function instance_pool_client(_app: sandbox_types.App)

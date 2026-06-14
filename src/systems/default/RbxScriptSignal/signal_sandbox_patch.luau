@@ -3,13 +3,11 @@ local sandbox = require("@layer/sandbox")
 local patching = sandbox.patching
 local sandboxer = sandbox.sandboxer
 
---- sandboxes values passed through RBXScriptSignals.
+--- sandboxes all values passed through RBXScriptSignals to prevent escapes.
 local patch = patching.getter_patch {
 	classes = patching.ALL_CLASSES,
 	types = { "RBXScriptSignal" },
 	run = function(context: sandbox.PatchedContext, _key: any)
-		print("we're sandboxing a signal")
-
 		return function(_self, unsandboxed_listener)
 			local tuple_sandboxer = sandboxer.sandbox_tuple(context.sandbox_context)
 

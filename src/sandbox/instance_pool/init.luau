@@ -1,4 +1,3 @@
-local RunService = game:GetService("RunService")
 return {
     start_client = require("@self/instance_pool_client"),
     start_server = require("@self/instance_pool_server"),
