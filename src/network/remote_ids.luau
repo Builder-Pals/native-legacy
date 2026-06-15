@@ -9,6 +9,10 @@ end
 
 local remote_ids = {
 	unreliable = {
+		mouse = {
+			update = next_id()
+		},
+
 		target_point = {
 			update = next_id(),
 			tool_activate = next_id()

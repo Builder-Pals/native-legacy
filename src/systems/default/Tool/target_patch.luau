@@ -95,7 +95,7 @@ app.add_system(NAME, function()
 					humanoids[player] = child :: Humanoid
 				elseif child:IsA("Tool") then
 					tool_humanoid_map[child] = humanoids[player]
-					
+
 					child.Destroying:Once(function()
 						tool_humanoid_map[child] = nil
 					end)
@@ -156,6 +156,7 @@ app.add_patch(
 		classes = { "Tool" },
 		keys = { "Activated" },
 		run = function(context: sandbox.PatchedContext, _key: any)
+			assert(RunService:IsServer())
 			local tool = context.unsandboxed_object
 			local signal = context.unsandboxed_object["Activated"] :: RBXScriptSignal
 
@@ -204,12 +205,25 @@ app.add_patch(
 				return connection
 			end
 
-			-- future: could do Wait/wait too, but it's unlikely
-			-- to be required for now.
+			local function wait(_self)
+				local thread: thread
+				local connection: RBXScriptConnection
+
+				connection = connect(_self, function(...)
+					connection:Disconnect()
+					coroutine.resume(thread, ...)
+				end)
+
+				thread = coroutine.running()
+				return coroutine.yield()
+			end
+
 			local fake_signal = {
 				__index = context.unsandboxed_object,
 				Connect = connect,
 				connect = connect,
+				Wait = wait,
+				wait = wait,
 				[patching.symbols.FAKE_TYPE] = typeof(signal),
 				[patching.symbols.FAKE_TYPEOF] = typeof(signal),
 			}

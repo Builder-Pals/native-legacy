@@ -35,10 +35,15 @@ export type ClientInstancePool = {
 }
 
 export type PatchedContext<TObject = any> = {
-	--- Similar to Snapshots in Harmony - the value (potentially with prior patches applied)
+	--[=[
+		The current key (potentially with prior patches applied)
+	]=]
 	snapshot: any,
-	--- Similar to Original in Harmony - the raw value without any patches
+	--[=[
+		The starting value without any patches applied. Same as `unsandboxed_object[key]`.
+	]=]
 	unsandboxed: any,
+	--- The base object without any patches applied.
 	unsandboxed_object: any,
 	sandbox_context: App,
 	storage: { [any]: any },

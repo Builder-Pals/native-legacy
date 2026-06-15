@@ -40,9 +40,11 @@ app.add_system(NAME, function()
 	end)
 end, RunService:IsServer())
 
+-- future: inheritance support would be good, maybe the new reflection api can help?
+local parts = { "Part", "BasePart", "WedgePart", "CornerWedgePart", "TrussPart", "MeshPart" }
+
 app.add_patch(NAME, patching.setter_patch {
-    -- future: inheritance support would be good, maybe the new reflection api can help?
-    classes = { "Part", "BasePart", "WedgePart", "CornerWedgePart", "TrussPart", "MeshPart" },
+    classes = parts,
     keys = { "Parent", "parent" },
     enabled = RunService:IsServer(),
     run = function(context, key, value)

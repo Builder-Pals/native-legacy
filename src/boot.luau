@@ -4,6 +4,7 @@ local defiltering = require("./sandbox/defiltering")
 local app = require("@layer/app")
 
 local RunService = game:GetService("RunService")
+local SoundService = game:GetService("SoundService")
 
 local external_boot_prefab = script.Parent.external_boot
 
@@ -21,6 +22,11 @@ return function()
 		sandbox.instance_pool.start_client(app.context)
 		defiltering.start_client()
 	else
+		if SoundService.RespectFilteringEnabled then
+			print("SoundService.RespectFilteringEnabled has been changed to false")
+			SoundService.RespectFilteringEnabled = false
+		end
+
 		network.init()
 		sandbox.instance_pool.start_server()
 		defiltering.start_server()

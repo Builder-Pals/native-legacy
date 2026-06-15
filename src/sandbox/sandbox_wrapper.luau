@@ -61,16 +61,25 @@ end
 
 function metatable:__index(key: any)
     local unsandboxed_object = get_unsandboxed_object(self)
-    local raw = unsandboxed_object[key]
+    local raw_value
 
-    local mutated = raw
+    -- bit of a hack...
+    -- generally we want to throw the error for invalid indexes, but it's ideal to throw a
+    -- warning instead of error for RBXScriptSignal:disconnect
+    if typeof(unsandboxed_object) == "RBXScriptSignal" and key == "disconnect" then
+        raw_value = nil
+    else
+        raw_value = unsandboxed_object[key]
+    end
+
+    local mutated = raw_value
     local met_conditions = {}
 
     for _, patch in get_getter_patches(self) do
         if should_run_on_key(patch, key, met_conditions) then
             local context: sandbox_types.PatchedContext = {
                 snapshot = mutated,
-                unsandboxed = raw,
+                unsandboxed = raw_value,
                 unsandboxed_object = unsandboxed_object,
                 sandbox_context = get_sandbox_context(self),
                 storage = get_storage_for_patch(self, patch)
@@ -91,7 +100,7 @@ function metatable:__newindex(key: any, value: any)
     for _, patch in get_setter_patches(self) do
         if should_run_on_key(patch, key, met_conditions) then
             local context: sandbox_types.PatchedContext = {
-                snapshot = key,
+                snapshot = mutated_key,
                 unsandboxed = get_unsandboxed_object(self),
                 unsandboxed_object = unsandboxed_object,
                 sandbox_context = get_sandbox_context(self),
