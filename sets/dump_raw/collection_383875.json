@@ -1,0 +1,110 @@
+[
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Small Neutral Spawn", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59524197", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "383875", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "144864324", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    }
+]

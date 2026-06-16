@@ -1,0 +1,650 @@
+[
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Trowel Dispenser", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59524124", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "383878", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "171986570", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Superball Dispenser", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59524102", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "383878", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "171986758", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Slingshot Dispenser", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59524079", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "383878", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "171986806", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Rocket Launcher Dispenser", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59524044", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "383878", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "171986853", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Timebomb Dispenser", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59524006", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "383878", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "171986652", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Sword Dispenser", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59524162", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "383878", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "171986713", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    }
+]

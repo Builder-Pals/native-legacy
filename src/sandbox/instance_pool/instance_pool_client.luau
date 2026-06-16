@@ -23,6 +23,7 @@ local function instance_pool_client(_app: sandbox_types.App)
             if not instance then
                 expand = true
                 print(`waiting for expansion of {className} pool...`)
+                -- TODO: Add 'virtual instance' that collects property changes/method calls until the instance is actually created
                 instance = class_container.ChildAdded:Wait()
                 task.defer(coroutine.running())
                 coroutine.yield()

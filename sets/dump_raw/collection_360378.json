@@ -1,0 +1,1514 @@
+[
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Steps - Turn Left", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "56450261", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "138020529", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Steps - Turn Right", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "56450290", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "138020609", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Steps - Corner", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "56450320", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "138020678", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Steps", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "56450340", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "138020722", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Ladder", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "56450238", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "144863277", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Trapdoor - Ice", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "41324919", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "138011451", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Trapdoor - Slate", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "41324907", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "138011504", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Trapdoor - Grass", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "41324912", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "138011544", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Corroded Truss - Horizontal", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59617538", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "144839684", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Corroded Truss - Centered Vertical", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59617344", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "144839254", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Corroded Truss - Corner Vertical", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59617845", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "144840347", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Metal Truss - Horizontal", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59617492", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "144839585", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Metal Truss - Centered Vertical", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59617205", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "144838964", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Metal Truss - Corner Vertical", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "59617391", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "360378", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "144839382", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    }
+]

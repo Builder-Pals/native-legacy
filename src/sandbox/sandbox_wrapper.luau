@@ -104,7 +104,8 @@ function metatable:__newindex(key: any, value: any)
                 unsandboxed = get_unsandboxed_object(self),
                 unsandboxed_object = unsandboxed_object,
                 sandbox_context = get_sandbox_context(self),
-                storage = get_storage_for_patch(self, patch)
+                storage = get_storage_for_patch(self, patch),
+                environment = getfenv(2)
             }
             
             mutated_key, mutated_value = patch.run(context, key, mutated_value)

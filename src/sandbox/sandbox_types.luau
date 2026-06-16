@@ -53,6 +53,8 @@ export type PatchedContext<TObject = any> = {
 	unsandboxed_object: any,
 	sandbox_context: App,
 	storage: { [any]: any },
+	--- The environment of the sandboxed script.
+	environment: { [any]: any },
 }
 
 export type GetterPatchRun = (context: PatchedContext, key: any) -> any

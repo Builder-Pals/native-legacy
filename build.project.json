@@ -8,7 +8,11 @@
             "$className": "ReplicatedStorage",
 
             "native_legacy": {
-                "$path": "dist/"
+                "$path": "dist/",
+
+                "sets_data": {
+                    "$path": "sets/dump"
+                }
             },
 
             "server": {

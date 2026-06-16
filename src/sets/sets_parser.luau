@@ -1,74 +1,62 @@
 -- many thanks to the roblox set archive on GitHub created by pizzaboxer!
 -- data converted using the jsonformatter xml-to-json site.
 
-local DATA_MAP = {
-    happyhomeman = require("./data/users/happyhomeman"),
-    usabilityman = require("./data/users/usabilityman"),
-    usabilityman2 = require("./data/users/usabilityman2"),
+local sets_data = require("../sets_data")
+
+type Set = sets_data.Set
+type CollectionEntry = sets_data.CollectionEntry
+
+local USER_ID_TO_NAME = {
+    [18881829] = "happyhomeman",
+    [11744447] = "usabilityman",
+    [18881789] = "usabilityman2",
 }
 
-export type Set = {
-    Name: string,
-    CategoryId: string,
-    Description: string,
-    AssetSetId: string,
-    CreatorName: string,
-    ImageAsssetId: string,
-    SetType: "private" | "public",
-}
-
-local function parse(data: typeof(DATA_MAP.happyhomeman))
-    local sets = {}
-    
-    for _, set in data.List.Value do
-        local output = {}
-        
-        for _, entry in set.Table.Entry do
-            output[entry.Key] = entry.Value
-        end
-
-        table.insert(sets, output :: Set)
-    end
-
-    return sets
+local function to_uid(x)
+    return assert(tonumber(x), `invalid user id {x}`)
 end
-
-local USER_TO_SETS = {
-    happyhomeman = parse(DATA_MAP.happyhomeman),
-    usabilityman = parse(DATA_MAP.usabilityman),
-    usabilityman2 = parse(DATA_MAP.usabilityman2), 
-}
-
-local USER_ID_TO_SETS = {
-    [18881829] = USER_TO_SETS.happyhomeman,
-    [11744447] = USER_TO_SETS.usabilityman,
-    [18881789] = USER_TO_SETS.usabilityman2,
-}
 
 local sets_parser = {}
 
 --- Returns an array of sets that belonged to a given user.
-function sets_parser.get_sets(user_id: number): (boolean, { Set })
-    local result = USER_ID_TO_SETS[user_id]
+function sets_parser.get_sets(user_id: number | string): (boolean, { Set })
+    local username = USER_ID_TO_NAME[to_uid(user_id)]
 
-    if not result then
+    if not username then
         return false, {}
     end
 
-    return true, USER_ID_TO_SETS[user_id]
+    local data = sets_data.users[username]
+
+    if data then
+        return true, data
+    else
+        return false, {}
+    end
 end
 
 --- Returns an array of Roblox's built in categories (used for the stamper tool).
 function sets_parser.get_base_categories(): { Set }
-    local categories = {}
+    return sets_data.base
+end
 
-    for _, sets in USER_ID_TO_SETS do
-        for _, set in sets do
-            table.insert(categories, set)
-        end
+function sets_parser.get_collection(user_id: number | string): (boolean, { CollectionEntry })
+    local entries = {}
+    local username = USER_ID_TO_NAME[to_uid(user_id)]
+
+    for _, collection in sets_data.collections do
+        for _, entry in collection do
+            if entry.CreatorName == username then
+                table.insert(entries, entry)
+            end
+        end 
     end
 
-    return categories
+    if username then
+        return true, entries
+    else
+        return false, {}
+    end
 end
 
 return sets_parser
