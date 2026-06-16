@@ -196,7 +196,6 @@ app.add_patch(
 								humanoid.TargetPoint = target_point
 							end
 
-							print("fire good", target_point)
 							callback()
 						end
 					end

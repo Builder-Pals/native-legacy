@@ -4,5 +4,6 @@
 # New tools can be added by running `rokit add <tool>` in a terminal.
 
 [tools]
-rojo = "rojo-rbx/rojo@7.6.1"
-darklua = "seaofvoices/darklua@0.19.0"
+lute = "luau-lang/lute@1.0.0"
+
+# btw: `lute setup --with-luaurc` handles setup for you

@@ -17,6 +17,7 @@ export type FakeMouse = {
 	key_down: FakeSignal.SignalContext,
 	key_up: FakeSignal.SignalContext,
 	location: Vector2,
+	hit: CFrame,
 	target: Instance?,
 }
 
@@ -102,6 +103,7 @@ app.add_system("hopperbin_send_input", function(_app)
 				UserInputService:GetMouseLocation(),
 				mouse.Target,
 				input_pool,
+				mouse.Hit.Position
 			}
 
 			network.remotes.unreliable.client.send(network.remotes.ids.unreliable.mouse.update, data)
@@ -137,6 +139,10 @@ local function mouse_index(self, key: string): any
 		return data.key_up.signal
 	end
 
+	if key == "Hit" or key == "hit" then
+		return data.hit
+	end
+
 	print("fallback", key)
 	return (data.real_mouse :: any)[key]
 end
@@ -152,6 +158,8 @@ app.add_system("hopperbin_receive_input", function(_app)
 
 			location = Vector2.zero,
 			target = nil,
+
+			hit = CFrame.identity,
 
 			[patching.symbols.FAKE_TYPE] = "userdata",
 			[patching.symbols.FAKE_TYPEOF] = "Instance",
@@ -175,8 +183,8 @@ app.add_system("hopperbin_receive_input", function(_app)
 
 			mouse.location = payload[1]
 			mouse.target = payload[2]
-
 			local keys = payload[3]
+			mouse.hit = CFrame.new(payload[4])
 
 			for key, pressed in keys do
 				if pressed then

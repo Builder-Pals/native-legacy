@@ -36,6 +36,12 @@ export type ClientInstancePool = {
 
 export type PatchedContext<TObject = any> = {
 	--[=[
+		## Getter
+		The current value (potentially with prior patches applied)
+
+		Starting point: `unsandboxed_object[key]`
+
+		## Setter
 		The current key (potentially with prior patches applied)
 	]=]
 	snapshot: any,

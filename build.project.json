@@ -1,6 +1,6 @@
 {
     "name": "nl-layer",
-    "emitLegacyScripts": false,
+    "emitLegacyScripts": true,
     "tree": {
         "$className": "DataModel",
 
@@ -25,6 +25,10 @@
                     "RunContext": "Client",
                     "Source": "require(game:GetService('ReplicatedStorage').native_legacy).boot()"
                 }
+            },
+
+            "nl_dont_sandbox": {
+                "$className": "ObjectValue"
             }
         }
     }

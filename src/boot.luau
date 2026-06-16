@@ -5,10 +5,20 @@ local app = require("@layer/app")
 
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
+local StarterPlayer = game:GetService("StarterPlayer")
 
 local external_boot_prefab = script.Parent.external_boot
 
 local IS_CLIENT = RunService:IsClient()
+
+local function clone_animate()
+	local animate = script.Parent:WaitForChild("character"):WaitForChild("Animate"):Clone()
+	local bindable = Instance.new("BindableFunction")
+	bindable.Name = "PlayEmote"
+	bindable.Parent = animate
+
+	animate.Parent = StarterPlayer:WaitForChild("StarterCharacterScripts")
+end
 
 return function()
 	print("----")
@@ -27,6 +37,7 @@ return function()
 			SoundService.RespectFilteringEnabled = false
 		end
 
+		clone_animate()
 		network.init()
 		sandbox.instance_pool.start_server()
 		defiltering.start_server()

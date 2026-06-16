@@ -108,6 +108,11 @@ function metatable:__newindex(key: any, value: any)
             }
             
             mutated_key, mutated_value = patch.run(context, key, mutated_value)
+
+            if mutated_key == nil then
+                -- a patch has sunk the value.
+                return
+            end
         end
     end
 

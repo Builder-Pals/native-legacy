@@ -20,6 +20,7 @@ app.add_patch(
 	patching.setter_patch {
 		types = { "Instance" },
 		enabled = IS_CLIENT,
+		priority = -1,
 		run = function(context: sandbox.PatchedContext, key: any, value: any)
 			if DONT_NETWORK[context.unsandboxed_object.ClassName] then
 				return key, value
@@ -55,6 +56,7 @@ app.add_patch(
 		types = { "Instance" },
 		keys = { "Remove", "remove", "Destroy", "destroy" },
 		enabled = IS_CLIENT,
+		priority = -1,
 		run = function(context: sandbox.PatchedContext, key)
 			if DONT_NETWORK[context.unsandboxed_object.ClassName] then
 				return context.snapshot

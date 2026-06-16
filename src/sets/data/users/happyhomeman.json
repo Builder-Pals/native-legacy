@@ -1,0 +1,244 @@
+{
+	"List": {
+		"Value": [
+			{
+				"Table": {
+					"Entry": [
+						{
+							"Key": "Name",
+							"Value": "My Models"
+						},
+						{
+							"Key": "CategoryId",
+							"Value": "-151054632"
+						},
+						{
+							"Key": "Description",
+							"Value": "A set of my models."
+						},
+						{
+							"Key": "AssetSetId",
+							"Value": "-151054632"
+						},
+						{
+							"Key": "CreatorName",
+							"Value": "happyhomeman"
+						},
+						{
+							"Key": "ImageAssetId",
+							"Value": "21267705"
+						},
+						{
+							"Key": "SetType",
+							"Value": "private"
+						}
+					]
+				}
+			},
+			{
+				"Table": {
+					"Entry": [
+						{
+							"Key": "Name",
+							"Value": "My Decals"
+						},
+						{
+							"Key": "CategoryId",
+							"Value": "-151054631"
+						},
+						{
+							"Key": "Description",
+							"Value": "A set of my decals."
+						},
+						{
+							"Key": "AssetSetId",
+							"Value": "-151054631"
+						},
+						{
+							"Key": "CreatorName",
+							"Value": "happyhomeman"
+						},
+						{
+							"Key": "ImageAssetId",
+							"Value": "21002577"
+						},
+						{
+							"Key": "SetType",
+							"Value": "private"
+						}
+					]
+				}
+			},
+			{
+				"Table": {
+					"Entry": [
+						{
+							"Key": "Name",
+							"Value": "Experimental"
+						},
+						{
+							"Key": "CategoryId",
+							"Value": "462226"
+						},
+						{
+							"Key": "Description",
+							"Value": ""
+						},
+						{
+							"Key": "AssetSetId",
+							"Value": "462226"
+						},
+						{
+							"Key": "CreatorName",
+							"Value": "happyhomeman"
+						},
+						{
+							"Key": "ImageAssetId",
+							"Value": "65821324"
+						},
+						{
+							"Key": "SetType",
+							"Value": "user"
+						}
+					]
+				}
+			},
+			{
+				"Table": {
+					"Entry": [
+						{
+							"Key": "Name",
+							"Value": "High Scalability"
+						},
+						{
+							"Key": "CategoryId",
+							"Value": "433603"
+						},
+						{
+							"Key": "Description",
+							"Value": ""
+						},
+						{
+							"Key": "AssetSetId",
+							"Value": "433603"
+						},
+						{
+							"Key": "CreatorName",
+							"Value": "happyhomeman"
+						},
+						{
+							"Key": "ImageAssetId",
+							"Value": "63590456"
+						},
+						{
+							"Key": "SetType",
+							"Value": "user"
+						}
+					]
+				}
+			},
+			{
+				"Table": {
+					"Entry": [
+						{
+							"Key": "Name",
+							"Value": "Vehicles"
+						},
+						{
+							"Key": "CategoryId",
+							"Value": "383879"
+						},
+						{
+							"Key": "Description",
+							"Value": ""
+						},
+						{
+							"Key": "AssetSetId",
+							"Value": "383879"
+						},
+						{
+							"Key": "CreatorName",
+							"Value": "happyhomeman"
+						},
+						{
+							"Key": "ImageAssetId",
+							"Value": "59188178"
+						},
+						{
+							"Key": "SetType",
+							"Value": "user"
+						}
+					]
+				}
+			},
+			{
+				"Table": {
+					"Entry": [
+						{
+							"Key": "Name",
+							"Value": "Gear"
+						},
+						{
+							"Key": "CategoryId",
+							"Value": "383878"
+						},
+						{
+							"Key": "Description",
+							"Value": ""
+						},
+						{
+							"Key": "AssetSetId",
+							"Value": "383878"
+						},
+						{
+							"Key": "CreatorName",
+							"Value": "happyhomeman"
+						},
+						{
+							"Key": "ImageAssetId",
+							"Value": "59188142"
+						},
+						{
+							"Key": "SetType",
+							"Value": "user"
+						}
+					]
+				}
+			},
+			{
+				"Table": {
+					"Entry": [
+						{
+							"Key": "Name",
+							"Value": "Gameplay"
+						},
+						{
+							"Key": "CategoryId",
+							"Value": "383875"
+						},
+						{
+							"Key": "Description",
+							"Value": ""
+						},
+						{
+							"Key": "AssetSetId",
+							"Value": "383875"
+						},
+						{
+							"Key": "CreatorName",
+							"Value": "happyhomeman"
+						},
+						{
+							"Key": "ImageAssetId",
+							"Value": "59188080"
+						},
+						{
+							"Key": "SetType",
+							"Value": "user"
+						}
+					]
+				}
+			}
+		]
+	}
+}
