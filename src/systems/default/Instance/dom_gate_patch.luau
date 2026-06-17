@@ -20,9 +20,22 @@ local patch = patching.getter_patch {
 
 		if t == "function" then
 			local tuple_sandboxer = sandboxer.sandbox_tuple(context.sandbox_context)
+		
+			local trace = debug.traceback()
 
 			return function(...)
-				return tuple_sandboxer(context.unsandboxed(sandboxer.unsandbox_tuple(...)))
+				local result = table.pack(pcall(function(...)
+					return tuple_sandboxer(context.unsandboxed(sandboxer.unsandbox_tuple(...)))
+				end, ...))
+
+				local ok = table.unpack(result, 1, 1)
+
+				if not ok then
+					local failure = table.unpack(result, 2, 2)
+					error(`{failure}\n(from {context.unsandboxed_object.ClassName}.{_key})\n{trace}`, 0)
+				end
+
+				return table.unpack(result, 2)
 			end
 		elseif t == "Instance" then
 			return sandboxer.sandbox(context.sandbox_context, context.unsandboxed)

@@ -121,7 +121,7 @@ app.add_system(NAME, function()
 			task.spawn(on_character, player.Character)
 		end
 	end
-
+	
 	Players.PlayerAdded:Connect(on_player_added)
 
 	Players.PlayerRemoving:Connect(function(player)

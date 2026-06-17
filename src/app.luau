@@ -53,6 +53,10 @@ function app.add_patch(id: string, patch: sandbox_types.Patch, enabled: Optional
 		patches = { patch },
 	}
 
+	if not patch.id then
+		patch.id = id
+	end
+
 	if patch_group.enabled ~= false then
 		table.insert(setup.patches, patch)
 	end
@@ -62,7 +66,8 @@ end
 
 function app.add_patch_group(patch_group: sandbox_types.PatchGroup): sandbox_types.PatchGroup
 	if patch_group.enabled ~= false then
-		for _, patch in patch_group.patches do
+		for index, patch in patch_group.patches do
+			patch.id = `{patch_group.id}_{index}` 
 			table.insert(setup.patches, patch)
 		end
 	end

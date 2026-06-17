@@ -82,6 +82,7 @@ export type PatchKind = "getter_patch" | "setter_patch"
 --- Container for all base information about a patch
 export type Patch = {
 	type: "patch",
+	id: string?,
 	kind: PatchKind,
 	types: { string }?,
 	keys: { any }?,
@@ -93,6 +94,7 @@ export type Patch = {
 
 export type PatchGroup = {
 	enabled: boolean?,
+	id: string,
 	patches: { Patch },
 }
 

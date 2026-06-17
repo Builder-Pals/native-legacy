@@ -3,6 +3,10 @@ local sandbox_types = require("../sandbox_types")
 local patch_module_creator = {}
 
 function patch_module_creator.simple(id: string, patch: sandbox_types.Patch): sandbox_types.PatchGroup
+    if not patch.id then
+        patch.id = id
+    end
+
     return {
         id = id,
         enabled = true,

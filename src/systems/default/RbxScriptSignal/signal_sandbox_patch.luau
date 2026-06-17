@@ -33,9 +33,10 @@ local patch = patching.getter_patch {
 			end
 		end
 
-		print("bra",key)
 		return context.unsandboxed_object[key]
 	end,
 }
 
-return app.add_patch("signal_sandbox", patch)
+app.add_patch("signal_sandbox", patch)
+
+return
