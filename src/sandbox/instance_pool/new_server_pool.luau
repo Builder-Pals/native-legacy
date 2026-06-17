@@ -1,5 +1,5 @@
-local MIN_POOL_SIZE = 5
-local MAX_POOL_SIZE = 25
+local MIN_POOL_SIZE = 20
+local MAX_POOL_SIZE = 100
 
 local function new_server_pool(class_name: string, parent: Instance)
     local items = {}

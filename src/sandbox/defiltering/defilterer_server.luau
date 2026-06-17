@@ -3,7 +3,7 @@ local remotes = require("@layer/network/remotes")
 local defilter_serdes = require("./defilter_serdes")
 
 local function apply(instance: any, property: any, value: any)
-	print(`{instance}.{property} = {value}`)
+	print(instance, `.{property} = {value}`)
 
 	if property == "__r" then
 		instance.Parent = nil

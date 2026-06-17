@@ -37,7 +37,7 @@ app.add_patch(
 	"insert_service_base_categories",
 	patching.getter_patch {
 		classes = { "InsertService" },
-		keys = { "GetUserCategories" },
+		keys = { "GetBaseCategories" },
 		run = function(context, _key)
 			return function(_self)
 				if context.storage.base_categories == nil then
