@@ -19,7 +19,7 @@ app.add_patch(
 					task.wait(API_CALL_DELAY)
 				end
 
-                local ok, user_sets = sets.parser.get_sets(user_id)
+                local ok, user_sets = sets.parser.get_user_sets(user_id)
             
                 if not ok then
                     warn(`sets for {user_id} have not been archived\n{debug.traceback()}`)
@@ -45,7 +45,6 @@ app.add_patch(
 					task.wait(API_CALL_DELAY)
 				end
 
-                print("OK - returning base categories",sets.parser.get_base_categories())
                 return sets.parser.get_base_categories()
             end
 		end,

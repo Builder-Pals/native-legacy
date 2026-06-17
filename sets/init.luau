@@ -8,6 +8,7 @@ local TARGET_USERS = {
 	11744447, -- usabilityman
 	18881789, -- usabilityman2
 	18881829, -- happyhomeman
+	1 -- Roblox
 }
 
 export type Set = {

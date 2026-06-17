@@ -67,7 +67,7 @@ end
 function app.add_patch_group(patch_group: sandbox_types.PatchGroup): sandbox_types.PatchGroup
 	if patch_group.enabled ~= false then
 		for index, patch in patch_group.patches do
-			patch.id = `{patch_group.id}_{index}` 
+			patch.id = `{patch_group.id}_{index}`
 			table.insert(setup.patches, patch)
 		end
 	end
@@ -88,6 +88,7 @@ function app.start()
 	-- important: load all modules to allow them to register patches/systems
 	for _, child in script.Parent:WaitForChild("systems"):GetDescendants() do
 		if child:IsA("ModuleScript") then
+			print("loading", child)
 			local _ = require(child :: any) :: any
 		end
 	end
@@ -97,7 +98,7 @@ function app.start()
 		patches = patch_filter_selector.sort_patches(setup.patches),
 		bag = bag,
 	}
-	
+
 	print("app:", app_context)
 
 	bag.entries = BAG_ENTRIES

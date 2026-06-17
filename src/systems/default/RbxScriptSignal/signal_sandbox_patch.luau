@@ -39,4 +39,4 @@ local patch = patching.getter_patch {
 
 app.add_patch("signal_sandbox", patch)
 
-return
+return nil

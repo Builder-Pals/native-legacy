@@ -82,7 +82,8 @@ function metatable:__index(key: any)
                 unsandboxed = raw_value,
                 unsandboxed_object = unsandboxed_object,
                 sandbox_context = get_sandbox_context(self),
-                storage = get_storage_for_patch(self, patch)
+                storage = get_storage_for_patch(self, patch),
+                environment = getfenv(2)
             }
             
             mutated = patch.run(context, key)
@@ -139,6 +140,14 @@ function metatable:__iter()
     return iterate
 end
 
+function metatable:__eq(a, b)
+    if typeof(a) ~= "table" or typeof(b) ~= "table" then
+        return false
+    end
+
+    return unsandbox(a) == unsandbox(b)
+end
+
 return function(context: sandbox_types.App, value: any)
     local filtered_patches = patch_filter_selector.find_patches(context.patches)(value)
     
@@ -168,5 +177,7 @@ return function(context: sandbox_types.App, value: any)
         [patch_symbols.SANDBOX_CONTEXT] = context
     }
 
-    return setmetatable(sandboxed, metatable)
+    local new = setmetatable(sandboxed, metatable)
+
+    return new
 end

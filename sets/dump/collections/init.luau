@@ -26,5 +26,10 @@ return {
 	["433603"] = require("@self/433603"),
 	["383879"] = require("@self/383879"),
 	["383878"] = require("@self/383878"),
-	["383875"] = require("@self/383875")
+	["383875"] = require("@self/383875"),
+	["60856"] = require("@self/60856"),
+	["60855"] = require("@self/60855"),
+	["4"] = require("@self/4"),
+	["3"] = require("@self/3"),
+	["2"] = require("@self/2")
 } :: { [string]: { CollectionEntry } }

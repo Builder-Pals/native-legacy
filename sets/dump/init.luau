@@ -1,5 +1,4 @@
 -- generated!
-
 export type Set = {
 	Name: string,
 	CategoryId: string,
@@ -22,5 +21,5 @@ export type CollectionEntry = {
 return {
 	base = require("@self/base"),
 	users = require("@self/users"),
-	collections = require("@self/collections"),
+	collections = require("@self/collections")
 }

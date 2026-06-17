@@ -1,0 +1,866 @@
+[
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Time Bomb", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "47586", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "4", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "641272", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Superball", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "47613", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "4", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "641299", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Trowel", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "47582", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "4", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "641268", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Paintball Gun", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "47532", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "4", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "641218", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Sword", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "47433", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "4", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "641119", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Slingshot", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "47620", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "4", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "641306", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Rocket Launcher", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "47637", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "4", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "641323", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    },
+    {
+        "children": [
+            {
+                "children": [
+                    {
+                        "children": [
+                            {
+                                "children": "Name", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "arena", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "31742169", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetSetId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "4", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "AssetVersionId", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "78539976", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "CreatorName", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "Roblox", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": "IsTrusted", 
+                                "attributes": [], 
+                                "tag": "Key"
+                            },
+                            {
+                                "children": "True", 
+                                "attributes": [], 
+                                "tag": "Value"
+                            }
+                        ], 
+                        "attributes": [], 
+                        "tag": "Entry"
+                    }
+                ], 
+                "attributes": [], 
+                "tag": "Table"
+            }
+        ], 
+        "attributes": [], 
+        "tag": "Value"
+    }
+]

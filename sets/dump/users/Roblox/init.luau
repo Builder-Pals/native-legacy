@@ -10,8 +10,11 @@ export type Set = {
 }
 
 return {
-	["usabilityman"] = require("@self/usabilityman"),
-	["usabilityman2"] = require("@self/usabilityman2"),
-	["happyhomeman"] = require("@self/happyhomeman"),
-	["Roblox"] = require("@self/Roblox")
-} :: { [string]: { Set } }
+	require("@self/My Models"),
+	require("@self/My Decals"),
+	require("@self/XD Decal Set"),
+	require("@self/XD Skate Park Set"),
+	require("@self/Gameplay"),
+	require("@self/Models"),
+	require("@self/Parts")
+} :: { Set }
