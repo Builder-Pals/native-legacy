@@ -1,5 +1,5 @@
-local MIN_POOL_SIZE = 5
-local MAX_POOL_SIZE = 25
+local MIN_POOL_SIZE = 20
+local MAX_POOL_SIZE = 100
 
 local function new_server_pool(class_name: string, parent: Instance)
     local items = {}
@@ -48,12 +48,6 @@ local function new_server_pool(class_name: string, parent: Instance)
             populate()
         end
     end
-    
-    local function refill()
-        while #items < size do
-            populate()
-        end
-    end
 
     while #items < MIN_POOL_SIZE do
         populate()
@@ -62,14 +56,7 @@ local function new_server_pool(class_name: string, parent: Instance)
     return {
         pop = pop,
         expand = expand,
-        remove = remove,
-        refill = refill,
-        is_under_capacity = function()
-            return #items < size
-        end,
-        get_capacity = function()
-            return size
-        end,
+        remove = remove
     }
 end
 

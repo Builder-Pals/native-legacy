@@ -54,7 +54,6 @@ local function instance_pool_server()
         local warehouse = warehouses[player]
 
         if not warehouse then
-            warn(`{player} doesn't have a warehouse!`)
             return nil
         end
 
@@ -64,6 +63,26 @@ local function instance_pool_server()
 
         return nil
     end
+
+    remotes.reliable.server.subscribe({}, remotes.ids.reliable.instance_pool.pop, function(player: Player, instance: unknown, parent: unknown, expand: unknown)
+        assert(typeof(instance) == "Instance")
+        
+        local warehouse = warehouses[player]
+
+        if not warehouse then
+            return
+        end
+
+        if expand then
+            warehouse.expand(instance.ClassName)
+        end
+
+        warehouse.remove(instance)
+
+        if typeof(parent) == "Instance" then
+            instance.Parent = parent
+        end
+    end)
 
     return {}
 end
