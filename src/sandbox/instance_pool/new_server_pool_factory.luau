@@ -12,6 +12,31 @@ local function new_server_pool_factory(container: Instance)
             pool = new_server_pool(class_name, sub_container)
             pools[class_name] = pool
             sub_container.Parent = container
+
+            local debounce = false
+
+            sub_container.ChildRemoved:Connect(function(_)
+                if debounce then
+                    return
+                end
+
+                debounce = true
+                
+                task.delay(.1, function()
+                    debounce = false
+                    assert(pool)
+                    pool.refill()
+                end)
+
+                assert(pool)
+
+                -- the pool shouldn't reach zero unless it's under heavy use
+                -- we'll expand to compensate
+                if pool.get_capacity() == 0 then
+                    print("pool has been exhausted, expanding...")
+                    pool.expand()
+                end
+            end)
         end
 
         return pool.pop()

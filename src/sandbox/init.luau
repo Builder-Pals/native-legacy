@@ -19,6 +19,8 @@ export type Patch = sandbox_types.Patch
 export type GetterPatchInfo = sandbox_types.GetterPatchInfo
 export type SetterPatchInfo = sandbox_types.SetterPatchInfo
 
+export type App = sandbox_types.App
+
 return {
     instance_pool = require("@self/instance_pool"),
     environment_sandboxer = require("@self/environment_sandboxer"),

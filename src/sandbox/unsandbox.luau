@@ -1,9 +1,12 @@
 local patch_symbols = require("./patching/patch_symbols")
+local virtual_reverser = require("@layer/sandbox/virtual_instance/virtual_reverser")
 
 --- Gets the underlying value from a sandboxed object.
 --- If its not sandboxed, the same object will be returned.
 return function<T>(value: T)
-    if typeof(value) ~= "table" then
+    local t = typeof(value)
+
+    if t ~= "table" then
         return value
     end
 
@@ -13,5 +16,13 @@ return function<T>(value: T)
         warn(debug.traceback("Failed to retrieve unsandboxed object"))
     end)
 
-    return if success then unsandboxed_object else value
+    if success then
+        if t == "Instance" then
+            return virtual_reverser(unsandboxed_object :: Instance)
+        else
+            return unsandboxed_object
+        end
+    end
+
+    return value
 end
