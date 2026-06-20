@@ -190,7 +190,7 @@ local function dump_collection(id: string)
 	for _, xml_entry in children do
 		local entry = parse_entry(xml_entry) :: CollectionEntry
 		print(json.serialize(entry, true))
-		table.insert(all_entries, json.serialize(entry, true))
+		table.insert(all_entries, entry)
 	end
 
 	-- make json dump

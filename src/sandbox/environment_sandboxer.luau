@@ -1,4 +1,5 @@
-local instance_pool = require("./instance_pool")
+local env_symbols = require("./env_symbols")
+local pool = require("./pool")
 local patch_symbols = require("./patching/patch_symbols")
 local sandbox_types = require("./sandbox_types")
 local sandboxer = require("./sandboxer")
@@ -18,6 +19,7 @@ return function(app: sandbox_types.App)
 		environment.game = sandboxed_game
 		environment.Game = sandboxed_game
 		environment.script = sandboxer.sandbox(app, environment.script)
+        environment[env_symbols.SOURCE_SCRIPT] = environment.script
         
         environment.typeof = function(x)
             if typeof(x) == "table" then
@@ -35,7 +37,7 @@ return function(app: sandbox_types.App)
             return type(x)
         end
 
-		environment.Instance = instance_pool.new_lib(app)
+		environment.Instance = pool.new_instance_lib(app)
 	end
 
 	return environment_sandboxer

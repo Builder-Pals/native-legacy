@@ -22,7 +22,7 @@ export type SetterPatchInfo = sandbox_types.SetterPatchInfo
 export type App = sandbox_types.App
 
 return {
-    instance_pool = require("@self/instance_pool"),
+    pool = require("@self/pool"),
     environment_sandboxer = require("@self/environment_sandboxer"),
     patching = require("@self/patching"),
     sandboxer = require("@self/sandboxer"),

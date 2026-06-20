@@ -13,13 +13,13 @@ export type BagEntry<T> = { __T: (any) -> T, ["🐟"]: "this is just a luau type
 --- All entries available in the service bag, as present in app.luau.
 export type BagEntries = {
 	environment_sandboxer: BagEntry<EnvironmentSandboxer>,
-	client_instance_pool: BagEntry<ClientInstancePool>,
 }
 
 --- Provides context & configuration for the runtime application.
 export type App = {
 	patches: { Patch },
 	systems: { AppSystemFn },
+	client_pool: ClientInstancePool,
 	bag: {
 		entries: BagEntries,
 		get: <T>(entry: { __T: (any) -> T }) -> T,
@@ -30,9 +30,7 @@ export type EnvironmentSandboxer = {
 	sandbox_environment: (env: any) -> (),
 }
 
-export type ClientInstancePool = {
-	pop: (className: string, parent: Instance?, expand: boolean?) -> Instance,
-}
+export type ClientInstancePool = (class: string) -> (Instance)
 
 export type PatchedContext<TObject = any> = {
 	--[=[
@@ -53,8 +51,6 @@ export type PatchedContext<TObject = any> = {
 	unsandboxed_object: any,
 	sandbox_context: App,
 	storage: { [any]: any },
-	--- The environment of the sandboxed script.
-	environment: { [any]: any },
 }
 
 export type GetterPatchRun = (context: PatchedContext, key: any) -> any

@@ -7,6 +7,17 @@ local sandboxer = {}
 
 --- Puts a value into the sandbox, applying any relevant patches.
 function sandboxer.sandbox(context: sandbox_types.App, value: unknown)
+    -- some DataModel methods may return tables of unsandboxed objects!
+    if typeof(value) == "table" and getmetatable(value) == nil then
+        local out = {}
+
+        for key, val in value do
+            out[key] = sandboxer.sandbox(context, val)
+        end
+
+        value = out
+    end
+
     return sandbox_wrapper(context, value)
 end
 

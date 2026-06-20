@@ -1,7 +1,7 @@
 local network = require("./network")
-local sandbox = require("./sandbox")
 local defiltering = require("./sandbox/defiltering")
 local app = require("@layer/app")
+local pool = require("./sandbox/pool")
 
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
@@ -29,7 +29,6 @@ return function()
 
 	if IS_CLIENT then
 		network.init()
-		sandbox.instance_pool.start_client(app.context)
 		defiltering.start_client()
 	else
 		if SoundService.RespectFilteringEnabled then
@@ -39,7 +38,6 @@ return function()
 
 		clone_animate()
 		network.init()
-		sandbox.instance_pool.start_server()
 		defiltering.start_server()
 	end
 

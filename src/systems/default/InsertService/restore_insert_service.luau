@@ -13,7 +13,7 @@ app.add_patch(
 		classes = { "InsertService" },
 		keys = { "GetUserCategories" },
 		run = function(context, key)
-			return function(_, user_id)
+			return function(_, user_id): { [string]: any }?
 				if context.storage[user_id] == nil then
 					context.storage[user_id] = true
 					task.wait(API_CALL_DELAY)
@@ -23,7 +23,7 @@ app.add_patch(
             
                 if not ok then
                     warn(`sets for {user_id} have not been archived\n{debug.traceback()}`)
-                    return {}
+                    return nil -- the web service api used to return nil too
                 end
 
                 print(`OK - returning sets for {user_id}`, user_sets)
@@ -57,7 +57,7 @@ app.add_patch(
 		classes = { "InsertService" },
 		keys = { "GetCollection" },
 		run = function(context, _key)
-			return function(_self, category_id)
+			return function(_self, category_id): { [string]: any }?
 				if context.storage[category_id] == nil then
 					context.storage[category_id] = true
 					task.wait(API_CALL_DELAY)
@@ -67,7 +67,7 @@ app.add_patch(
 			
 				if not ok then
 					warn(`collection {category_id} has not been archived\n{debug.traceback()}`)
-					return {}
+					return nil -- the web service api used to return nil too
 				end
 
 				print(`OK - returning collection for {category_id}`, collection)

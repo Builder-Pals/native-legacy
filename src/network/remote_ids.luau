@@ -25,7 +25,7 @@ local remote_ids = {
 
 	reliable = {
 		instance_pool = {
-			pop = next_id(),
+			expand = next_id(),
 		},
 
 		defiltering = {

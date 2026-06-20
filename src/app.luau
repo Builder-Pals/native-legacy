@@ -13,7 +13,6 @@ local function new_entry<R>(x: R)
 end
 
 local BAG_ENTRIES: sandbox_types.BagEntries = {
-	client_instance_pool = new_entry(sandbox.instance_pool.start_client),
 	environment_sandboxer = new_entry(sandbox.environment_sandboxer),
 }
 
@@ -78,10 +77,6 @@ end
 function app.start()
 	print("loading modules")
 
-	if RunService:IsServer() then
-		sandbox.instance_pool.start_server()
-	end
-
 	local constructed: { [any]: any } = {}
 	local bag = {}
 
@@ -99,7 +94,11 @@ function app.start()
 		bag = bag,
 	}
 
-	print("app:", app_context)
+	if RunService:IsServer() then
+		sandbox.pool.server_pool()
+	else
+		app_context.client_pool = sandbox.pool.client_pool()
+	end
 
 	bag.entries = BAG_ENTRIES
 
