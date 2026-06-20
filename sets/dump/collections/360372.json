@@ -1,25 +1,186 @@
 [
-    "{\n    \"AssetId\": \"56449305\", \n    \"Name\": \"Cabinets - Top Small\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138018482\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449332\", \n    \"Name\": \"Cabinets - Top\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138018536\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449359\", \n    \"Name\": \"Oven\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138018585\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449386\", \n    \"Name\": \"Dishwasher\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138018640\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449402\", \n    \"Name\": \"Kitchen Sink\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138018686\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449449\", \n    \"Name\": \"Kitchen Counters\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138018773\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449487\", \n    \"Name\": \"Dining Chair\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138018860\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449509\", \n    \"Name\": \"Dining Table\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138018911\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449539\", \n    \"Name\": \"Bathroom Mirror\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138018987\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449580\", \n    \"Name\": \"Bathroom Sink\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019069\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449624\", \n    \"Name\": \"Bathtub & Shower\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019183\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449649\", \n    \"Name\": \"End Table\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019223\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449729\", \n    \"Name\": \"Dresser - Tall\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019384\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449753\", \n    \"Name\": \"Dresser - Wide\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019425\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449778\", \n    \"Name\": \"Bed\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019483\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449804\", \n    \"Name\": \"Bookshelf\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019533\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449842\", \n    \"Name\": \"Coffee Table\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019606\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449883\", \n    \"Name\": \"Standing Lamp\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019671\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449926\", \n    \"Name\": \"Fireplace\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019770\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449951\", \n    \"Name\": \"Couch\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019820\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449594\", \n    \"Name\": \"Toilet\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"157983940\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56449913\", \n    \"Name\": \"Flatscreen TV\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"157984052\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"65894286\", \n    \"Name\": \"Refrigerator\", \n    \"AssetSetId\": \"360372\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"157983991\", \n    \"CreatorName\": \"Roblox\"\n}"
+    {
+        "AssetId": "56449305", 
+        "Name": "Cabinets - Top Small", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138018482", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449332", 
+        "Name": "Cabinets - Top", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138018536", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449359", 
+        "Name": "Oven", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138018585", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449386", 
+        "Name": "Dishwasher", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138018640", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449402", 
+        "Name": "Kitchen Sink", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138018686", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449449", 
+        "Name": "Kitchen Counters", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138018773", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449487", 
+        "Name": "Dining Chair", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138018860", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449509", 
+        "Name": "Dining Table", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138018911", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449539", 
+        "Name": "Bathroom Mirror", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138018987", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449580", 
+        "Name": "Bathroom Sink", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019069", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449624", 
+        "Name": "Bathtub & Shower", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019183", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449649", 
+        "Name": "End Table", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019223", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449729", 
+        "Name": "Dresser - Tall", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019384", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449753", 
+        "Name": "Dresser - Wide", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019425", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449778", 
+        "Name": "Bed", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019483", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449804", 
+        "Name": "Bookshelf", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019533", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449842", 
+        "Name": "Coffee Table", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019606", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449883", 
+        "Name": "Standing Lamp", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019671", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449926", 
+        "Name": "Fireplace", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019770", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449951", 
+        "Name": "Couch", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019820", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449594", 
+        "Name": "Toilet", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "157983940", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56449913", 
+        "Name": "Flatscreen TV", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "157984052", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "65894286", 
+        "Name": "Refrigerator", 
+        "AssetSetId": "360372", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "157983991", 
+        "CreatorName": "Roblox"
+    }
 ]

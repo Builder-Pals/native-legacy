@@ -1,7 +1,42 @@
 [
-    "{\n    \"AssetId\": \"67187816\", \n    \"Name\": \"Present\", \n    \"AssetSetId\": \"438059\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"160879612\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"67187806\", \n    \"Name\": \"Christmas Tree\", \n    \"AssetSetId\": \"438059\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"160879591\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"67187780\", \n    \"Name\": \"Snowman\", \n    \"AssetSetId\": \"438059\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"160879543\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"67187797\", \n    \"Name\": \"Wreath\", \n    \"AssetSetId\": \"438059\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"160879573\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"67187771\", \n    \"Name\": \"Menorah\", \n    \"AssetSetId\": \"438059\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"160879529\", \n    \"CreatorName\": \"Roblox\"\n}"
+    {
+        "AssetId": "67187816", 
+        "Name": "Present", 
+        "AssetSetId": "438059", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "160879612", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "67187806", 
+        "Name": "Christmas Tree", 
+        "AssetSetId": "438059", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "160879591", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "67187780", 
+        "Name": "Snowman", 
+        "AssetSetId": "438059", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "160879543", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "67187797", 
+        "Name": "Wreath", 
+        "AssetSetId": "438059", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "160879573", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "67187771", 
+        "Name": "Menorah", 
+        "AssetSetId": "438059", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "160879529", 
+        "CreatorName": "Roblox"
+    }
 ]

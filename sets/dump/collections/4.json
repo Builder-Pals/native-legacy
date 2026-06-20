@@ -1,10 +1,66 @@
 [
-    "{\n    \"AssetId\": \"47586\", \n    \"Name\": \"Time Bomb\", \n    \"AssetSetId\": \"4\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"641272\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"47613\", \n    \"Name\": \"Superball\", \n    \"AssetSetId\": \"4\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"641299\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"47582\", \n    \"Name\": \"Trowel\", \n    \"AssetSetId\": \"4\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"641268\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"47532\", \n    \"Name\": \"Paintball Gun\", \n    \"AssetSetId\": \"4\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"641218\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"47433\", \n    \"Name\": \"Sword\", \n    \"AssetSetId\": \"4\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"641119\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"47620\", \n    \"Name\": \"Slingshot\", \n    \"AssetSetId\": \"4\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"641306\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"47637\", \n    \"Name\": \"Rocket Launcher\", \n    \"AssetSetId\": \"4\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"641323\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"31742169\", \n    \"Name\": \"arena\", \n    \"AssetSetId\": \"4\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"78539976\", \n    \"CreatorName\": \"Roblox\"\n}"
+    {
+        "AssetId": "47586", 
+        "Name": "Time Bomb", 
+        "AssetSetId": "4", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "641272", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "47613", 
+        "Name": "Superball", 
+        "AssetSetId": "4", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "641299", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "47582", 
+        "Name": "Trowel", 
+        "AssetSetId": "4", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "641268", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "47532", 
+        "Name": "Paintball Gun", 
+        "AssetSetId": "4", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "641218", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "47433", 
+        "Name": "Sword", 
+        "AssetSetId": "4", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "641119", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "47620", 
+        "Name": "Slingshot", 
+        "AssetSetId": "4", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "641306", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "47637", 
+        "Name": "Rocket Launcher", 
+        "AssetSetId": "4", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "641323", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "31742169", 
+        "Name": "arena", 
+        "AssetSetId": "4", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "78539976", 
+        "CreatorName": "Roblox"
+    }
 ]

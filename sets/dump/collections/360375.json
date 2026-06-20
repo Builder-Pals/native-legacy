@@ -1,9 +1,58 @@
 [
-    "{\n    \"AssetId\": \"56449996\", \n    \"Name\": \"Chimney\", \n    \"AssetSetId\": \"360375\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019902\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56450017\", \n    \"Name\": \"Roof - Peak\", \n    \"AssetSetId\": \"360375\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138019961\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56450038\", \n    \"Name\": \"Roof - Inner Corner\", \n    \"AssetSetId\": \"360375\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138020004\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56450063\", \n    \"Name\": \"Roof\", \n    \"AssetSetId\": \"360375\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138020052\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56450092\", \n    \"Name\": \"Window - Small\", \n    \"AssetSetId\": \"360375\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138020114\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56450197\", \n    \"Name\": \"Window - Tall Corner\", \n    \"AssetSetId\": \"360375\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138020372\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"56450222\", \n    \"Name\": \"Window - Tall\", \n    \"AssetSetId\": \"360375\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"138020435\", \n    \"CreatorName\": \"Roblox\"\n}"
+    {
+        "AssetId": "56449996", 
+        "Name": "Chimney", 
+        "AssetSetId": "360375", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019902", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56450017", 
+        "Name": "Roof - Peak", 
+        "AssetSetId": "360375", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138019961", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56450038", 
+        "Name": "Roof - Inner Corner", 
+        "AssetSetId": "360375", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138020004", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56450063", 
+        "Name": "Roof", 
+        "AssetSetId": "360375", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138020052", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56450092", 
+        "Name": "Window - Small", 
+        "AssetSetId": "360375", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138020114", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56450197", 
+        "Name": "Window - Tall Corner", 
+        "AssetSetId": "360375", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138020372", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "56450222", 
+        "Name": "Window - Tall", 
+        "AssetSetId": "360375", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "138020435", 
+        "CreatorName": "Roblox"
+    }
 ]

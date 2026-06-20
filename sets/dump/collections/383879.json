@@ -1,9 +1,58 @@
 [
-    "{\n    \"AssetId\": \"59524699\", \n    \"Name\": \"Bus\", \n    \"AssetSetId\": \"383879\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"144837133\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"59524640\", \n    \"Name\": \"Racecar\", \n    \"AssetSetId\": \"383879\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"144837042\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"59524606\", \n    \"Name\": \"Truck\", \n    \"AssetSetId\": \"383879\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"144836955\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"59524676\", \n    \"Name\": \"Car\", \n    \"AssetSetId\": \"383879\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"144837102\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"59524622\", \n    \"Name\": \"Jeep\", \n    \"AssetSetId\": \"383879\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"146134623\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"59524729\", \n    \"Name\": \"UFO\", \n    \"AssetSetId\": \"383879\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"154615236\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"59524656\", \n    \"Name\": \"Police Car\", \n    \"AssetSetId\": \"383879\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"161973480\", \n    \"CreatorName\": \"Roblox\"\n}"
+    {
+        "AssetId": "59524699", 
+        "Name": "Bus", 
+        "AssetSetId": "383879", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "144837133", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "59524640", 
+        "Name": "Racecar", 
+        "AssetSetId": "383879", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "144837042", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "59524606", 
+        "Name": "Truck", 
+        "AssetSetId": "383879", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "144836955", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "59524676", 
+        "Name": "Car", 
+        "AssetSetId": "383879", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "144837102", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "59524622", 
+        "Name": "Jeep", 
+        "AssetSetId": "383879", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "146134623", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "59524729", 
+        "Name": "UFO", 
+        "AssetSetId": "383879", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "154615236", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "59524656", 
+        "Name": "Police Car", 
+        "AssetSetId": "383879", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "161973480", 
+        "CreatorName": "Roblox"
+    }
 ]

@@ -1,4 +1,18 @@
 [
-    "{\n    \"AssetId\": \"65819994\", \n    \"Name\": \"C4 Explosive\", \n    \"AssetSetId\": \"462226\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"161726840\", \n    \"CreatorName\": \"Roblox\"\n}",
-    "{\n    \"AssetId\": \"67625690\", \n    \"Name\": \"Tesla Coil\", \n    \"AssetSetId\": \"462226\", \n    \"IsTrusted\": \"True\", \n    \"AssetVersionId\": \"165690977\", \n    \"CreatorName\": \"Roblox\"\n}"
+    {
+        "AssetId": "65819994", 
+        "Name": "C4 Explosive", 
+        "AssetSetId": "462226", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "161726840", 
+        "CreatorName": "Roblox"
+    },
+    {
+        "AssetId": "67625690", 
+        "Name": "Tesla Coil", 
+        "AssetSetId": "462226", 
+        "IsTrusted": "True", 
+        "AssetVersionId": "165690977", 
+        "CreatorName": "Roblox"
+    }
 ]
