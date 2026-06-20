@@ -3,6 +3,10 @@ local sandboxer = require("@layer/sandbox/sandboxer")
 local env_symbols = require("../env_symbols")
 local script_stalling = require("../script_stalling")
 
+local NEVER_POOL = {
+    Dragger = true -- dragger's parent is locked to 'NULL'
+}
+
 local function get_context()
     local ok, result = pcall(function()
         return getfenv(2)[env_symbols.SOURCE_SCRIPT]
@@ -16,14 +20,26 @@ return function(app: sandbox_types.App)
 
     local function op(class: string, parent: Instance?): unknown
         local instance = app.client_pool(class)
-        
         local sandboxed = sandboxer.sandbox(app, instance)
-        sandboxed.Parent = parent -- done on the sandboxed object for networking / allowing patches to apply
+
+        if parent ~= nil then
+            sandboxed.Parent = parent -- done on the sandboxed object for networking / allowing patches to apply
+        end
 
         return sandboxed
     end
 
     function lib.new(class: string, parent: Instance?): unknown
+        if NEVER_POOL[class] then
+            local local_instance = Instance.new(class)
+            
+            if parent ~= nil then
+                local_instance.Parent = parent
+            end
+
+            return sandboxer.sandbox(app, local_instance)
+        end
+
         local script_context = get_context()
         
         if script_context then

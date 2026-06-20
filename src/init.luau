@@ -10,4 +10,6 @@ return {
     boot = require("@self/boot"),
     --- library for converting instances/games for native legacy
     conversion = require("@self/conversion"),
+
+    load_game_from_id = app.load_game_from_id
 }

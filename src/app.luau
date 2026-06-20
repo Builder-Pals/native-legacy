@@ -1,3 +1,4 @@
+local AssetService = game:GetService("AssetService")
 local RunService = game:GetService("RunService")
 local sandbox_types = require("@layer/sandbox/sandbox_types")
 local patch_filter_selector = require("./sandbox/patching/patch_filter_selector")
@@ -72,6 +73,42 @@ function app.add_patch_group(patch_group: sandbox_types.PatchGroup): sandbox_typ
 	end
 
 	return patch_group
+end
+
+function app.load_game(package: Instance)
+	local dom_container = package:FindFirstChild("DataModel")
+
+	if not dom_container then
+		local place_config = package:FindFirstChild("NewNostalgicPlaceConfig")
+		assert(place_config, "package missing DataModel container and NewNostalgicPlaceConfig")
+		local dataModelPackage = place_config:FindFirstChild("DataModelPackage")
+		assert(dataModelPackage, "package missing DataModel container and NewNostalgicPlaceConfig/DataModelPackage")
+		local services = dataModelPackage:FindFirstChild("Services")
+		assert(services, "package missing DataModel container and NewNostalgicPlaceConfig/DataModelPackage/Services")
+		dom_container = services
+		print("using compatibility system")
+	end
+
+	assert(dom_container, "package missing DataModel container")
+
+	for _, child in dom_container:GetChildren() do
+		local service = game:GetService(child.Name)
+
+		for _, instance in child:GetChildren() do
+			instance.Parent = service
+		end
+	end
+
+	-- TODO: Replay PlayerAdded events
+	-- TODO: Respawn characters (if they exist)
+	-- TODO: Assign teams
+end
+
+function app.load_game_from_id(asset_id: number)
+	local asset = AssetService:LoadAssetAsync(asset_id)
+	local children = asset:GetChildren()[1]
+	children.Sandboxed = false
+	app.load_game(children)
 end
 
 function app.start()

@@ -20,6 +20,19 @@ local function clone_animate()
 	animate.Parent = StarterPlayer:WaitForChild("StarterCharacterScripts")
 end
 
+local function make_sandboxer(name: string)
+	-- Create a module underneath game that's easy to call from sandboxed scripts
+	local external_boot = external_boot_prefab:Clone()
+	external_boot.Name = name
+
+	local ref = Instance.new("ObjectValue")
+	ref.Value = script.Parent
+	ref.Name = "module"
+	ref.Parent = external_boot
+
+	external_boot.Parent = game
+end
+
 return function()
 	print("----")
 	print("booting nl...")
@@ -42,15 +55,8 @@ return function()
 	end
 
 	-- Create a module underneath game that's easy to call from sandboxed scripts
-	local external_boot = external_boot_prefab:Clone()
-	external_boot.Name = "native_legacy"
-
-	local ref = Instance.new("ObjectValue")
-	ref.Value = script.Parent
-	ref.Name = "module"
-	ref.Parent = external_boot
-
-	external_boot.Parent = game
+	make_sandboxer("native_legacy")
+	make_sandboxer("NostalgicScriptLoader") -- backwards compatibility!
 
     print("nl is now running!")
 	print("----")
