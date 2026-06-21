@@ -23,6 +23,13 @@ local patch = patching.getter_patch {
 			end
 		end
 
+		if key == "wait" or key == "Wait" then
+			return function(_self)
+				local tuple_sandboxer = sandboxer.sandbox_tuple(context.sandbox_context)
+				return tuple_sandboxer(context.unsandboxed_object:Wait())
+			end
+		end
+
 		-- prevents `RBXScriptSignal:disconnect` from throwing an error.
 		-- https://github.com/Fizzyhex/nostalgic-layer/issues/19
 

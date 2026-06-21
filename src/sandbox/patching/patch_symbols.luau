@@ -6,6 +6,7 @@ return {
     GETTER_PATCHES_SYMBOL = new_symbol("Getter Patches"),
     PATCH_STORAGE_SYMBOL = new_symbol("Patch Storage"),
     UNSANDBOXED_OBJECT = new_symbol("Unsandboxed Object"),
+    UNSANDBOXER = new_symbol("Unsandboxer"),
     SANDBOX_CONTEXT = new_symbol("Sandbox Context"),
     FAKE_TYPE = new_symbol("Fake Type"),
     FAKE_TYPEOF = new_symbol("Fake Typeof"),

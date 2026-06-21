@@ -76,7 +76,7 @@ function app.add_patch_group(patch_group: sandbox_types.PatchGroup): sandbox_typ
 end
 
 function app.load_game(package: Instance)
-	local dom_container = package:FindFirstChild("DataModel")
+	local dom_container = package:FindFirstChild("DataModel") or package:FindFirstChild("startPlace")
 
 	if not dom_container then
 		local place_config = package:FindFirstChild("NewNostalgicPlaceConfig")
@@ -104,6 +104,7 @@ function app.load_game(package: Instance)
 	-- TODO: Assign teams
 end
 
+--- loads a game based on its asset id - unpacking it into the DOM and replaying player join events.
 function app.load_game_from_id(asset_id: number)
 	local asset = AssetService:LoadAssetAsync(asset_id)
 	local children = asset:GetChildren()[1]
@@ -131,9 +132,9 @@ function app.start()
 		bag = bag,
 	}
 
-	if RunService:IsServer() then
-		sandbox.pool.server_pool()
-	else
+	sandbox.init()
+
+	if RunService:IsClient() then
 		app_context.client_pool = sandbox.pool.client_pool()
 	end
 

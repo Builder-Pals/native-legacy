@@ -1,3 +1,4 @@
+local RunService = game:GetService("RunService")
 
 local sandbox_types = require("@self/sandbox_types")
 
@@ -21,9 +22,26 @@ export type SetterPatchInfo = sandbox_types.SetterPatchInfo
 
 export type App = sandbox_types.App
 
+local is_initialized = false
+
 return {
     pool = require("@self/pool"),
     environment_sandboxer = require("@self/environment_sandboxer"),
     patching = require("@self/patching"),
     sandboxer = require("@self/sandboxer"),
+    init = function()
+        assert(not is_initialized, "sandbox has already been initialized!")
+        is_initialized = true
+
+        if RunService:IsServer() then
+           require("@self/pool").server_pool()
+        end
+
+        local sandboxer = require("@self/sandboxer")
+        local sandbox_wrapper = require("@self/sandbox_wrapper")
+
+        sandboxer.register("Instance", sandbox_wrapper)
+        sandboxer.register("RBXScriptSignal", sandbox_wrapper)
+        sandboxer.register("RBXScriptConnection", sandbox_wrapper)
+    end
 }

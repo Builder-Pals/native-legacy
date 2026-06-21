@@ -3,9 +3,17 @@ local env_symbols = require("./env_symbols")
 local new_symbol = require("@layer/util/new_symbol")
 local patch_symbols = require("./patching/patch_symbols")
 local sandbox_types = require("./sandbox_types")
+local sandboxer = require("./sandboxer")
 local script_stalling = require("./script_stalling")
-local unsandbox = require("./unsandbox")
 
+--[=[
+	A generic wrapper for values that exist within the sandbox.
+
+	## Patching
+
+	Patches allow values being set/gotten on the object to be intercepted and modified. They need to be added on the App before an
+	object is wrapped.
+]=]
 local sandbox_wrapper: (app: sandbox_types.App, value: any) -> any
 
 local function get_setter_patches(self)
@@ -57,17 +65,6 @@ local function get_storage_for_patch(self, patch: sandbox_types.Patch)
 	end
 end
 
-local function sandbox_tuple(context: sandbox_types.App, ...)
-    local packed = table.pack(...)
-    local result = {}
-
-    for key, value in packed do
-        result[key] = sandbox_wrapper(context, value)
-    end
-
-    return table.unpack(result)
-end
-
 local function get_unsandboxed_object(self)
 	return rawget(self, patch_symbols.UNSANDBOXED_OBJECT) :: any
 end
@@ -81,7 +78,7 @@ end
 function metatable:__index(key: any)
 	local unsandboxed_object = get_unsandboxed_object(self)
 	local raw_value
-    local app = get_sandbox_context(self)
+	local app = get_sandbox_context(self)
 
 	-- bit of a hack...
 	-- generally we want to throw the error for invalid indexes, but it's ideal to throw a
@@ -110,12 +107,12 @@ function metatable:__index(key: any)
 	end
 
 	if typeof(mutated) == "function" then
-        local source_script = getfenv(2)[env_symbols.SOURCE_SCRIPT]
-        assert(source_script)
+		local source_script = getfenv(2)[env_symbols.SOURCE_SCRIPT]
+		assert(source_script)
 
 		return function(...)
 			script_stalling.yield_if_stalled(source_script)
-			return sandbox_tuple(app, mutated(...))
+			return sandboxer.sandbox_tuple(app, mutated(...))
 		end
 	end
 
@@ -127,7 +124,7 @@ function metatable:__newindex(key: any, value: any)
 	local mutated_key, mutated_value = key, value
 	local met_conditions = {}
 
-    local app = get_sandbox_context(self)
+	local app = get_sandbox_context(self)
 
 	for _, patch in get_setter_patches(self) do
 		if should_run_on_key(patch, key, met_conditions) then
@@ -149,7 +146,7 @@ function metatable:__newindex(key: any, value: any)
 	end
 
 	if mutated_key ~= nil then
-		unsandboxed_object[mutated_key] = unsandbox(mutated_value)
+		unsandboxed_object[mutated_key] = sandboxer.unsandbox(mutated_value)
 	end
 end
 
@@ -171,11 +168,11 @@ function metatable:__iter()
 end
 
 function metatable.__eq(a, b)
-    if typeof(a) ~= "table" or typeof(b) ~= "table" then
+	if typeof(a) ~= "table" or typeof(b) ~= "table" then
 		return false
 	end
 
-	return unsandbox(a) == unsandbox(b)
+	return sandboxer.unsandbox(a) == sandboxer.unsandbox(b)
 end
 
 local leak = {}

@@ -1,7 +1,6 @@
 local network = require("./network")
 local defiltering = require("./sandbox/defiltering")
 local app = require("@layer/app")
-local pool = require("./sandbox/pool")
 
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
@@ -33,6 +32,7 @@ local function make_sandboxer(name: string)
 	external_boot.Parent = game
 end
 
+--- fires up the layer. should be called once on the server, and once on all clients!
 return function()
 	print("----")
 	print("booting nl...")

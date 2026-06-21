@@ -90,8 +90,11 @@ app.add_system(NAME, function()
 		target_timestamps[player] = 0
 
 		local function on_character(character: Model)
+			print("new char", character)
+
 			local function on_child(child: Instance)
-				if child:IsA("Humanoid") and humanoids[player] == nil then
+				if child:IsA("Humanoid") then
+					print("human=",child)
 					humanoids[player] = child :: Humanoid
 				elseif child:IsA("Tool") then
 					tool_humanoid_map[child] = humanoids[player]
@@ -106,9 +109,7 @@ app.add_system(NAME, function()
 				end
 			end
 
-			character.ChildAdded:Connect(function(child)
-				on_child(child)
-			end)
+			character.ChildAdded:Connect(on_child)
 
 			for _, child in character:GetChildren() do
 				on_child(child)
@@ -169,7 +170,6 @@ app.add_patch(
 
 					-- fire as normal for NPC held tools
 					if not player then
-						print("fire standard :(")
 						callback()
 					end
 				end)
