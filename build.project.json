@@ -12,6 +12,14 @@
 
                 "sets_data": {
                     "$path": "sets/dump"
+                },
+
+                "packages": {
+                    "$className": "Folder",
+
+                    "Iris": {
+                        "$path": "Iris/lib"
+                    }
                 }
             },
 
