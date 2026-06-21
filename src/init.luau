@@ -1,4 +1,8 @@
 local app = require("@self/app")
+local loader = require("@self/loader")
+local nl_constants = require("@self/nl_constants")
+
+script:AddTag(nl_constants.RELOAD_PROTECTION)
 
 return {
     --- pulls an environment into the sandbox.
@@ -9,5 +13,5 @@ return {
     
     boot = require("@self/boot"),
     conversion = require("@self/conversion"),
-    load_game_from_id = app.load_game_from_id
+    load_game_from_id = loader.load_game_from_id
 }

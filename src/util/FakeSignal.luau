@@ -3,7 +3,10 @@
 ]=]
 
 local sandbox = require("@layer/sandbox")
+local new_symbol = require("@layer/util/new_symbol")
 local patching = sandbox.patching
+
+local SINK = new_symbol("FakeSignal Sink")
 
 type Wire = {
 	signal: RBXScriptSignal,
@@ -64,12 +67,16 @@ local function signal_start_wire(self: FakeSignal)
 		self.wire_lifecycle.start(self)
 	end
 
-	local function and_then(...)
+	local function and_then(first_arg, ...)
+		if first_arg == SINK then
+			return
+		end
+
 		if #self._listeners == 0 then
 			signal_stop_wire(self)
 		end
 
-		return signal_fire(self, ...)
+		return signal_fire(self, first_arg, ...)
 	end
 
 	self.wire.connection = self.wire.signal:Connect(function(...)
@@ -179,4 +186,6 @@ return {
 	new = new,
 	wire = wire_signal,
 	wire_lifecycle = wire_lifecycle,
+	fire = signal_fire,
+	SINK= SINK
 }

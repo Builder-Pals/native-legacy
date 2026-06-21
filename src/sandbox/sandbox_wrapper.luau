@@ -151,20 +151,6 @@ function metatable:__newindex(key: any, value: any)
 end
 
 function metatable:__iter()
-	-- local last_value: unknown?
-
-	-- local function iterate(o)
-	-- 	local key, value = next(get_unsandboxed_object(self), last_value)
-	-- 	last_value = value
-
-	-- 	if (patch_symbols :: any)[key] then
-	-- 		return iterate(o)
-	-- 	end
-
-	-- 	return key, value
-	-- end
-
-	-- return iterate
 	error("cant do that mate")
 end
 
