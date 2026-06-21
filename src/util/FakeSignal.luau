@@ -39,9 +39,9 @@ export type SignalContext = {
 
 local function signal_fire(self: FakeSignal, ...)
 	for _, listener in pairs(self._listeners) do
-		-- note: signals are now deferred by default on roblox, but they weren't before..
+		-- note: signals are now deferred by default on roblox, but they weren't before.
 		-- see Workspace.SignalBehaviour
-		task.spawn(listener, ...)
+		task.defer(listener, ...)
 	end
 end
 
@@ -82,6 +82,11 @@ local function signal_start_wire(self: FakeSignal)
 	self.wire.connection = self.wire.signal:Connect(function(...)
 		and_then(self.wire.middleware(...))
 	end)
+end
+
+local function signal_clear_listeners(self: FakeSignal)
+	table.clear(self._listeners)
+	signal_stop_wire(self)
 end
 
 local function signal_connect(self: FakeSignal, callback)
@@ -127,7 +132,7 @@ local function signal_wait(self: FakeSignal)
 	return coroutine.yield()
 end
 
-local function wire_signal(self: FakeSignal, signal: RBXScriptSignal, middleware)
+local function signal_wire(self: FakeSignal, signal: RBXScriptSignal, middleware)
 	if self.wire and self.wire.connection then
 		self.wire.connection:Disconnect()
 	end
@@ -141,6 +146,12 @@ local function wire_signal(self: FakeSignal, signal: RBXScriptSignal, middleware
 	if #self._listeners > 0 then
 		signal_start_wire(self)
 	end
+end
+
+local function signal_wire_destroy(self: FakeSignal)
+	signal_stop_wire(self)
+	self.wire = nil
+	self.wire_lifecycle = nil
 end
 
 local connection = {
@@ -184,8 +195,10 @@ end
 
 return {
 	new = new,
-	wire = wire_signal,
+	wire = signal_wire,
 	wire_lifecycle = wire_lifecycle,
+	destroy_wire = signal_wire_destroy,
 	fire = signal_fire,
-	SINK= SINK
+	clear_listeners = signal_clear_listeners,
+	SINK = SINK
 }

@@ -3,42 +3,34 @@
     "emitLegacyScripts": true,
     "tree": {
         "$className": "DataModel",
-
         "ReplicatedStorage": {
             "$className": "ReplicatedStorage",
-
             "native_legacy": {
                 "$path": "dist/",
-
                 "sets_data": {
                     "$path": "sets/dump"
                 },
-
                 "packages": {
                     "$className": "Folder",
-
                     "Iris": {
                         "$path": "Iris/lib"
                     }
+                },
+                "server": {
+                    "$className": "Script",
+                    "$properties": {
+                        "RunContext": "Server",
+                        "Source": "require(game:GetService('ReplicatedStorage').native_legacy).boot()"
+                    }
+                },
+                "client": {
+                    "$className": "Script",
+                    "$properties": {
+                        "RunContext": "Client",
+                        "Source": "require(game:GetService('ReplicatedStorage').native_legacy).boot()"
+                    }
                 }
             },
-
-            "server": {
-                "$className": "Script",
-                "$properties": {
-                    "RunContext": "Server",
-                    "Source": "require(game:GetService('ReplicatedStorage').native_legacy).boot()"
-                }
-            },
-
-            "client": {
-                "$className": "Script",
-                "$properties": {
-                    "RunContext": "Client",
-                    "Source": "require(game:GetService('ReplicatedStorage').native_legacy).boot()"
-                }
-            },
-
             "nl_dont_sandbox": {
                 "$className": "ObjectValue"
             }

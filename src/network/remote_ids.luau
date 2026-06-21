@@ -24,6 +24,15 @@ local remote_ids = {
 	},
 
 	reliable = {
+		console = {
+			load_place = next_id(),
+		},
+
+		hopperbin = {
+			select = next_id(),
+			deselect = next_id(),
+		},
+
 		instance_pool = {
 			expand = next_id(),
 		},

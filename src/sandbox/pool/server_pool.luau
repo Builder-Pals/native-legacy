@@ -2,6 +2,7 @@ local remotes = require("@layer/network/remotes")
 local server = remotes.reliable.server
 
 local with_players = require("@layer/util/with_players")
+local nl_constants = require("../../nl_constants")
 
 local POOL_SIZE = 100
 
@@ -15,6 +16,7 @@ return function()
 		local warehouse = Instance.new("ScreenGui")
         warehouse.ResetOnSpawn = false
 		warehouse.Name = "_Warehouse" -- sync with client!
+		warehouse:AddTag(nl_constants.RELOAD_PROTECTION)
 		warehouse.Parent = pgui
 		warehouses[player] = warehouse
 

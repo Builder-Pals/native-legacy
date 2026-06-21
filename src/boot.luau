@@ -1,6 +1,7 @@
 local network = require("./network")
 local defiltering = require("./sandbox/defiltering")
 local app = require("@layer/app")
+local console = require("./console")
 
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
@@ -39,6 +40,7 @@ return function()
 
 	print("starting app...")
 	app.start()
+	console.init()
 
 	if IS_CLIENT then
 		network.init()
