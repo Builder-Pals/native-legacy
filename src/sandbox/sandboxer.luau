@@ -8,10 +8,6 @@ local function sandbox(context: sandbox_types.App, value: any)
 	return if sandboxer then sandboxer(context, value) else value
 end
 
-local function is_sandboxed(value: any)
-	return typeof(value) == "table" and rawget(value, patch_symbols.UNSANDBOXED_OBJECT)
-end
-
 --- For pulling values in/out of the Sandbox
 local sandboxer = {}
 
@@ -22,6 +18,10 @@ function sandboxer.register(type: string, fn: (context: sandbox_types.App, value
 	sandboxers[type] = fn
 end
 
+function sandboxer.is_sandboxed(value: any)
+	return typeof(value) == "table" and rawget(value, patch_symbols.UNSANDBOXED_OBJECT)
+end
+
 --- Puts a value into the sandbox using any currently registered sandboxers.
 function sandboxer.sandbox(context: sandbox_types.App, value: unknown)
 	if typeof(value) == "table" and getmetatable(value) == nil then
@@ -30,8 +30,8 @@ function sandboxer.sandbox(context: sandbox_types.App, value: unknown)
 		for key, value_2 in value do
 			-- if the table contains sandboxed values, we must have already touched it.
 			-- sandboxed values should NEVER come directly from the DOM.
-			if is_sandboxed(key) or is_sandboxed(value_2) then
-				return value_2
+			if sandboxer.is_sandboxed(key) or sandboxer.is_sandboxed(value_2) then
+				return value
 			end
 
 			output[sandbox(context, key)] = sandbox(context, value_2)
