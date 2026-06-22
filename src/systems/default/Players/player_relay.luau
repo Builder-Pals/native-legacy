@@ -110,8 +110,6 @@ app.add_patch(
 					table.insert(players, sandboxer.sandbox(context.sandbox_context, player))
 				end
 
-				print("sandboxed players:", players)
-
 				return players
 			end
 		end,
@@ -133,7 +131,7 @@ app.add_patch(
 					table.insert(players, sandboxer.sandbox(context.sandbox_context, player))
 				end
 
-				-- return a table with the players we haven't registered yet removed
+				-- return a table without the players we haven't registered yet
 				local children = context.unsandboxed_object:GetChildren()
 				local filtered_children = {}
 

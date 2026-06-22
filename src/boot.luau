@@ -11,13 +11,17 @@ local external_boot_prefab = script.Parent.external_boot
 
 local IS_CLIENT = RunService:IsClient()
 
-local function clone_animate()
+local function clone_starter_player_scripts()
+	local starter_scripts = StarterPlayer:WaitForChild("StarterCharacterScripts")
+
 	local animate = script.Parent:WaitForChild("character"):WaitForChild("Animate"):Clone()
 	local bindable = Instance.new("BindableFunction")
 	bindable.Name = "PlayEmote"
 	bindable.Parent = animate
+	animate.Parent = starter_scripts
 
-	animate.Parent = StarterPlayer:WaitForChild("StarterCharacterScripts")
+	local place_hop_camera = script.Parent:WaitForChild("character"):WaitForChild("place_hop_camera"):Clone()
+	place_hop_camera.Parent = starter_scripts
 end
 
 local function make_sandboxer(name: string)
@@ -51,7 +55,7 @@ return function()
 			SoundService.RespectFilteringEnabled = false
 		end
 
-		clone_animate()
+		clone_starter_player_scripts()
 		network.init()
 		defiltering.start_server()
 	end
