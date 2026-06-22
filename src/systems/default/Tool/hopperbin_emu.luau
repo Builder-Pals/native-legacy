@@ -20,7 +20,7 @@ local SPECIAL_KEYS = {
 
 local SPECIAL_KEY_REVERSER: { [string]: string } = {}
 
-for key, value in SPECIAL_KEYS do
+for key, value in SPECIAL_KEYS :: { [string]: string } do
 	SPECIAL_KEY_REVERSER[value] = key
 end
 
