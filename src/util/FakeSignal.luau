@@ -177,7 +177,7 @@ signal.__index = signal
 
 local function new()
 	local my_signal = setmetatable({
-		_listeners = {},
+		_listeners = setmetatable({}, { __mode = "v" }),
 	}, signal) :: FakeSignal
 
 	return {
@@ -200,5 +200,5 @@ return {
 	destroy_wire = signal_wire_destroy,
 	fire = signal_fire,
 	clear_listeners = signal_clear_listeners,
-	SINK = SINK
+	SINK = SINK,
 }

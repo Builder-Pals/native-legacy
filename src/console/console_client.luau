@@ -11,7 +11,11 @@ local games: { [string]: number } = {
 	["Underwater Obby"] = 14848794565,
 	["Airplane Crash to Mystery Island"] = 14961020116,
 	["Build your own Noob Trap"] = 14687697121,
-	["Heli-Wars"] = 14535192873
+	["Heli-Wars"] = 14535192873,
+	["Base Wars"] = 13159150083,
+	["WARZONE"] = 14687770741,
+	["Virtual Paintball"] = 13232401212,
+	["Sandbox"] = 13224001965
 }
 
 return function()

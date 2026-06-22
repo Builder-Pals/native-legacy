@@ -1,3 +1,4 @@
+local sandboxer = require("./sandboxer")
 local stalled: { [Script]: true | nil } = {}
 local timestamps: { [Script]: number } = {}
 
@@ -24,6 +25,8 @@ local script_stalling = {}
 --- Stalls a script until the operation is complete, with error handling to ensure scripts are unstalled in the event
 --- of an error.
 function script_stalling.with<X>(script: Script, op: () -> X): X
+	script = sandboxer.unsandbox(script) :: any
+
 	script_stalling.stall(script)
 	local ok, result = pcall(function()
 		return op()
@@ -35,6 +38,8 @@ function script_stalling.with<X>(script: Script, op: () -> X): X
 end
 
 function script_stalling.yield_if_stalled(script: Script)
+	script = sandboxer.unsandbox(script) :: any
+
 	if stalled[script] then
 		print(`{script} is stalled!`)
 
