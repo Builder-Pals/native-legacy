@@ -10,9 +10,9 @@ app.add_patch(
 		classes = { "Accessory" },
 		keys = { "className", "ClassName" },
 		run = function(_)
-			return function(_)
-				return "Hat"
-			end
+			return "Hat"
 		end,
 	}
 )
+
+return nil
