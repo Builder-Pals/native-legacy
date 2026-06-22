@@ -20,6 +20,7 @@ local signals = {
 	Players = {
 		PlayerAdded = FakeSignal.new(),
 		PlayerRemoving = FakeSignal.new(),
+		ChildAdded = FakeSignal.new(),
 	},
 }
 
@@ -39,6 +40,7 @@ local function add_player(player: Player)
 	end
 
 	signals.Players.PlayerAdded.fire(player)
+	signals.Players.ChildAdded.fire(player)
 
 	-- respawn character to make sure OnCharacterAdded events fire
 	if was_character_loaded then
@@ -59,18 +61,28 @@ local function mask_players()
 end
 
 app.add_system("player_relay", function(context)
-	FakeSignal.wire(signals.Players.PlayerAdded.signal, Players.PlayerAdded, function(player)
+	local function handle_player_added(player: Player)
 		if is_masking_enabled then
 			return FakeSignal.SINK
 		end
 
-        if player == Players.LocalPlayer then
-            -- yea it'd just be a bit weird
-            return FakeSignal.SINK
-        end
+		if player == Players.LocalPlayer then
+			-- yea it'd just be a bit weird
+			return FakeSignal.SINK
+		end
 
 		joined[player] = true
 		return sandboxer.sandbox(context, player)
+	end
+
+	FakeSignal.wire(signals.Players.PlayerAdded.signal, Players.PlayerAdded, handle_player_added)
+
+	FakeSignal.wire(signals.Players.ChildAdded.signal, Players.ChildAdded, function(child)
+		if not child:IsA("Player") then
+			return sandboxer.sandbox(context, child)
+		end
+
+		return handle_player_added(child)
 	end)
 
 	FakeSignal.wire(signals.Players.PlayerRemoving.signal, Players.PlayerRemoving, function(player)
@@ -152,6 +164,18 @@ app.add_patch(
 			local signal_context = key_map[key:lower()]
 			assert(signal_context, `{key:lower()} missing from key map!`)
 			return signal_context.signal
+		end,
+	}
+)
+
+-- MANY old scripts listen to ChildAdded instead of PlayerAdded. this is because society is evil.
+app.add_patch(
+	"player_relay_events",
+	patching.getter_patch {
+		classes = { "Players" },
+		keys = { "childAdded", "ChildAdded" },
+		run = function(_)
+			return signals.Players.ChildAdded.signal
 		end,
 	}
 )

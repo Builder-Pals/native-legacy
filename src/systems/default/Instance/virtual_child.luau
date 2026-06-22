@@ -148,7 +148,7 @@ app.add_patch(
 			end
 
 			return function(self)
-                local unsandboxed = sandboxer.unsandbox(self) :: any
+				local unsandboxed = sandboxer.unsandbox(self) :: any
 				local children = unsandboxed.GetChildren(unsandboxed)
 				local output = {}
 
@@ -159,8 +159,8 @@ app.add_patch(
 						table.insert(output, sandboxer.sandbox_from_dom(context.sandbox_context, child))
 					end
 				end
-                
-                return output
+
+				return output
 			end
 		end,
 	}
@@ -181,7 +181,10 @@ app.add_patch(
 			return function(self, name: string)
 				local unsandboxed = sandboxer.unsandbox(self) :: any
 				local result = unsandboxed.FindFirstChild(unsandboxed, name) :: any
-				return sandboxer.sandbox(context.sandbox_context, if result:HasTag(TAG) then result.Value else result)
+				return sandboxer.sandbox(
+					context.sandbox_context,
+					if result and result:HasTag(TAG) then result.Value else result
+				)
 			end
 		end,
 	}
