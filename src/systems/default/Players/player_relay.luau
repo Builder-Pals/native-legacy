@@ -39,8 +39,8 @@ local function add_player(player: Player)
 		player.Character:Destroy()
 	end
 
-	signals.Players.PlayerAdded.fire(player)
-	signals.Players.ChildAdded.fire(player)
+	FakeSignal.fire(signals.Players.PlayerAdded, player)
+	FakeSignal.fire(signals.Players.ChildAdded, player)
 
 	-- respawn character to make sure OnCharacterAdded events fire
 	if was_character_loaded then
@@ -51,7 +51,7 @@ end
 local function remove_player(player: Player)
 	if joined[player] then
 		joined[player] = nil
-		signals.Players.PlayerRemoving.fire(player)
+		FakeSignal.fire(signals.Players.PlayerRemoving, player)
 	end
 end
 
@@ -75,24 +75,37 @@ app.add_system("player_relay", function(context)
 		return sandboxer.sandbox(context, player)
 	end
 
-	FakeSignal.wire(signals.Players.PlayerAdded.signal, Players.PlayerAdded, handle_player_added)
-
-	FakeSignal.wire(signals.Players.ChildAdded.signal, Players.ChildAdded, function(child)
-		if not child:IsA("Player") then
-			return sandboxer.sandbox(context, child)
+	local player_added_processor = FakeSignal.new_processor(function(callback)
+		return function(player)
+			callback(handle_player_added(player))
 		end
-
-		return handle_player_added(child)
 	end)
 
-	FakeSignal.wire(signals.Players.PlayerRemoving.signal, Players.PlayerRemoving, function(player)
-		if not joined[player] then
-			return FakeSignal.SINK
-		end
+	local player_child_processor = FakeSignal.new_processor(function(callback)
+		return function(child)
+			if not child:IsA("Player") then
+				callback(sandboxer.sandbox(context, child))
+				return
+			end
 
-		joined[player] = nil
-		return sandboxer.sandbox(context, player)
+			callback(handle_player_added(child))
+		end
 	end)
+
+	local player_removing_processor = FakeSignal.new_processor(function(callback)
+		return function(player)
+			if not joined[player] then
+				return
+			end
+
+			joined[player] = nil
+			callback(sandboxer.sandbox(context, player))
+		end
+	end)
+
+	FakeSignal.bind(signals.Players.PlayerAdded, Players.PlayerAdded, player_added_processor)
+	FakeSignal.bind(signals.Players.ChildAdded, Players.ChildAdded, player_child_processor)
+	FakeSignal.bind(signals.Players.PlayerRemoving, Players.PlayerRemoving, player_removing_processor)
 end)
 
 -- server/client
@@ -161,7 +174,7 @@ app.add_patch(
 		run = function(_, key)
 			local signal_context = key_map[key:lower()]
 			assert(signal_context, `{key:lower()} missing from key map!`)
-			return signal_context.signal
+			return signal_context
 		end,
 	}
 )
@@ -173,7 +186,7 @@ app.add_patch(
 		classes = { "Players" },
 		keys = { "childAdded", "ChildAdded" },
 		run = function(_)
-			return signals.Players.ChildAdded.signal
+			return signals.Players.ChildAdded
 		end,
 	}
 )

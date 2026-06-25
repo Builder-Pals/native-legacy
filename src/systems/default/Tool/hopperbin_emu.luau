@@ -53,13 +53,13 @@ export type FakeMouse = {
 	hit: CFrame,
 	target: Instance?,
 
-	key_down: FakeSignal.SignalContext,
-	key_up: FakeSignal.SignalContext,
+	key_down: FakeSignal.FakeSignalContext,
+	key_up: FakeSignal.FakeSignalContext,
 
-	button_1_down: FakeSignal.SignalContext,
-	button_1_up: FakeSignal.SignalContext,
-	button_2_down: FakeSignal.SignalContext,
-	button_2_up: FakeSignal.SignalContext,
+	button_1_down: FakeSignal.FakeSignalContext,
+	button_1_up: FakeSignal.FakeSignalContext,
+	button_2_down: FakeSignal.FakeSignalContext,
+	button_2_up: FakeSignal.FakeSignalContext,
 }
 
 -- client
@@ -196,11 +196,11 @@ local function mouse_index(self, key: string): any
 	end
 
 	if camel_key == "keyDown" then
-		return data.key_down.signal
+		return data.key_down
 	end
 
 	if camel_key == "keyUp" then
-		return data.key_up.signal
+		return data.key_up
 	end
 
 	if camel_key == "hit" then
@@ -208,19 +208,19 @@ local function mouse_index(self, key: string): any
 	end
 
 	if camel_key == "button1Down" then
-		return data.button_1_down.signal
+		return data.button_1_down
 	end
 
 	if camel_key == "button1Up" then
-		return data.button_1_up.signal
+		return data.button_1_up
 	end
 
 	if camel_key == "button2Down" then
-		return data.button_2_down.signal
+		return data.button_2_down
 	end
 
 	if camel_key == "button2Up" then
-		return data.button_2_up.signal
+		return data.button_2_up
 	end
 
 	print("fallback", key)
@@ -232,8 +232,8 @@ local function refresh_fake_mouse(player: Player)
 
 	if existing then
 		-- prevent existing mouse from receiving any more events
-		FakeSignal.destroy_wire(existing.key_down.signal)
-		FakeSignal.destroy_wire(existing.key_up.signal)
+		FakeSignal.wipe_connections(existing.key_down)
+		FakeSignal.wipe_connections(existing.key_up)
 	end
 
 	-- don't create new mice for disconnected players.
@@ -365,16 +365,16 @@ app.add_system("hopperbin_net_receiver", function(_app)
 
 	local function handle_special_key(key: unknown, mouse: FakeMouse)
 		if key == SPECIAL_KEYS.MB1_DOWN then
-			mouse.button_1_down.fire()
+			FakeSignal.fire(mouse.button_1_down)
 			return true
 		elseif key == SPECIAL_KEYS.MB1_UP then
-			mouse.button_1_up.fire()
+			FakeSignal.fire(mouse.button_1_up)
 			return true
 		elseif key == SPECIAL_KEYS.MB2_DOWN then
-			mouse.button_2_down.fire()
+			FakeSignal.fire(mouse.button_2_down)
 			return true
 		elseif key == SPECIAL_KEYS.MB2_UP then
-			mouse.button_2_up.fire()
+			FakeSignal.fire(mouse.button_2_up)
 			return true
 		end
 
@@ -402,9 +402,9 @@ app.add_system("hopperbin_net_receiver", function(_app)
 				end
 
 				if pressed then
-					mouse.key_down.fire(key)
+					FakeSignal.fire(mouse.key_down, key)
 				else
-					mouse.key_up.fire(key)
+					FakeSignal.fire(mouse.key_up, key)
 				end
 			end
 
@@ -433,15 +433,17 @@ app.add_patch(
 			assert(player, "no player?")
 			assert(player:IsA("Player"), "not a player?")
 
-			FakeSignal.wire(fake_signal.signal, selected_signal, function(_real_mouse)
-				local mouse = fake_mice[player]
-				mouse.real_mouse = _real_mouse
+			FakeSignal.bind(fake_signal, selected_signal, function(callback)
+				return function(_real_mouse)
+					local mouse = fake_mice[player]
+					mouse.real_mouse = _real_mouse
 
-				assert(mouse, `{player} is missing fake mouse`)
-				return mouse.object
+					assert(mouse, `{player} is missing fake mouse`)
+					callback(mouse.object)
+				end
 			end)
 
-			return fake_signal.signal
+			return fake_signal
 		end,
 	},
 	RunService:IsServer()

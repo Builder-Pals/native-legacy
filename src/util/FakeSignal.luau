@@ -1,160 +1,155 @@
 --[=[
-	Emulates RBXScriptSignals with the ability to fire events from luau.
+	Creates impostor RBXScriptSignals, which can be connected to multiple events at
+	once under the hood, with support for middleware.
 ]=]
 
 local sandbox = require("@layer/sandbox")
 local new_symbol = require("@layer/util/new_symbol")
 local patching = sandbox.patching
 
+export type ProcessorFactory = (AnyFn) -> AnyFn
+export type AnyFn = (...any) -> ...any
+
 local SINK = new_symbol("FakeSignal Sink")
 
-type Wire = {
-	signal: RBXScriptSignal,
-	middleware: (...any) -> ...any,
-	connection: RBXScriptConnection?,
-}
+local connection_mt, signal_mt
 
-type WireLifecycle = {
-	start: (self: FakeSignal) -> (),
-	stop: (self: FakeSignal) -> (),
-}
-
-export type FakeSignal = {
-	_listeners: { (...any) -> () },
-	wire: Wire?,
-	wire_lifecycle: WireLifecycle?,
-}
-
-export type FakeConnection = {
-	_signal: FakeSignal,
-	_callback: () -> (),
-	connected: boolean,
-	Connected: boolean,
-}
-
-export type SignalContext = {
-	fire: (...any) -> (),
-	signal: FakeSignal,
-}
-
-local function signal_fire(self: FakeSignal, ...)
-	for _, listener in pairs(self._listeners) do
-		-- note: signals are now deferred by default on roblox, but they weren't before.
-		-- see Workspace.SignalBehaviour
-		task.defer(listener, ...)
-	end
-end
-
-local function signal_stop_wire(self: FakeSignal)
-	if self.wire == nil or self.wire.connection == nil then
-		return
-	end
-
-	self.wire.connection:Disconnect()
-
-	if self.wire_lifecycle then
-		self.wire_lifecycle.stop(self)
-	end
-end
-
---- Starts listening to the wired RBXScriptSignal (if present).
-local function signal_start_wire(self: FakeSignal)
-	if self.wire == nil or #self._listeners == 0 or self.wire.connection then
-		return
-	end
-
-	if self.wire_lifecycle then
-		self.wire_lifecycle.start(self)
-	end
-
-	local function and_then(first_arg, ...)
-		if first_arg == SINK then
+local function sink_processor(callback: AnyFn)
+	return function(arg1, ...)
+		if arg1 == SINK then
 			return
 		end
 
-		if #self._listeners == 0 then
-			signal_stop_wire(self)
+		callback(arg1, ...)
+	end
+end
+
+export type FakeConnectionContext = {
+	signal: FakeSignalContext,
+	original_callback: AnyFn,
+	connections: { RBXScriptConnection },
+}
+
+export type FakeSignalContext = {
+	signals: { RBXScriptSignal },
+	processors: { ProcessorFactory },
+	remote: BindableEvent?,
+	connections: { [AnyFn]: FakeConnectionContext },
+}
+
+local function connection_disconnect(ctx: FakeConnectionContext)
+	for _, connection in ctx.connections do
+		connection:Disconnect()
+	end
+
+	ctx.signal.connections[ctx.original_callback] = nil
+end
+
+local function signal_disconnect(ctx: FakeSignalContext, callback: AnyFn)
+	local match = ctx.connections[callback]
+
+	if match then
+		connection_disconnect(match)
+	end
+end
+
+local function signal_gc(ctx: FakeSignalContext)
+	for callback, listener in ctx.connections do
+		local alive = false
+		
+		for _, connection in listener.connections do
+			if connection.Connected then
+				alive = true
+				break
+			end
 		end
-
-		return signal_fire(self, first_arg, ...)
-	end
-
-	self.wire.connection = self.wire.signal:Connect(function(...)
-		and_then(self.wire.middleware(...))
-	end)
-end
-
-local function signal_clear_listeners(self: FakeSignal)
-	table.clear(self._listeners)
-	signal_stop_wire(self)
-end
-
-local function signal_connect(self: FakeSignal, callback)
-	assert(typeof(callback) == "function")
-	table.insert(self._listeners, callback)
-	signal_start_wire(self)
-end
-
--- this method is deprecated and throws an error in modern roblox
-local function signal_disconnect(self: FakeSignal, callback)
-	for index, listener in self._listeners do
-		if listener == callback then
-			table.remove(self._listeners, index)
-			break
+		
+		if not alive then
+			ctx.connections[callback] = nil
 		end
 	end
-
-	if #self._listeners == 0 then
-		signal_stop_wire(self)
-	end
 end
 
-local function connection_disconnect(self: FakeConnection)
-	local index = table.find(self._signal._listeners, self._callback)
+local function signal_connect(ctx: FakeSignalContext, callback)
+	signal_gc(ctx)
 
-	if index then
-		table.remove(self._signal._listeners, index)
+	local fake_connection: FakeConnectionContext = {
+		original_callback = callback,
+		signal = ctx,
+		connections = {},
+	}
+
+	-- connect to the real signals
+	for index, event in ctx.signals do
+		local fn = if ctx.processors[index] == sink_processor
+			then sink_processor(callback)
+			else sink_processor(ctx.processors[index](callback))
+
+		table.insert(fake_connection.connections, event:Connect(fn))
 	end
 
-	self.connected = false
-	self.Connected = false
+	setmetatable(fake_connection, connection_mt)
+	ctx.connections[callback] = fake_connection
+
+	return fake_connection
 end
 
-local function signal_wait(self: FakeSignal)
-	local thread: thread
+local function signal_wait(ctx: FakeSignalContext)
+	local thread = coroutine.running()
 
-	local function callback(...)
+	local connection = signal_connect(ctx, function(...)
+		coroutine.resume(thread)
 		coroutine.resume(thread, ...)
-	end
+	end)
 
-	table.insert(self._listeners, callback)
-	thread = coroutine.running()
+	coroutine.yield()
+	connection_disconnect(connection)
 	return coroutine.yield()
 end
 
-local function signal_wire(self: FakeSignal, signal: RBXScriptSignal, middleware)
-	if self.wire and self.wire.connection then
-		self.wire.connection:Disconnect()
+--- Binds a `FakeSignal` to an existing signal. If provided, the processor will be able to mutate
+--- arguments before they reach any underlying callbacks.
+local function signal_bind(ctx: FakeSignalContext, signal: RBXScriptSignal, processor: ProcessorFactory?)
+	table.insert(ctx.signals, signal)
+	table.insert(ctx.processors, processor or sink_processor)
+end
+
+local function signal_fire(ctx: FakeSignalContext, ...)
+	if ctx.remote then
+		ctx.remote:Fire(...)
+		return
 	end
 
-	self.wire = {
-		signal = signal,
-		middleware = middleware,
-		connection = nil,
+	local bind = Instance.new("BindableEvent")
+	signal_bind(ctx, bind.Event)
+	ctx.remote = bind
+	bind:Fire(...)
+end
+
+local function new_signal()
+	local fake_signal: FakeSignalContext = {
+		connections = {},
+		processors = {},
+		signals = {}
 	}
 
-	if #self._listeners > 0 then
-		signal_start_wire(self)
+	setmetatable(fake_signal, signal_mt)
+	return fake_signal
+end
+
+local function new_processor(x: ProcessorFactory)
+	return x
+end
+
+local function signal_wipe_connections(signal: FakeSignalContext)
+	for _, connection in signal.connections do
+		connection_disconnect(connection)
 	end
+
+	table.clear(signal.connections)
 end
 
-local function signal_wire_destroy(self: FakeSignal)
-	signal_stop_wire(self)
-	self.wire = nil
-	self.wire_lifecycle = nil
-end
-
-local connection = {
+connection_mt = {
 	Disconnect = connection_disconnect,
 	disconnect = connection_disconnect,
 	Wait = signal_wait,
@@ -163,9 +158,9 @@ local connection = {
 	[patching.symbols.FAKE_TYPEOF] = "RBXScriptConnection",
 }
 
-connection.__index = connection
+connection_mt.__index = connection_mt
 
-local signal = {
+signal_mt = {
 	connect = signal_connect,
 	Connect = signal_connect,
 	disconnect = signal_disconnect, -- only available in camelCase!
@@ -173,32 +168,13 @@ local signal = {
 	[patching.symbols.FAKE_TYPEOF] = "RBXScriptSignal",
 }
 
-signal.__index = signal
-
-local function new()
-	local my_signal = setmetatable({
-		_listeners = setmetatable({}, { __mode = "v" }),
-	}, signal) :: FakeSignal
-
-	return {
-		fire = function(...)
-			signal_fire(my_signal, ...)
-		end,
-
-		signal = my_signal,
-	}
-end
-
-local function wire_lifecycle(self: FakeSignal, start, stop)
-	self.wire_lifecycle = { start = start, stop = stop }
-end
+signal_mt.__index = signal_mt
 
 return {
-	new = new,
-	wire = signal_wire,
-	wire_lifecycle = wire_lifecycle,
-	destroy_wire = signal_wire_destroy,
-	fire = signal_fire,
-	clear_listeners = signal_clear_listeners,
 	SINK = SINK,
+	new = new_signal,
+	bind = signal_bind,
+	fire = signal_fire,
+	new_processor = new_processor,
+	wipe_connections = signal_wipe_connections,
 }
