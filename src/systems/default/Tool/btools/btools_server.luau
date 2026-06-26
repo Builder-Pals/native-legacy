@@ -115,11 +115,21 @@ local function removePartKey(key)
 	end
 end
 
+local function find_tool(char)
+	for _, child in char:GetChildren() do
+		if child:IsA("Accessory") and child:HasTag("nl_pseudo_tool") then
+			return child
+		end
+	end
+
+	return nil
+end
+
 local function playerIsUsingTool(player, toolName)
 	local char = player.Character
 
 	if char then
-		local tool = char:FindFirstChildWhichIsA("Tool")
+		local tool = find_tool(char)
 		if tool and CollectionService:HasTag(tool, toolName) then
 			return true, tool
 		end
@@ -131,8 +141,8 @@ end
 local function swingBuildTool(player)
 	local char = player.Character
 	if char then
-		local tool = char:FindFirstChildWhichIsA("Tool")
-		if tool and tool.RequiresHandle and CollectionService:HasTag(tool, "BuildTool") then
+		local tool = find_tool(char)
+		if tool and CollectionService:HasTag(tool, "BuildTool") then
 			local toolAnim = Instance.new("StringValue")
 			toolAnim.Name = "toolanim"
 			toolAnim.Value = "Slash"
@@ -153,31 +163,6 @@ local function onSubmitUpdate(player, key, cframe)
 		end
 	end
 end
-
--- ----------------------------------------------------------------------------------------------------------------------------
--- -- Player/HopperBin tracking
--- ----------------------------------------------------------------------------------------------------------------------------
-
--- local function onDescendantAdded(desc)
--- 	if desc:IsA("HopperBin") then
--- 		local toolName = desc.BinType.Name
--- 		if DECLARED_BUILD_TOOLS[toolName] then
--- 			local tool = Instance.new("Tool")
--- 			tool.RequiresHandle = false
--- 			tool.Parent = desc.Parent
-
--- 			CollectionService:AddTag(tool, toolName)
--- 			desc:Destroy()
--- 		end
--- 	end
--- end
-
--- local function onPlayerAdded(player)
--- 	for _, desc in pairs(player:GetDescendants()) do
--- 		onDescendantAdded(desc)
--- 	end
--- 	player.DescendantAdded:Connect(onDescendantAdded)
--- end
 
 local function onPlayerRemoved(player)
 	local key = playerToKey[player]
@@ -200,9 +185,8 @@ app.add_system("btools_server", function(_)
 		local BuildToolRemoved = CollectionService:GetInstanceRemovedSignal(toolName)
 
 		local function onBuildToolAdded(tool)
-			if tool:IsA("Tool") and not CollectionService:HasTag(tool, "BuildTool") then
+			if tool:IsA("Accessory") and not CollectionService:HasTag(tool, "BuildTool") then
 				tool.Name = toolName
-				tool.CanBeDropped = false
 
 				local dragger = draggerScript:Clone()
 				dragger.Parent = tool
@@ -213,7 +197,7 @@ app.add_system("btools_server", function(_)
 		end
 
 		local function onBuildToolRemoved(tool)
-			if tool:IsA("Tool") and CollectionService:HasTag(tool, "BuildTool") then
+			if tool:IsA("Accessory") and CollectionService:HasTag(tool, "BuildTool") then
 				CollectionService:RemoveTag(tool, toolName)
 				CollectionService:RemoveTag(tool, "BuildTool")
 
@@ -258,9 +242,11 @@ app.add_system("btools_server", function(_)
 
 					part = newPart
 				else
+					print("reject 999")
 					return false
 				end
 			elseif not playerIsUsingTool(player, "GameTool") then
+				print("rejected")
 				return false
 			end
 
@@ -288,6 +274,7 @@ app.add_system("btools_server", function(_)
 				end
 			end
 
+			print("rejected 2")
 			return false
 		elseif request == "ClearKey" then
 			local key = ...
@@ -334,11 +321,6 @@ app.add_system("btools_server", function(_)
 		end
 	end
 
-	-- for _, player in pairs(Players:GetPlayers()) do
-	-- 	onPlayerAdded(player)
-	-- end
-
-	-- Players.PlayerAdded:Connect(onPlayerAdded)
 	Players.PlayerRemoving:Connect(onPlayerRemoved)
 
 	----------------------------------------------------------------------------------------------------------------------------

@@ -83,9 +83,25 @@ app.add_system("hopperbin_send_input", function(_app)
 					network.remotes.reliable.client.send(network.remotes.ids.reliable.hopperbin.deselect, bin)
 				end)
 
+				local active_selection = bin:GetPropertyChangedSignal("Active"):Connect(function()
+					-- script bins fire off Selected events
+					if bin.BinType == Enum.BinType.Script then
+						return
+					end
+					
+					if bin.Active then
+						bin_selected = true
+						network.remotes.reliable.client.send(network.remotes.ids.reliable.hopperbin.select, bin)
+					else
+						bin_selected = false
+						network.remotes.reliable.client.send(network.remotes.ids.reliable.hopperbin.deselect, bin)
+					end
+				end)
+
 				bin:GetPropertyChangedSignal("Parent"):Once(function()
 					select_connection:Disconnect()
 					deselect_connection:Disconnect()
+					active_selection:Disconnect()
 				end)
 			end
 
@@ -315,7 +331,7 @@ end, RunService:IsServer())
 
 -- Server
 -- Receive mouse input from the client.
-app.add_system("hopperbin_net_receiver", function(_app)
+app.add_system("hopperbin_net_receiver", function(context)
 	local function increment_attribute(instance: Instance, attribute: string)
 		local current = instance:GetAttribute(attribute) or 0
 		assert(typeof(current) == "number")
@@ -389,7 +405,7 @@ app.add_system("hopperbin_net_receiver", function(_app)
 			local mouse = fake_mice[player]
 
 			mouse.location = payload[1]
-			mouse.target = payload[2]
+			mouse.target = sandbox.sandboxer.sandbox(context, payload[2])
 			local keys = payload[3]
 			mouse.hit = CFrame.new(payload[4])
 

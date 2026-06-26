@@ -1,3 +1,4 @@
+local RunService = game:GetService("RunService")
 local with_players = require("@layer/util/with_players")
 local hopperbin_emu = require("./hopperbin_emu")
 local app = require("@layer/app")
@@ -8,7 +9,7 @@ local patching = sandbox.patching
 local FAKE_TAG = "_fake_hopper"
 
 local function get_tool(name: string)
-    return routing.TOOLS:WaitForChild(name)
+	return routing.TOOLS:WaitForChild(name)
 end
 
 local BTOOL_TYPES = {
@@ -16,6 +17,22 @@ local BTOOL_TYPES = {
 	[Enum.BinType.Clone] = get_tool("Clone"),
 	[Enum.BinType.Hammer] = get_tool("Hammer"),
 }
+
+local function get_bin_type(bin: HopperBin): Enum.BinType
+	local value = bin:GetAttribute("bin_type")
+
+	if value == nil then
+		return bin.BinType
+	end
+
+	local bin_type = Enum.BinType:FromValue(value :: number)
+	assert(bin_type, `Invalid bin type for tool {bin.Name}: {bin:GetAttribute("bin_type")}`)
+	return bin_type
+end
+
+local function set_bin_type(tool: Instance, bin_type: Enum.BinType)
+	tool:SetAttribute("bin_type", bin_type.Value)
+end
 
 -- server
 -- swaps btools out for recreations
@@ -27,6 +44,13 @@ app.add_system("btools_server_swapper", function(_)
 
 		local function with_hopper_bin(bin: HopperBin)
 			print(`found hopper bin for {player.Name}: {bin.Name} ({bin.BinType})`)
+
+			-- enforce the real bin type as script to prevent clashing with the modernised tools
+			if bin.BinType ~= Enum.BinType.Script then
+				set_bin_type(bin, bin.BinType)
+				bin.BinType = Enum.BinType.Script
+			end
+
 			local tool
 			local is_selected = false
 
@@ -38,20 +62,22 @@ app.add_system("btools_server_swapper", function(_)
 						tool:Destroy()
 						tool = nil
 					end
+
+					return
 				end
 
-				local new_tool = BTOOL_TYPES[bin.BinType]
+				local new_tool = BTOOL_TYPES[get_bin_type(bin)]
 
 				if not new_tool then
 					return
 				end
 
 				new_tool = new_tool:Clone()
-				new_tool.Name = bin.Name
 				new_tool.Parent = player.Character
+
 				tool = new_tool
 			end
-			
+
 			local select_connection = hopperbin_emu.on_select(bin):Connect(function()
 				is_selected = true
 				refresh_tool()
@@ -85,11 +111,11 @@ app.add_system("btools_server_swapper", function(_)
 				end
 			end
 
-            backpack.ChildAdded:Connect(with_backpack_child)
+			backpack.ChildAdded:Connect(with_backpack_child)
 
-            for _, child in backpack:GetChildren() do
-                with_backpack_child(child)
-            end
+			for _, child in backpack:GetChildren() do
+				with_backpack_child(child)
+			end
 		end
 
 		for _, child in player:GetChildren() do
@@ -98,9 +124,9 @@ app.add_system("btools_server_swapper", function(_)
 
 		player.ChildAdded:Connect(with_player_child)
 
-        return nil
+		return nil
 	end)
-end)
+end, RunService:IsServer())
 
 app.add_patch(
 	"btools_class_spoofer",
@@ -128,6 +154,18 @@ app.add_patch(
 			end
 
 			return context.snapshot
+		end,
+	}
+)
+
+-- patch to use the get_bin_type function for the BinType property
+app.add_patch(
+	"btools_bin_type_spoofer",
+	patching.getter_patch {
+		classes = { "HopperBin" },
+		keys = { "BinType", "binType" },
+		run = function(context)
+			return get_bin_type(context.unsandboxed_object)
 		end,
 	}
 )
