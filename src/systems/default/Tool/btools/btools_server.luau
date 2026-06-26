@@ -171,6 +171,14 @@ local function onSubmitUpdate(player, key, cframe)
 	end
 end
 
+local function onCharacterAdded(player)
+	-- reset the key on character spawn. helps against cases where the character is destroyed but a dragger is active.
+	local key = playerToKey[player]
+	if key then
+		removePartKey(key)
+	end
+end
+
 local function onPlayerRemoved(player)
 	local key = playerToKey[player]
 	if key then
@@ -322,12 +330,17 @@ app.add_system("btools_server", function(_)
 					part:Destroy()
 				end
 
-				wait(0.1)
+				task.wait(0.1)
 				deleteDebounce[player] = false
 			end
 		end
 	end
 
+	Players.PlayerAdded:Connect(function(player)
+		player.CharacterAdded:Connect(function()
+			onCharacterAdded(player)
+		end)
+	end)
 	Players.PlayerRemoving:Connect(onPlayerRemoved)
 
 	----------------------------------------------------------------------------------------------------------------------------
