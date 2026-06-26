@@ -462,4 +462,12 @@ app.add_patch(
 	RunService:IsServer()
 )
 
-return nil
+return {
+	on_select = function(bin: HopperBin)
+		return bin:GetAttributeChangedSignal("select")
+	end,
+
+	on_deselect = function(bin: HopperBin)
+		return bin:GetAttributeChangedSignal("deselect")
+	end,
+}

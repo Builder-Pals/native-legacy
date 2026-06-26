@@ -7,6 +7,9 @@
             "$className": "ReplicatedStorage",
             "native_legacy": {
                 "$path": "dist/",
+                "tools": {
+                    "$path": "models/btools.rbxm"
+                },
                 "sets_data": {
                     "$path": "sets/dump"
                 },

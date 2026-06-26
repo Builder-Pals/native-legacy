@@ -53,7 +53,7 @@ local function vehicle_from_seat(character: Model, seat: Instance): Instance?
 end
 
 local function should_patch(instance: Instance)
-	return instance:IsA("Model")
+	return instance:IsA("Model") or instance:IsA("HopperBin")
 end
 
 local vehicle_folder: Folder?
@@ -190,4 +190,6 @@ app.add_patch(
 	}
 )
 
-return nil
+return {
+	make_redirect = make_redirect,
+}

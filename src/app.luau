@@ -1,5 +1,6 @@
 local RunService = game:GetService("RunService")
 local sandbox_types = require("@layer/sandbox/sandbox_types")
+local routing = require("./routing")
 local patch_filter_selector = require("./sandbox/patching/patch_filter_selector")
 local sandbox = require("@layer/sandbox")
 
@@ -81,7 +82,7 @@ function app.start()
 	local bag = {}
 
 	-- important: load all modules to allow them to register patches/systems
-	for _, child in script.Parent:WaitForChild("systems"):GetDescendants() do
+	for _, child in routing.SYSTEMS:GetDescendants() do
 		if child:IsA("ModuleScript") then
 			print("loading", child)
 			local _ = require(child :: any) :: any

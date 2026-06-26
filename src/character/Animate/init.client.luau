@@ -407,7 +407,7 @@ end
 
 function getTool()	
 	for _, kid in ipairs(Figure:GetChildren()) do
-		if kid.className == "Tool" then return kid end
+		if kid.className == "Tool" or kid:HasTag("nl_pseudo_tool") then return kid end
 	end
 	return nil
 end
