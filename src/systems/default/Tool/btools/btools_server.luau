@@ -1,5 +1,6 @@
 --!nonstrict
-local app = require("../../../../app")
+local app = require("@layer/app")
+local nl_constants = require("@layer/nl_constants")
 -------------------------------------------------------------------------------------------------------------------------
 -- @CloneTrooper1019, 2017-2018 <3
 -- ClassicBuildTools.lua
@@ -16,9 +17,15 @@ local PhysicsService = game:GetService("PhysicsService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
+if RunService:IsClient() then
+	return nil
+end
+
 local DraggerService = Instance.new("Folder")
+DraggerService:AddTag("nl_relaod_protection")
 DraggerService.Name = "DraggerService"
 DraggerService.Parent = ReplicatedStorage
+DraggerService:AddTag(nl_constants.RELOAD_PROTECTION)
 
 local DraggerGateway = Instance.new("RemoteFunction")
 DraggerGateway.Name = "DraggerGateway"

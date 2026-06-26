@@ -9,7 +9,11 @@ app.add_patch(
 	patching.getter_patch {
 		classes = { "Accessory" },
 		keys = { "className", "ClassName" },
-		run = function(_)
+		run = function(context)
+			if context.unsandboxed_object:HasTag("nl_pseudo_tool") then
+				return "Model"
+			end
+
 			return "Hat"
 		end,
 	}

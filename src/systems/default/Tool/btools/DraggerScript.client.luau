@@ -133,7 +133,7 @@ local function startDraggerAction(mPart)
 	
 	local pointOnMousePart = mPart.CFrame:toObjectSpace(mouse.Hit).p
 	local canDrag,dragKey,mousePart = gateway:InvokeServer("GetKey",mPart,mode == "Clone")
-	
+
 	if canDrag then
 		selection.Adornee = mousePart
 		selection.Transparency = 0
