@@ -1,10 +1,13 @@
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local remotes = require("../../network/remotes")
+local Action = require("@layer/util/Action")
+local defiltering = require("../defiltering")
 
 return function()
 	local warehouse = Players.LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("_Warehouse")
 	local warehouse_data: { [string]: { Instance } } = {}
-	local yielding_threads: { [string]: { thread } } = {}
+	local instance_tickets: { [string]: { {false | Instance} } } = {}
 
 	local function on_folder_added(pool_folder: Instance)
 		if not pool_folder:IsA("Folder") then
@@ -13,10 +16,10 @@ return function()
 
 		local class = pool_folder.Name
 		local pool: { Instance } = {}
-		local threads = yielding_threads[class] or {}
+		local threads = instance_tickets[class] or {}
 
 		warehouse_data[class] = pool
-		yielding_threads[class] = threads
+		instance_tickets[class] = threads
 
 		local function on_poolee_added(instance: Instance)
 			if not instance:IsA(class) then
@@ -24,10 +27,11 @@ return function()
 				return
 			end
 
-			local thread = table.remove(threads)
+			local ticket = table.remove(threads)
 
-			if thread then
-				coroutine.resume(thread, instance)
+			if ticket then
+				print("there's a ticket open - resuming it now")
+				ticket[1] = instance
 			else
 				table.insert(pool, instance)
 			end
@@ -49,18 +53,24 @@ return function()
 		pool_folder.ChildRemoved:Connect(on_poolee_removed)
 	end
 
+	-- we used to yield threads here instead of polling, but they're shaky inside of metamethods - causing
+	-- silent infinite yield problems (that limitation is documented).
 	local function pool_yield(class: string): Instance
 		print(`waiting for {class}...`)
-		local current = coroutine.running()
 
-		if not yielding_threads[class] then
-			yielding_threads[class] = {}
+		if not instance_tickets[class] then
+			instance_tickets[class] = {}
 		end
 
-		table.insert(yielding_threads[class], current)
-		local x= coroutine.yield()
-		print("\tresolved!")
-		return x
+		local ticket: { Instance | false } = {false}
+
+		table.insert(instance_tickets[class], ticket)
+		
+		while not ticket[1] do
+			task.wait()
+		end
+
+		return ticket[1] :: Instance
 	end
 
 	for _, child in warehouse:GetChildren() do
@@ -73,8 +83,8 @@ return function()
 		-- we use Instance.new here to throw an error if the class is invalid
 		if not warehouse_data[class] and Instance.new(class) then
 			-- if there's a yielding_threads table for the class, we must have already requested
-            -- for the pool to be expanded. so don't spam the server :P
-            if not yielding_threads[class] then
+			-- for the pool to be expanded. so don't spam the server :P
+			if not instance_tickets[class] then
 				-- request for server to make a new pool for the class.
 				remotes.reliable.client.send(remotes.ids.reliable.instance_pool.expand, class)
 			end
@@ -87,6 +97,9 @@ return function()
 		if not poolee then
 			return pool_yield(class)
 		end
+
+		-- make sure its parented elsewhere so that the server knows it's no longer in the pool.
+		Action.invoke(defiltering.events.send_property, poolee, "Parent", ReplicatedStorage)
 
 		poolee.Parent = nil
 
