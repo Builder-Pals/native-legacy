@@ -13,6 +13,6 @@ app.add_patch("player_is_roblox", patching.getter_patch {
 		print(`yeah, {player} is roblox!`)
 		return ROBLOX_USER_ID
 	end,
-}, false)
+}, false) -- <-- remove this param or set to true to activate!
 
 return nil

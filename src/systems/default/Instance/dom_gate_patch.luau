@@ -20,8 +20,7 @@ local patch = patching.getter_patch {
 
 		if t == "function" then
 			local tuple_sandboxer = sandboxer.sandbox_tuple(context.sandbox_context)
-		
-			local trace = debug.traceback()
+			local trace = debug.traceback("", 2)
 
 			return function(...)
 				local result = table.pack(pcall(function(...)
@@ -32,7 +31,7 @@ local patch = patching.getter_patch {
 
 				if not ok then
 					local failure = table.unpack(result, 2, 2)
-					error(`{failure}\n(from {context.unsandboxed_object.ClassName}.{_key})\n{trace}`, 0)
+					error(`{script.Name} error: {failure}\n(error originated from {context.unsandboxed_object.ClassName}.{_key})\n🧵 {trace}\nargs: {...}`, 0)
 				end
 
 				return table.unpack(result, 2)
