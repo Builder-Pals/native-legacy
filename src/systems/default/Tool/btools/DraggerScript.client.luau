@@ -10,7 +10,6 @@
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local SoundService = game:GetService("SoundService")
 local Players = game:GetService("Players")
 local Dragger = Instance.new("Dragger")
 

@@ -20,6 +20,7 @@ return function()
 
 		local function on_poolee_added(instance: Instance)
 			if not instance:IsA(class) then
+				warn(`child added to {class} pool, but it's not a {class}.`)
 				return
 			end
 
@@ -49,6 +50,7 @@ return function()
 	end
 
 	local function pool_yield(class: string): Instance
+		print(`waiting for {class}...`)
 		local current = coroutine.running()
 
 		if not yielding_threads[class] then
@@ -56,7 +58,9 @@ return function()
 		end
 
 		table.insert(yielding_threads[class], current)
-		return coroutine.yield()
+		local x= coroutine.yield()
+		print("\tresolved!")
+		return x
 	end
 
 	for _, child in warehouse:GetChildren() do

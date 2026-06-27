@@ -131,4 +131,18 @@ app.add_patch(
 	}
 )
 
-return nil
+--- Replicates a property to the server
+local function send_property(instance: Instance, property: string, value: any)
+	Action.invoke(defiltering.events.send_property, instance, property, value)
+end
+
+--- Sets a property on an instance and replicates it to the server
+local function net_set(instance: Instance, property: string, value: any)
+	(instance :: any)[property] = value
+	send_property(instance, property, value)
+end
+
+return {
+	send_property = send_property,
+	net_set = net_set,
+}

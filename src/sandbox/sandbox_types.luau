@@ -30,6 +30,7 @@ export type EnvironmentSandboxer = {
 	sandbox_environment: (env: any) -> (),
 }
 
+--- Instantiates a new networked Instance of `class` from a client
 export type ClientInstancePool = (class: string) -> (Instance)
 
 export type PatchedContext<TObject = any> = {
