@@ -5,7 +5,7 @@ local patching = sandbox.patching
 local ROBLOX_USER_ID = 1
 
 -- Player.UserId will always return 1, tricking scripts into treating you like the Roblox account
-local patch = patching.getter_patch {
+app.add_patch("player_is_roblox", patching.getter_patch {
 	classes = { "Player" },
 	keys = { "UserId", "userId" },
 	run = function(context, _key)
@@ -13,6 +13,6 @@ local patch = patching.getter_patch {
 		print(`yeah, {player} is roblox!`)
 		return ROBLOX_USER_ID
 	end,
-}
+}, false)
 
-return app.add_patch("player_is_roblox", patch, false)
+return nil
