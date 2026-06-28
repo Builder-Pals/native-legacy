@@ -15,6 +15,7 @@ return function()
 
 		local warehouse = Instance.new("ScreenGui")
         warehouse.ResetOnSpawn = false
+		warehouse.Enabled = false -- stops ui objects in the pool from appearing on the screen lol
 		warehouse.Name = "_Warehouse" -- sync with client!
 		warehouse:AddTag(nl_constants.RELOAD_PROTECTION)
 		warehouse.Parent = pgui
