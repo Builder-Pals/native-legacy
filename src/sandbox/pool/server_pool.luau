@@ -11,14 +11,14 @@ return function()
 	local pools: { [Player]: { [string]: Folder } } = {}
 
 	Composite.common.player_added:connect(function(player)
-		local pgui = player:WaitForChild("PlayerGui")
+		local player_gui = player:WaitForChild("PlayerGui")
 
 		local warehouse = Instance.new("ScreenGui")
         warehouse.ResetOnSpawn = false
 		warehouse.Enabled = false -- stops ui objects in the pool from appearing on the screen lol
 		warehouse.Name = "_Warehouse" -- sync with client!
 		warehouse:AddTag(nl_constants.RELOAD_PROTECTION)
-		warehouse.Parent = pgui
+		warehouse.Parent = player_gui
 		warehouses[player] = warehouse
 
 		pools[player] = {}
