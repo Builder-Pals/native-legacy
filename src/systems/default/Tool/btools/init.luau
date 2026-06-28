@@ -1,9 +1,9 @@
 local RunService = game:GetService("RunService")
-local with_players = require("@layer/util/with_players")
 local hopperbin_emu = require("./hopperbin_emu")
 local app = require("@layer/app")
 local routing = require("@layer/routing")
 local sandbox = require("@layer/sandbox")
+local Composite = require("@layer/util/Composite")
 local patching = sandbox.patching
 
 local FAKE_TAG = "_fake_hopper"
@@ -39,7 +39,7 @@ end
 -- due to defiltering, we don't have to worry about the client creating tools that won't be
 -- detected by this check.
 app.add_system("btools_server_swapper", function(_)
-	with_players(function(player)
+	Composite.new():connect(function(player: Player)
 		print(`checking for btools in backpack for {player.Name}`)
 
 		local function with_hopper_bin(bin: HopperBin)

@@ -3,8 +3,7 @@ local RunService = game:GetService("RunService")
 
 local app = require("@layer/app")
 local sandbox = require("@layer/sandbox")
-local with_character = require("../../../util/with_character")
-local with_players = require("../../../util/with_players")
+local Composite = require("../../../util/Composite")
 local patching = sandbox.patching
 local sandboxer = sandbox.sandboxer
 
@@ -82,11 +81,11 @@ local function break_joints(instance: Model | BasePart)
 end
 
 app.add_system("virtual_child_runtime", function(_)
-	with_players(function(player)
-		with_character(player, function(character)
-			local function with_child(humanoid: Instance)
+	Composite.common.player_added:connect(function(player: Player)
+		Composite.new():listen(player.CharacterAdded):add(player.Character):connect(function(character: Model)
+			local function with_child(humanoid: Instance): nil
 				if not humanoid:IsA("Humanoid") then
-					return
+					return nil
 				end
 
 				local last_seat = humanoid.SeatPart
@@ -122,13 +121,17 @@ app.add_system("virtual_child_runtime", function(_)
 
 				humanoid:GetPropertyChangedSignal("SeatPart"):Connect(on_seat_changed)
 				humanoid.Died:Connect(on_death)
+
+				return nil
 			end
 
-			character.ChildAdded:Connect(with_child)
+			Composite.new():listen(character.ChildAdded):add_array(character:GetChildren()):connect(with_child)
 
 			for _, child in character:GetChildren() do
 				with_child(child)
 			end
+
+			return nil
 		end)
 
 		return nil

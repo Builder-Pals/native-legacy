@@ -2,11 +2,10 @@ local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
-local with_character = require("@layer/util/with_character")
-local with_players = require("@layer/util/with_players")
 local app = require("@layer/app")
 
 local sandbox = require("@layer/sandbox")
+local Composite = require("@layer/util/Composite")
 local patching = sandbox.patching
 
 local NAME = "legacy_ownership"
@@ -31,16 +30,19 @@ end
 -- server
 -- tags all player characters for convenience
 app.add_system(NAME, function()
-    with_players(function(player)
-		with_character(player, function(character)
-			character:AddTag(CHARACTER_TAG)
-		end)
-
+    Composite.common.player_added:connect(function(player: Player)
+		Composite.from(player.CharacterAdded)
+			:add(player.Character)
+			:connect(function(character: Model)
+				character:AddTag(CHARACTER_TAG)
+				return nil
+			end)
+		
 		return nil
 	end)
 end, RunService:IsServer())
 
--- future: inheritance support would be good, maybe the new reflection api can help?
+-- future: optional inheritance support could be interesting, maybe the new reflection api can help?
 local parts = { "Part", "BasePart", "WedgePart", "CornerWedgePart", "TrussPart", "MeshPart" }
 
 app.add_patch(NAME, patching.setter_patch {

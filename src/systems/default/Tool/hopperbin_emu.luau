@@ -4,8 +4,8 @@ local UserInputService = game:GetService("UserInputService")
 
 local app = require("@layer/app")
 local sandbox = require("@layer/sandbox")
-local with_players = require("@layer/util/with_players")
-local string_util = require("../../../util/string_util")
+local Composite = require("@layer/util/Composite")
+local string_util = require("@layer/util/string_util")
 local FakeSignal = require("@layer/util/FakeSignal")
 local network = require("@layer/network")
 
@@ -286,7 +286,7 @@ end
 -- Throws away mice when appropriate to ensure (per player) only one Hopperbin has
 -- an active mouse at a time.
 app.add_system("hopperbin_mouse_refresher", function(_app)
-	with_players(function(player)
+	Composite.common.player_added:connect(function(player: Player)
 		local function with_backpack(backpack: Backpack)
 			refresh_fake_mouse(player)
 
@@ -342,7 +342,7 @@ app.add_system("hopperbin_net_receiver", function(context)
 		return bin.Parent and bin.Parent:IsA("Backpack") and bin.Parent.Parent == player
 	end
 
-	with_players(function(player)
+	Composite.new():connect(function(player)
 		refresh_fake_mouse(player)
 
 		return function()

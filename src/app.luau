@@ -22,7 +22,12 @@ local setup = {
 	systems = {} :: { sandbox_types.AppSystemFn },
 }
 
-local app = {}
+local app = {
+	run_context = {
+		CLIENT = RunService:IsClient(),
+		SERVER = RunService:IsServer(),
+	}
+}
 
 app.context = (
 	setmetatable({}, {

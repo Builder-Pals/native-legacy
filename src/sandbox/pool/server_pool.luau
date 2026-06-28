@@ -1,8 +1,8 @@
 local remotes = require("@layer/network/remotes")
 local server = remotes.reliable.server
 
-local with_players = require("@layer/util/with_players")
-local nl_constants = require("../../nl_constants")
+local nl_constants = require("@layer/nl_constants")
+local Composite = require("@layer/util/Composite")
 
 local POOL_SIZE = 100
 
@@ -10,7 +10,7 @@ return function()
 	local warehouses = {}
 	local pools: { [Player]: { [string]: Folder } } = {}
 
-	with_players(function(player)
+	Composite.common.player_added:connect(function(player)
 		local pgui = player:WaitForChild("PlayerGui")
 
 		local warehouse = Instance.new("ScreenGui")
