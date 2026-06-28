@@ -32,7 +32,7 @@ local patch = patching.getter_patch {
 				if not ok then
 					local failure = table.unpack(result, 2, 2)
 					local method_path = `{context.unsandboxed_object.ClassName}.{_key}`
-					error(`{method_path}({...}) -> error: {failure}\n🧵`, 0)
+					error(`{method_path}({...}) -> error: {failure}\n🧵{trace}`, 0)
 				end
 
 				-- the 3rd argument is CRUCIAL for nil preservation.
