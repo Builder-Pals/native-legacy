@@ -257,11 +257,9 @@ app.add_system("btools_server", function(_)
 
 					part = newPart
 				else
-					print("reject 999")
 					return false
 				end
 			elseif not playerIsUsingTool(player, "GameTool") then
-				print("rejected")
 				return false
 			end
 
@@ -289,7 +287,6 @@ app.add_system("btools_server", function(_)
 				end
 			end
 
-			print("rejected 2")
 			return false
 		elseif request == "ClearKey" then
 			local key = ...

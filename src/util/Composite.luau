@@ -68,7 +68,6 @@ function Composite.connect<T>(builder: Builder<T>, callback: SomeCallback<T>)
 	local cleanup_map: { [T]: () -> () } = {}
 
 	local function process(x: T)
-		print("processing", x)
 		local cleanup = callback(x)
 
 		if cleanup then
@@ -94,6 +93,10 @@ function Composite.connect<T>(builder: Builder<T>, callback: SomeCallback<T>)
 	for _, pre_entry in builder.data.pre_entries do
 		pre_entry.method(pre_entry.object)
 	end
+
+	for _, object in builder.data.pre_entry_objects do
+		process(object)
+	end
 end
 
 -- Luau type function that removes the optional (?) from the type.
@@ -115,24 +118,8 @@ end
 
 function Composite.from<T, X>(
 	signal: FirstArgSignal<T> & FirstArgSignal<X>,
-	add: { X } | { X? } | X | X?,
-	remove_signal: FirstArgSignal<T>?
 ): Builder<X>
-	local composite = Composite.new():listen(signal)
-
-	if add then
-		if type(add) == "table" then
-			composite:add_array(add)
-		else
-			composite:add(add)
-		end
-	end
-
-	if remove_signal then
-		composite:listen(remove_signal)
-	end
-
-	return composite
+	return Composite.new():listen(signal)
 end
 
 function Composite.new(): AnonBuilder

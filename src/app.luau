@@ -81,15 +81,15 @@ function app.add_patch_group(patch_group: sandbox_types.PatchGroup): sandbox_typ
 end
 
 function app.start()
-	print("loading modules")
-
 	local constructed: { [any]: any } = {}
 	local bag = {}
+	
+	print("# start systems")
 
 	-- important: load all modules to allow them to register patches/systems
 	for _, child in routing.SYSTEMS:GetDescendants() do
 		if child:IsA("ModuleScript") then
-			print("loading", child)
+			print(`- {child}`)
 			local _ = require(child :: any) :: any
 		end
 	end
