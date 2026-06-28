@@ -31,10 +31,13 @@ local patch = patching.getter_patch {
 
 				if not ok then
 					local failure = table.unpack(result, 2, 2)
-					error(`{script.Name} error: {failure}\n(error originated from {context.unsandboxed_object.ClassName}.{_key})\n🧵 {trace}\nargs: {...}`, 0)
+					local method_path = `{context.unsandboxed_object.ClassName}.{_key}`
+					error(`{method_path}({...}) -> error: {failure}\n🧵`, 0)
 				end
 
-				return table.unpack(result, 2)
+				-- the 3rd argument is CRUCIAL for nil preservation.
+				-- see comment in sandboxer.unsandbox_tuple.
+				return table.unpack(result, 2, result.n)
 			end
 		elseif t == "Instance" then
 			return sandboxer.sandbox(context.sandbox_context, context.unsandboxed)

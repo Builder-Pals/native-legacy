@@ -71,6 +71,14 @@ function sandboxer.unsandbox(value: any)
 		if unsandboxer ~= nil then
 			return (unsandboxer :: (any) -> any)(value)
 		end
+
+		local output = {}
+
+		for key, value_2 in value do
+			output[sandboxer.unsandbox(key)] = sandboxer.unsandbox(value_2)
+		end
+
+		return output
 	end
 
 	return value
@@ -86,7 +94,7 @@ function sandboxer.sandbox_tuple(context: sandbox_types.App)
 			result[key] = sandboxer.sandbox(context, value)
 		end
 
-		return table.unpack(result)
+		return table.unpack(result, nil, packed.n)
 	end
 end
 
@@ -113,7 +121,17 @@ function sandboxer.unsandbox_tuple(...: any)
 		result[key] = sandboxer.unsandbox(value)
 	end
 
-	return table.unpack(result)
+	-- the 3rd argument here is SO VERY CRUCIAL. wondering how?
+	-- there's a difference between nil and nan. consider:
+	-- JointsService:SetJoinAfterMoveTarget() -> ❌ Argument 1 missing or nil
+	-- JointsService:SetJoinAfterMoveTarget(nil) -> ✔️
+
+	-- if you don't pass the 3rd argument, nil values returned by this function may be lost,
+	-- breaking calls to the roblox api that expect nil instead of nan.
+
+	-- this literally broke the entire stamper tool placement system.
+
+	return table.unpack(result, nil, packed.n)
 end
 
 return sandboxer

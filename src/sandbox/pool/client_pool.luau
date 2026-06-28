@@ -1,7 +1,7 @@
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local remotes = require("../../network/remotes")
 local Action = require("@layer/util/Action")
+local replicated_nil = require("@layer/systems/default/replicated_nil")
 local defiltering = require("../defiltering")
 
 return function()
@@ -99,7 +99,7 @@ return function()
 		end
 
 		-- make sure its parented elsewhere so that the server knows it's no longer in the pool.
-		Action.invoke(defiltering.events.send_property, poolee, "Parent", ReplicatedStorage)
+		Action.invoke(defiltering.events.send_property, poolee, "Parent", replicated_nil)
 
 		poolee.Parent = nil
 
