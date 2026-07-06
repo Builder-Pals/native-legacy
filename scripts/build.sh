@@ -9,4 +9,6 @@ mkdir -p dist/
 rojo sourcemap build_default.project.json -o sourcemap.json
 darklua process --config .darklua.json src/ dist/
 
+cp -r models/btools.rbxm dist/tools.rbxm
+
 echo built!
