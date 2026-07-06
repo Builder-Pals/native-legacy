@@ -6,7 +6,7 @@ set -e
 mkdir -p dist/
 
 ./scripts/copy-meta.sh
-rojo sourcemap build.project.json -o sourcemap.json
+rojo sourcemap build_default.project.json -o sourcemap.json
 darklua process --config .darklua.json src/ dist/
 
 echo built!

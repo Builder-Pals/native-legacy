@@ -1,0 +1,19 @@
+{
+    "name": "nl-layer",
+    "emitLegacyScripts": true,
+    "tree": {
+        "$path": "src/",
+        "tools": {
+            "$path": "models/btools.rbxm"
+        },
+        "sets_data": {
+            "$path": "sets/dump"
+        },
+        "packages": {
+            "$className": "Folder",
+            "Iris": {
+                "$path": "Iris/lib"
+            }
+        }
+    }
+}
