@@ -37,6 +37,13 @@ function conversion_util.convert_script(script: SourceContainer)
 	script.Source = conversion_util.convert_source(script.Source)
 end
 
+function conversion_util.revert_script(script: SourceContainer)
+	if script.Source:sub(1, #WRAPPER) == WRAPPER then
+		script.Source = script.Source:sub(#WRAPPER + 1)
+	end
+end
+
+
 local function convert_node(instance: Instance)
 	if
 		can_sandbox(instance)
@@ -52,7 +59,6 @@ local function convert_node(instance: Instance)
 	end
 end
 
---- Converts a 
 function conversion_util.convert_game(data_model: DataModel)
     for _, service in ipairs(data_model:GetChildren()) do
         if TARGET_SERVICES[service.Name] then
@@ -61,15 +67,43 @@ function conversion_util.convert_game(data_model: DataModel)
     end
 end
 
+function conversion_util.revert_game(data_model: DataModel)
+	for _, service in ipairs(data_model:GetChildren()) do
+		if TARGET_SERVICES[service.Name] then
+			for _, child in ipairs(service:GetDescendants()) do
+				if child:IsA("ModuleScript") or child:IsA("Script") or child:IsA("LocalScript") then
+					conversion_util.revert_script(child)
+				end
+			end
+		end
+	end
+end
+
 --- Sandboxes an Instance (and all of its descendants)
 function conversion_util.convert_tree(instance: Instance)
-	local recording = ChangeHistoryService:TryBeginRecording(CHANGE_ACTION, "NL tree conversion")
+	local recording = ChangeHistoryService:TryBeginRecording(CHANGE_ACTION, "NL Tree Conversion")
 
 	if not recording then
 		warn(`change history service error, only one operation can be recorded at a time.`)
 	end
 
 	convert_node(instance)
+
+	ChangeHistoryService:FinishRecording(CHANGE_ACTION, Enum.FinishRecordingOperation.Commit)
+end
+
+function conversion_util.revert_tree(instance: Instance)
+	local recording = ChangeHistoryService:TryBeginRecording(CHANGE_ACTION, "NL Tree Reversion")
+
+	if not recording then
+		warn(`change history service error, only one operation can be recorded at a time.`)
+	end
+
+	for _, child in ipairs(instance:GetDescendants()) do
+		if child:IsA("ModuleScript") or child:IsA("Script") or child:IsA("LocalScript") then
+			conversion_util.revert_script(child)
+		end
+	end
 
 	ChangeHistoryService:FinishRecording(CHANGE_ACTION, Enum.FinishRecordingOperation.Commit)
 end
