@@ -117,7 +117,7 @@ type function Unoptional(ty: type)
 end
 
 function Composite.from<T, X>(
-	signal: FirstArgSignal<T> & FirstArgSignal<X>,
+	signal: FirstArgSignal<T> & FirstArgSignal<X>
 ): Builder<X>
 	return Composite.new():listen(signal)
 end
