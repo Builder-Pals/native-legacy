@@ -52,7 +52,7 @@ local function clean_player(player: Player)
 	end
 end
 
-local function clean(parent: Instance)
+local function clear_safely(parent: Instance)
 	for _, child in parent:GetChildren() do
 		if child:IsA("Player") then
 			clean_player(child)
@@ -77,6 +77,16 @@ end
 local loader = {}
 
 function loader.load_game(package: Instance)
+	local function get_class_name(service: Instance)
+		local class_name = service:GetAttribute("ClassName")
+
+		if type(class_name) == "string" then
+			return class_name
+		end
+
+		return service.Name
+	end
+
 	local dom_container = package:FindFirstChild("DataModel") or package:FindFirstChild("startPlace")
 
 	if not dom_container then
@@ -95,8 +105,8 @@ function loader.load_game(package: Instance)
 	player_relay.mask_players()
 
 	for _, child in dom_container:GetChildren() do
-		local service = game:GetService(child.Name)
-		clean(service)
+		local service = game:GetService(get_class_name(child))
+		clear_safely(service)
 
 		for _, instance in child:GetChildren() do
 			instance.Parent = service
