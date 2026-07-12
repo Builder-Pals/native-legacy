@@ -55,8 +55,6 @@ app.add_system("btools_server_swapper", function(_)
 			local is_selected = false
 
 			local function refresh_tool()
-				print(`refreshing tool for {bin.Name} ({bin.BinType}) {is_selected}`)
-
 				if not is_selected then
 					if tool then
 						tool:Destroy()
