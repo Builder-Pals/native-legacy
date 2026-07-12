@@ -111,6 +111,7 @@ return function()
 
 	command.Triggered:Connect(function()
 		print("ok")
+		current_window = window_types.manager
 		is_open:set(not is_open:get())
 	end)
 end

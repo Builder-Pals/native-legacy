@@ -18,7 +18,6 @@ local PLAYER_PROTECTED = {
 	PlayerScripts = true,
 }
 
-
 -- taken straight from the ol' nostalgic layer :P
 local function auto_assign_teams()
 	local teams = Teams:GetTeams()
