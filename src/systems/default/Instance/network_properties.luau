@@ -118,7 +118,14 @@ app.add_patch(
 		run = function()
 			return function(_, item, ...)
 				local instance = sandboxer.unsandbox(item)
-				assert(typeof(instance) == "Instance")
+
+				if instance == nil then
+					-- edge-case: Debris:AddItem doesn't throw an error if you pass in nil.
+					-- you learn something new every day :P
+					return
+				end
+
+				assert(typeof(instance) == "Instance", `invalid debris item {item} of type {typeof(item)}`)
 
 				instance.Destroying:Once(function()
 					Action.invoke(defiltering.events.send_property, instance, "__d", true)
