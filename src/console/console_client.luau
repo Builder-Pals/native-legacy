@@ -1,4 +1,5 @@
 local Players = game:GetService("Players")
+local TextChatService = game:GetService("TextChatService")
 
 local nl_constants = require("@layer/nl_constants")
 local Iris = require("../packages/Iris")
@@ -13,12 +14,34 @@ local games: { [string]: number } = {
 	["Build your own Noob Trap"] = 14687697121,
 	["Heli-Wars"] = 14535192873,
 	["Base Wars"] = 13159150083,
-	["WARZONE"] = 14687770741,
+	["Disaster Hotel"] = 13155062219,
+	--["WARZONE"] = 14687770741,
 	["Virtual Paintball"] = 13232401212,
-	["Sandbox"] = 13224001965
+	["Sandbox"] = 13224001965,
+	--["Hotline Roblox"] = 13448653318
+	["Orbital Warfare"] = 13293927722
 }
 
+local function make_command()
+	local command = Instance.new("TextChatCommand")
+	command.Name = "NLPanel"
+	command.PrimaryAlias = "/nl"
+	command.SecondaryAlias = "/nativelegacy"
+	command.Parent = TextChatService:WaitForChild("TextChatCommands")
+
+	return command
+end
+
+local function apply_theme()
+	local light_theme = Iris.TemplateConfig.colorLight
+	assert(light_theme, "light theme is missing")
+	Iris.UpdateGlobalConfig(light_theme :: any)
+end
+
 return function()
+	apply_theme()
+	local command = make_command()
+
 	local gui = Instance.new("ScreenGui")
 	gui.Name = "NL Console"
 	gui:AddTag(nl_constants.RELOAD_PROTECTION)
@@ -30,23 +53,64 @@ return function()
 	local function request(id: number)
 		print(`requesting {id}}`)
 		workspace:AddTag("place_hopping")
-		client.send(network.remotes.ids.reliable.console.load_place,id)
+		client.send(network.remotes.ids.reliable.console.load_place, id)
 	end
 
-	Iris:Connect(function()
-		Iris.Window { "native legacy management" }
-            Iris.Text { "place loader" }
-			Iris.CollapsingHeader({"Load from ID"})
-				local inputText = Iris.InputNum({ "ID" })
-				if Iris.Button { "Load" }.clicked() then
-					request(inputText.state.number.value)
+	local is_open = Iris.State(true)
+	local position = Iris.State(Vector2.new(16, 350))
+	local size = Iris.State(Vector2.new(300, 400))
+
+	const window_types = {
+		manager = 1,
+		notice = 2
+	}
+
+	local current_window = window_types.manager
+
+	local remove_close_notice
+	remove_close_notice = is_open:onChange(function()
+		current_window = window_types.notice
+		assert(remove_close_notice)
+		remove_close_notice()
+		is_open:set(true)
+	end)
+
+	local windows = {
+		[window_types.manager] = function()
+			Iris.Window({ "native legacy management" }, { isOpened = is_open, position = position, size = size })
+				Iris.Text { "place loader" }
+				Iris.CollapsingHeader({"Load from Marketplace"})
+					local inputText = Iris.InputNum({ "ID" })
+					if Iris.Button { "Load" }.clicked() then
+						request(inputText.state.number.value)
+					end
+				Iris.End()
+				for game_name, id in games do
+					if Iris.Button { game_name }.clicked() then
+						request(id)
+					end
 				end
 			Iris.End()
-			for game_name, id in games do
-				if Iris.Button { game_name }.clicked() then
-					request(id)
+		end,
+
+		[window_types.notice] = function()
+			local window_size = Iris.State(Vector2.new(300, 200))
+
+			Iris.Window({ "notice" }, { isOpened = is_open, position = position, size = window_size })
+				Iris.Text { "type /nl into chat to summon\nthis window whenever. have fun!" }
+				if Iris.Button { "OK" }.clicked() then
+					is_open:set(false)
 				end
-			end
-		Iris.End()
+			Iris.End()
+		end
+	}
+
+	Iris:Connect(function()
+		windows[current_window]()
+	end)
+
+	command.Triggered:Connect(function()
+		print("ok")
+		is_open:set(not is_open:get())
 	end)
 end

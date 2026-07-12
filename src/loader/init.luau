@@ -1,7 +1,10 @@
-local player_relay = require("./systems/default/Players/player_relay")
 local AssetService = game:GetService("AssetService")
 local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
+
+local player_relay = require("@layer/systems/default/Players/player_relay")
+local packager = require("./packager")
+local nl_constants = require("@layer/nl_constants")
 
 local NEVER_CLEAN = {
 	StarterPlayerScripts = true,
@@ -15,7 +18,6 @@ local PLAYER_PROTECTED = {
 	PlayerScripts = true,
 }
 
-local nl_constants = require("@layer/nl_constants")
 
 -- taken straight from the ol' nostalgic layer :P
 local function auto_assign_teams()
@@ -76,45 +78,26 @@ end
 
 local loader = {}
 
-function loader.load_game(package: Instance)
-	local function get_class_name(service: Instance)
-		local class_name = service:GetAttribute("ClassName")
-
-		if type(class_name) == "string" then
-			return class_name
-		end
-
-		return service.Name
+function loader.load_game(package_instance: Instance)
+	local package = packager.game_packager.read(package_instance)
+	
+	if not package.read_ok then
+		warn(`[load-game] failed to load game '{package_instance}'! error: {package.error}\n{debug.traceback()}`)
+		return
 	end
-
-	local dom_container = package:FindFirstChild("DataModel") or package:FindFirstChild("startPlace")
-
-	if not dom_container then
-		local place_config = package:FindFirstChild("NewNostalgicPlaceConfig")
-		assert(place_config, "package missing DataModel container and NewNostalgicPlaceConfig")
-		local dataModelPackage = place_config:FindFirstChild("DataModelPackage")
-		assert(dataModelPackage, "package missing DataModel container and NewNostalgicPlaceConfig/DataModelPackage")
-		local services = dataModelPackage:FindFirstChild("Services")
-		assert(services, "package missing DataModel container and NewNostalgicPlaceConfig/DataModelPackage/Services")
-		dom_container = services
-		print("using compatibility system")
-	end
-
-	assert(dom_container, "package missing DataModel container")
 
 	player_relay.mask_players()
 
-	for _, child in dom_container:GetChildren() do
-		local service = game:GetService(get_class_name(child))
-		clear_safely(service)
-
-		for _, instance in child:GetChildren() do
-			instance.Parent = service
-		end
+	for _, service_info in package.services do
+		clear_safely(service_info.service)
+		print(`[load-game] unpacking {service_info.service}...`)
+		packager.game_packager.unpack_service(service_info)
 	end
 
+	print("[load-game] success!")
+
 	task.delay(1, function()
-		print("releasing players!")
+		print("[load-game] releasing players!")
 		auto_assign_teams()
 		player_relay.release_players()
 	end)

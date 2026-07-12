@@ -23,14 +23,14 @@ return function()
 
 		local function on_poolee_added(instance: Instance)
 			if not instance:IsA(class) then
-				warn(`child added to {class} pool, but it's not a {class}.`)
+				warn(`[pool] invalid - child added to {class} pool, but it's not a {class}.`)
 				return
 			end
 
 			local ticket = table.remove(threads)
 
 			if ticket then
-				print("there's a ticket open - resuming it now")
+				print("[pool] resuming ticket")
 				ticket[1] = instance
 			else
 				table.insert(pool, instance)
@@ -56,7 +56,7 @@ return function()
 	-- we used to yield threads here instead of polling, but they're shaky inside of metamethods - causing
 	-- silent infinite yield problems (that limitation is documented).
 	local function pool_yield(class: string): Instance
-		print(`waiting for {class}...`)
+		print(`[pool] empty - waiting for {class}...`)
 
 		if not instance_tickets[class] then
 			instance_tickets[class] = {}

@@ -84,7 +84,7 @@ function app.start()
 	local constructed: { [any]: any } = {}
 	local bag = {}
 	
-	print("# start systems")
+	print("## start systems")
 
 	-- important: load all modules to allow them to register patches/systems
 	for _, child in routing.SYSTEMS:GetDescendants() do

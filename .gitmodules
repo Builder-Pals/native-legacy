@@ -1,3 +1,6 @@
 [submodule "Iris"]
 	path = Iris
 	url = https://github.com/SirMallard/Iris.git
+[submodule "src/packager"]
+	path = src/packager
+	url = https://github.com/Builder-Pals/native-packager.git

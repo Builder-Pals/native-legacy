@@ -39,7 +39,7 @@ end
 -- due to defiltering, we don't have to worry about the client creating tools that won't be
 -- detected by this check.
 app.add_system("btools_server_swapper", function(_)
-	Composite.new():connect(function(player: Player)
+	Composite.common.player_added:connect(function(player: Player)
 		print(`checking for btools in backpack for {player.Name}`)
 
 		local function with_hopper_bin(bin: HopperBin)
@@ -128,6 +128,8 @@ app.add_system("btools_server_swapper", function(_)
 	end)
 end, RunService:IsServer())
 
+-- shared
+-- spoofs btools to have HopperBin as the class name 
 app.add_patch(
 	"btools_class_spoofer",
 	patching.getter_patch {
@@ -143,20 +145,17 @@ app.add_patch(
 	}
 )
 
-app.add_patch(
-	"btools_parent_spoofer",
-	patching.getter_patch {
-		classes = { "Tool" },
-		keys = { "className", "ClassName" },
-		run = function(context)
-			if context.unsandboxed_object:HasTag(FAKE_TAG) then
-				return "HopperBin"
-			end
-
-			return context.snapshot
-		end,
-	}
-)
+-- todo
+-- btools are always parented to the backpack.
+-- app.add_patch(
+-- 	"btools_parent_spoofer",
+-- 	patching.getter_patch {
+-- 		classes = { "Tool" },
+-- 		keys = { "className", "ClassName" },
+-- 		run = function(context)
+-- 		end,
+-- 	}
+-- )
 
 -- patch to use the get_bin_type function for the BinType property
 app.add_patch(

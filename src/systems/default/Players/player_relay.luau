@@ -159,7 +159,6 @@ app.add_patch(
 					end
 				end
 
-				print("filtered children:", filtered_children)
 				return filtered_children
 			end
 		end,

@@ -12,6 +12,5 @@ return {
     end,
     
     boot = require("@self/boot"),
-    conversion = require("@self/conversion"),
     load_game_from_id = loader.load_game_from_id
 }

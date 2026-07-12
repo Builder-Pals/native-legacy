@@ -40,7 +40,7 @@ end
 --- fires up the layer. should be called once on the server, and once on all clients!
 return function()
 	print("----")
-	print("booting nl...")
+	print("booting native legacy...")
 
 	print("starting app...")
 	app.start()
@@ -64,6 +64,6 @@ return function()
 	make_sandboxer("native_legacy")
 	make_sandboxer("NostalgicScriptLoader") -- backwards compatibility!
 
-    print("nl is now running!")
+    print("nl is up!")
 	print("----")
 end
