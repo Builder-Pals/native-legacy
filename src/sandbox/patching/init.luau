@@ -5,6 +5,7 @@ return {
     getter_patch = patch_creator.new_getter_patch,
     setter_patch = patch_creator.new_setter_patch,
     symbols = patch_symbols,
+    utils = require("@self/patch_utils"), 
 
     --- Applies a patch to ALL classes. Currently the same as providing an empty table
     ALL_CLASSES = {} :: { string }

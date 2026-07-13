@@ -33,7 +33,7 @@ export type FakeConnectionContext = {
 export type FakeSignalContext = {
 	signals: { RBXScriptSignal },
 	processors: { ProcessorFactory },
-	remote: BindableEvent?,
+	remote: BindableEvent,
 	connections: { [AnyFn]: FakeConnectionContext },
 }
 
@@ -88,6 +88,9 @@ local function signal_connect(ctx: FakeSignalContext, callback)
 		table.insert(fake_connection.connections, event:Connect(fn))
 	end
 
+	local remote_connection = ctx.remote.Event:Connect(sink_processor(callback))
+	table.insert(fake_connection.connections, remote_connection)
+
 	setmetatable(fake_connection, connection_mt)
 	ctx.connections[callback] = fake_connection
 
@@ -115,22 +118,15 @@ local function signal_bind(ctx: FakeSignalContext, signal: RBXScriptSignal, proc
 end
 
 local function signal_fire(ctx: FakeSignalContext, ...)
-	if ctx.remote then
-		ctx.remote:Fire(...)
-		return
-	end
-
-	local bind = Instance.new("BindableEvent")
-	signal_bind(ctx, bind.Event)
-	ctx.remote = bind
-	bind:Fire(...)
+	ctx.remote:Fire(...)
 end
 
 local function new_signal()
 	local fake_signal: FakeSignalContext = {
 		connections = {},
 		processors = {},
-		signals = {}
+		signals = {},
+		remote = Instance.new("BindableEvent")
 	}
 
 	setmetatable(fake_signal, signal_mt)

@@ -1,6 +1,6 @@
 local sandboxer = require("./sandboxer")
-local stalled: { [Script]: true | nil } = {}
-local timestamps: { [Script]: number } = {}
+local stalled: { [LuaSourceContainer]: true | nil } = {}
+local timestamps: { [LuaSourceContainer]: number } = {}
 
 local TIMEOUT = 15
 local last_gc = 0
@@ -24,7 +24,7 @@ local script_stalling = {}
 
 --- Stalls a script until the operation is complete, with error handling to ensure scripts are unstalled in the event
 --- of an error.
-function script_stalling.with<X>(script: Script, op: () -> X): X
+function script_stalling.with<X>(script: LuaSourceContainer, op: () -> X): X
 	script = sandboxer.unsandbox(script) :: any
 
 	script_stalling.stall(script)
@@ -37,7 +37,7 @@ function script_stalling.with<X>(script: Script, op: () -> X): X
 	return result :: X
 end
 
-function script_stalling.yield_if_stalled(script: Script)
+function script_stalling.yield_if_stalled(script: LuaSourceContainer)
 	script = sandboxer.unsandbox(script) :: any
 
 	if stalled[script] then
@@ -52,11 +52,11 @@ function script_stalling.yield_if_stalled(script: Script)
 	end
 end
 
-function script_stalling.stall(script: Script)
+function script_stalling.stall(script: LuaSourceContainer)
 	stalled[script] = true
 end
 
-function script_stalling.unstall(script: Script)
+function script_stalling.unstall(script: LuaSourceContainer)
 	stalled[script] = nil
 end
 

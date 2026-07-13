@@ -1,3 +1,4 @@
+local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -52,6 +53,8 @@ export type FakeMouse = {
 	location: Vector2,
 	hit: CFrame,
 	target: Instance?,
+
+	dead: boolean,
 
 	key_down: FakeSignal.FakeSignalContext,
 	key_up: FakeSignal.FakeSignalContext,
@@ -193,7 +196,8 @@ local function get_server_deselect_signal(bin: HopperBin)
 end
 
 local mice_data: { [Player]: { location: Vector2, target: Instance? } } = {}
-local fake_mice: { [Player]: FakeMouse } = {}
+local fake_mice: { [Instance]: FakeMouse } = {}
+local player_mice_map: { [Player]: FakeMouse } = {}
 
 local function mouse_index(self, key: string): any
 	local data = rawget(self, "data") :: FakeMouse
@@ -243,19 +247,40 @@ local function mouse_index(self, key: string): any
 	return (data.real_mouse :: any)[key]
 end
 
-local function refresh_fake_mouse(player: Player)
-	local existing = fake_mice[player]
+local function kill_mouse(mouse: FakeMouse)
+	mouse.dead = true
+	FakeSignal.wipe_connections(mouse.key_down)
+	FakeSignal.wipe_connections(mouse.key_up)
+	FakeSignal.wipe_connections(mouse.button_1_down)
+	FakeSignal.wipe_connections(mouse.button_1_up)
+	FakeSignal.wipe_connections(mouse.button_2_down)
+	FakeSignal.wipe_connections(mouse.button_2_up)
+end
+
+local function kill_objects_mouse(owner: Instance)
+	local mouse = fake_mice[owner]
+
+	if mouse then
+		kill_mouse(mouse)
+		fake_mice[owner] = nil
+	end
+end
+
+local function attach_new_mouse(player: Player, owner: Instance): FakeMouse?
+	local existing = fake_mice[owner]
 
 	if existing then
+		print("killing mouse", owner.Name)
 		-- prevent existing mouse from receiving any more events
-		FakeSignal.wipe_connections(existing.key_down)
-		FakeSignal.wipe_connections(existing.key_up)
+		kill_mouse(existing)
 	end
 
-	-- don't create new mice for disconnected players.
-	if not player:IsDescendantOf(game) then
-		return
+	-- mice that aren't in the DOM should never work.
+	if not owner:IsDescendantOf(game) then
+		return nil
 	end
+
+	owner:AddTag("mouse")
 
 	local fake_mouse_data: FakeMouse = {
 		player = player,
@@ -273,14 +298,22 @@ local function refresh_fake_mouse(player: Player)
 		target = nil,
 
 		hit = CFrame.identity,
+		dead = false,
 
 		[patching.symbols.FAKE_TYPE] = "userdata",
 		[patching.symbols.FAKE_TYPEOF] = "Instance",
 	}
 
 	fake_mouse_data.object = setmetatable({ data = fake_mouse_data }, { __index = mouse_index })
-	fake_mice[player] = fake_mouse_data
+	fake_mice[owner] = fake_mouse_data
+	player_mice_map[player] = fake_mouse_data
+
+	return fake_mouse_data
 end
+
+CollectionService:GetInstanceRemovedSignal("mouse"):Connect(function(instance)
+	kill_objects_mouse(instance)
+end)
 
 -- Server
 -- Throws away mice when appropriate to ensure (per player) only one Hopperbin has
@@ -288,11 +321,9 @@ end
 app.add_system("hopperbin_mouse_refresher", function(_app)
 	Composite.common.player_added:connect(function(player: Player)
 		local function with_backpack(backpack: Backpack)
-			refresh_fake_mouse(player)
-
 			local function with_hopperbin(bin: HopperBin)
 				local deselect_connection = get_server_deselect_signal(bin):Connect(function()
-					refresh_fake_mouse(player)
+					kill_objects_mouse(bin)
 				end)
 
 				bin:GetPropertyChangedSignal("Parent"):Once(function()
@@ -325,7 +356,9 @@ app.add_system("hopperbin_mouse_refresher", function(_app)
 			with_child(child)
 		end
 
-		return nil
+		return function()
+			player_mice_map[player] = nil
+		end
 	end)
 end, RunService:IsServer())
 
@@ -342,9 +375,7 @@ app.add_system("hopperbin_net_receiver", function(context)
 		return bin.Parent and bin.Parent:IsA("Backpack") and bin.Parent.Parent == player
 	end
 
-	Composite.new():connect(function(player)
-		refresh_fake_mouse(player)
-
+	Composite.common.player_added:connect(function(player)
 		return function()
 			mice_data[player] = nil
 			fake_mice[player] = nil
@@ -402,7 +433,12 @@ app.add_system("hopperbin_net_receiver", function(context)
 		network.remotes.ids.unreliable.mouse.update,
 		function(player, payload: any)
 			assert(typeof(payload) == "table")
-			local mouse = fake_mice[player]
+			local mouse = player_mice_map[player]
+
+			if not mouse then
+				warn(`mouse data received, but {player} has no mouse`)
+				return
+			end
 
 			mouse.location = payload[1]
 			mouse.target = sandbox.sandboxer.sandbox(context, payload[2])
@@ -451,8 +487,12 @@ app.add_patch(
 
 			FakeSignal.bind(fake_signal, selected_signal, function(callback)
 				return function(_real_mouse)
-					local mouse = fake_mice[player]
-					mouse.real_mouse = _real_mouse
+					local mouse = fake_mice[context.unsandboxed_object]
+
+					if not mouse then
+						print("making a new mouse")
+						mouse = attach_new_mouse(player, context.unsandboxed_object)
+					end
 
 					assert(mouse, `{player} is missing fake mouse`)
 					callback(mouse.object)

@@ -1,7 +1,7 @@
 local patch_filter_selector = require("@layer/sandbox/patching/patch_filter_selector")
-local env_symbols = require("./env_symbols")
 local new_symbol = require("@layer/util/new_symbol")
 local patch_symbols = require("./patching/patch_symbols")
+local patch_utils = require("./patching/patch_utils")
 local sandbox_types = require("./sandbox_types")
 local sandboxer = require("./sandboxer")
 local script_stalling = require("./script_stalling")
@@ -107,7 +107,7 @@ function metatable:__index(key: any)
 	end
 
 	if typeof(mutated) == "function" then
-		local source_script = getfenv(2)[env_symbols.SOURCE_SCRIPT]
+		local source_script = patch_utils.get_source_script()
 		assert(source_script)
 
 		return function(...)
