@@ -1,5 +1,7 @@
 local Debris = game:GetService("Debris")
-local remotes = require("@layer/network/remotes")
+local network = require("@layer/network")
+local remotes = network.remotes
+local change_tracker = network.change_tracker
 local defilter_serdes = require("./defilter_serdes")
 
 local function apply(instance: any, property: any, value: any)
@@ -15,6 +17,7 @@ local function apply(instance: any, property: any, value: any)
 		instance:Destroy()
 	else
 		instance[property] = value
+		change_tracker.server_change(instance, property)
 	end
 end
 

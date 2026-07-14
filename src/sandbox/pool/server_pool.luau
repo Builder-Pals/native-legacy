@@ -4,7 +4,7 @@ local server = remotes.reliable.server
 local nl_constants = require("@layer/nl_constants")
 local Composite = require("@layer/util/Composite")
 
-local POOL_SIZE = 100
+local POOL_SIZE = 200
 
 return function()
 	local warehouses = {}

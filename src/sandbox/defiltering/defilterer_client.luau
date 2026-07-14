@@ -1,4 +1,6 @@
-local remotes = require("@layer/network/remotes")
+local network = require("@layer/network")
+local remotes = network.remotes
+local change_tracker = network.change_tracker
 local defilter_serdes = require("./defilter_serdes")
 local defilterer_events = require("@layer/sandbox/defiltering/defilterer_events")
 local Action = require("@layer/util/Action")
@@ -14,6 +16,7 @@ return function()
 		end
 
 		queue[instance][property] = if value == nil then {} else value
+		change_tracker.client_change(instance, property, value)
 	end)
 
 	local function update()
