@@ -45,7 +45,7 @@ end
 
 local function clean_player(player: Player)
 	for _, child in player:GetChildren() do
-		if child:HasTag(nl_constants.RELOAD_PROTECTION) == false and not PLAYER_PROTECTED[child.Name] then
+		if child:HasTag(nl_constants.RELOAD_PROTECTION) == false and not PLAYER_PROTECTED[child.ClassName] then
 			if not pcall(child.Destroy, child) then
 				warn(`can't destroy {child:GetFullName()}`)
 			end
@@ -86,6 +86,8 @@ function loader.load_game(package_instance: Instance)
 	end
 
 	player_relay.mask_players()
+
+	clear_safely(Players)
 
 	for _, service_info in package.services do
 		clear_safely(service_info.service)

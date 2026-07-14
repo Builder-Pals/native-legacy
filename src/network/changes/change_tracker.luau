@@ -88,9 +88,10 @@ function change_tracker.client_change(instance: Instance, prop: string, value: a
 		local last_server_commit = get(instance, sv)
 
 		metadata.connection = instance:GetPropertyChangedSignal(prop):Connect(function()
-			local latest_sv = get(instance, sv)
+			local latest_server_commit = get(instance, sv)
 
-			if last_server_commit == latest_sv then
+			if last_server_commit == latest_server_commit then
+                -- the property was likely not changed by a server script
 				return
 			end
 
@@ -103,7 +104,7 @@ function change_tracker.client_change(instance: Instance, prop: string, value: a
 
 			local too_many_re_entries = re_entries > MAX_RE_ENTRIES
 
-			if latest_sv >= new_commit_id or too_many_re_entries then
+			if latest_server_commit >= new_commit_id or too_many_re_entries then
 				if too_many_re_entries then
 					warn(`[change_tracker] id={new_commit_id} max re-entries exceeded for {instance}.{prop}`)
 				end
@@ -118,15 +119,16 @@ function change_tracker.client_change(instance: Instance, prop: string, value: a
 
             -- defer to prevent against re-parenting errors
 			task.defer(function()
-                local is_unmodified = curr_value == (instance :: IndexableInstance)[prop]
+                local updated_value = (instance :: IndexableInstance)[prop]
+                local is_unmodified = curr_value == updated_value
 
-				if is_unmodified then
-					print(`[change_tracker] id={new_commit_id} server applied an outdated commit to {instance}.{prop} - reverting`);
+				if is_unmodified and metadata.latest_value ~= updated_value then
+					print(`[change_tracker] id={new_commit_id} server applied an outdated commit ({instance}.{prop} = {updated_value}) - reverting to {metadata.latest_value}`);
 					(instance :: IndexableInstance)[prop] = metadata.latest_value
 				end
 			end)
 
-			last_server_commit = latest_sv
+			last_server_commit = latest_server_commit
 		end)
 	end
 
