@@ -135,7 +135,7 @@ app.add_patch(
 	"player_relay_get_children",
 	patching.getter_patch {
 		classes = { "Players" },
-		keys = { "GetChildren", "getChildren" },
+		keys = { "GetChildren", "getChildren", "children" },
 		run = function(context)
 			return function(_)
 				local players = {}

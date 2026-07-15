@@ -142,7 +142,7 @@ app.add_patch(
 	"virtual_child",
 	patching.getter_patch {
 		types = { "Instance" },
-		keys = { "getChildren", "GetChildren" },
+		keys = { "getChildren", "GetChildren", "children" },
 		run = function(context, _key)
 			local instance = context.unsandboxed_object
 

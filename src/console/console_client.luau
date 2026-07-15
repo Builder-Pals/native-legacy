@@ -50,10 +50,10 @@ return function()
 
 	Iris.Init(gui, nil, false)
 
-	local function request(id: number)
+	local function request(id: number, uncopylocked: boolean?)
 		print(`requesting {id}}`)
 		workspace:AddTag("place_hopping")
-		client.send(network.remotes.ids.reliable.console.load_place, id)
+		client.send(network.remotes.ids.reliable.console.load_place, id, uncopylocked)
 	end
 
 	local is_open = Iris.State(true)
@@ -80,11 +80,19 @@ return function()
 			Iris.Window({ "native legacy management" }, { isOpened = is_open, position = position, size = size })
 				Iris.Text { "place loader" }
 				Iris.CollapsingHeader({"Load from Marketplace"})
-					local inputText = Iris.InputNum({ "ID" })
+					local input_1 = Iris.InputNum({ "ID" })
 					if Iris.Button { "Load" }.clicked() then
-						request(inputText.state.number.value)
+						request(input_1.state.number.value)
 					end
 				Iris.End()
+				Iris.CollapsingHeader({"Load Uncopylocked Place"})
+					Iris.TextWrapped { "[HIGHLY EXPERIMENTAL] Native Legacy will do its best to load this game within the compatibility layer. It may take a while to load. This feature does not support games uploaded after 2017." }
+					local input_2 = Iris.InputNum({ "ID" })
+					if Iris.Button { "Load" }.clicked() then
+						request(input_2.state.number.value, true)
+					end
+				Iris.End()
+				Iris.Separator()
 				for game_name, id in games do
 					if Iris.Button { game_name }.clicked() then
 						request(id)

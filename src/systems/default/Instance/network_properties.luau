@@ -11,7 +11,14 @@ local sandboxer = sandbox.sandboxer
 
 local IS_CLIENT = RunService:IsClient()
 local NAME = `network_properties`
-local DONT_NETWORK = { Mouse = true }
+local DONT_NETWORK = {
+	Mouse = true,
+	-- these have function fields that we can't send and shouldn't bother handling ATM.
+	-- plus, they should only ever be present in a script
+	-- that already supports filtering enabled
+	RemoteFunction = true,
+	BindableEvent = true
+}
 
 -- client
 -- replicates property changes to the server
@@ -27,7 +34,7 @@ app.add_patch(
 			end
 
 			-- property didn't change, no need to network
-			if context.unsandboxed_object[key] == sandboxer.unsandbox(value) then
+			if context.unsandboxed == sandboxer.unsandbox(value) then
 				return key, value
 			end
 
