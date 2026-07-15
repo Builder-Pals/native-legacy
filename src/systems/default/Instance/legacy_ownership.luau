@@ -2,10 +2,10 @@ local CollectionService = game:GetService("CollectionService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
+local Composite = require("@layer/util/Composite")
 local app = require("@layer/app")
 
 local sandbox = require("@layer/sandbox")
-local Composite = require("@layer/util/Composite")
 local patching = sandbox.patching
 
 local NAME = "legacy_ownership"
@@ -51,14 +51,15 @@ app.add_patch(NAME, patching.setter_patch {
     enabled = RunService:IsServer(),
     run = function(context, key, value)
         local part = context.unsandboxed_object
-        part.Parent = sandbox.sandboxer.unsandbox(value)
+		local unsandboxed_value = sandbox.sandboxer.unsandbox(value)
 
-        if not part:IsDescendantOf(workspace) then
-            return key, value
-        end
+		if typeof(unsandboxed_value) == "Instance" and unsandboxed_value:IsDescendantOf(workspace) then
+			task.defer(function()
+				migrate_ownership(part)
+			end)
+		end
 
-        migrate_ownership(part)
-        return key, value
+		return key, value
     end
 })
 

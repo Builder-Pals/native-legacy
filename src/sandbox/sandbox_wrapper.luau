@@ -1,10 +1,15 @@
+local RunService = game:GetService("RunService")
 local patch_filter_selector = require("@layer/sandbox/patching/patch_filter_selector")
+local Action = require("@layer/util/Action")
+local defilterer_events = require("./defiltering/defilterer_events")
 local new_symbol = require("@layer/util/new_symbol")
 local patch_symbols = require("./patching/patch_symbols")
 local patch_utils = require("./patching/patch_utils")
 local sandbox_types = require("./sandbox_types")
 local sandboxer = require("./sandboxer")
 local script_stalling = require("./script_stalling")
+
+local IS_CLIENT = RunService:IsClient()
 
 --[=[
 	A generic wrapper for values that exist within the sandbox.
@@ -146,7 +151,18 @@ function metatable:__newindex(key: any, value: any)
 	end
 
 	if mutated_key ~= nil then
-		unsandboxed_object[mutated_key] = sandboxer.unsandbox(mutated_value)
+		if IS_CLIENT and typeof(unsandboxed_object) == "Instance" then
+			-- rather than directly setting the property, we'll delegate it to the networking
+			-- systems to handle it.
+			Action.invoke(
+				defilterer_events.send_property,
+				unsandboxed_object,
+				mutated_key,
+				sandboxer.unsandbox(mutated_value)
+			)
+		else
+			unsandboxed_object[mutated_key] = sandboxer.unsandbox(mutated_value)
+		end
 	end
 end
 

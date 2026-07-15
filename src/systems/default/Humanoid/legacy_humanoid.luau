@@ -1,10 +1,9 @@
 local app = require("@layer/app")
 local sandbox = require("@layer/sandbox")
+local network = require("@layer/network")
 local patching = sandbox.patching
 
 local TP_OFFSET = Vector3.new(0, 1.5, 0)
-
-
 
 -- some scripts used to teleport the player by changing the cframe/position of the torso. doing this in modern Roblox will just detatch the
 -- torso entirely.

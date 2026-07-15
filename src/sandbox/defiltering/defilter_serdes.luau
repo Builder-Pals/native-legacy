@@ -1,6 +1,6 @@
 type DeserializedPayload = { [Instance]: { [string]: any } }
 
-type SerializedPayload = { { any } }
+type SerializedPayload = { { any } | number }
 
 local function pack_value(value: any): any
 	return if typeof(value) == "Instance" then { value } else value
@@ -17,8 +17,8 @@ end
 
 local defilter_serdes = {}
 
-function defilter_serdes.serialize_payload(payload: DeserializedPayload): SerializedPayload
-	local serialized = {}
+function defilter_serdes.serialize_payload(payload: DeserializedPayload, ak: number): SerializedPayload
+	local serialized: SerializedPayload = { ak }
 
 	for instance, properties in payload do
 		local t: { any } = { instance }
@@ -37,8 +37,15 @@ end
 function defilter_serdes.deserialize_payload(
 	payload: SerializedPayload,
 	processor: (instance: Instance, property: string, value: any) -> ()
-)
+): number
+	local ak = 0
+
 	for _, chunk in payload do
+		if typeof(chunk) == "number" then
+			ak = chunk
+			continue
+		end
+		
 		local instance = chunk[1]
 
 		-- iterate backwards to preserve setting property order
@@ -46,6 +53,12 @@ function defilter_serdes.deserialize_payload(
 		for i = #chunk, 2, -2 do
 			local value = chunk[i]
 			local property = chunk[i - 1]
+
+			if property == "a" then
+				ak = value
+				continue
+			end 
+
             local success, unpacked_value = unpack_value(value)
 			
             -- in the event the client sends an instance to us that doesn't exist on the server,
@@ -56,6 +69,8 @@ function defilter_serdes.deserialize_payload(
             end
 		end
 	end
+
+	return ak
 end
 
 return defilter_serdes

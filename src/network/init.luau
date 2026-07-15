@@ -1,6 +1,6 @@
 return {
     remotes = require("@self/remotes"),
-    change_tracker = require("@self/changes/change_tracker"),
+    locker = require("@self/net_locker"),
     -- done lazily just by remotes being required above
     init = function() end
 }

@@ -21,41 +21,6 @@ local DONT_NETWORK = {
 }
 
 -- client
--- replicates property changes to the server
-app.add_patch(
-	`{NAME}_changes`,
-	patching.setter_patch {
-		types = { "Instance" },
-		enabled = IS_CLIENT,
-		priority = -1,
-		run = function(context: sandbox.PatchedContext, key: any, value: any)
-			if DONT_NETWORK[context.unsandboxed_object.ClassName] then
-				return key, value
-			end
-
-			-- property didn't change, no need to network
-			if context.unsandboxed == sandboxer.unsandbox(value) then
-				return key, value
-			end
-
-			-- future: this would cause issues in cases where things are put under the camera and then moved out.
-			-- the server could create stuff we parent to nil in player gui, and then we can move it out at any time?
-
-			if workspace.CurrentCamera and context.unsandboxed_object:IsDescendantOf(workspace.CurrentCamera) then
-				return key, value
-			end
-
-			-- if not context.unsandboxed_object:IsDescendantOf(game) then
-			-- 	return key, value
-			-- end
-
-			Action.invoke(defiltering.events.send_property, context.unsandboxed_object, key, sandboxer.unsandbox(value))
-			return key, value
-		end,
-	}
-)
-
--- client
 -- replicates destroy/remove calls
 app.add_patch(
 	`{NAME}_destroy`,
