@@ -101,8 +101,16 @@ local function removePartKey(key)
 	local data = activeKeys[key]
 
 	if data then
+		-- Clear this first so cleanup cannot re-enter through a tool ancestry callback.
+		activeKeys[key] = nil
+
 		local player = data.Player
 		local part = data.Part
+		local toolConnection = data.ToolConnection
+
+		if toolConnection then
+			toolConnection:Disconnect()
+		end
 
 		if player then
 			playerToKey[player] = nil
@@ -117,8 +125,15 @@ local function removePartKey(key)
 
 			partToKey[part] = nil
 		end
+	end
+end
 
-		activeKeys[key] = nil
+local function removeToolKey(tool)
+	for key, data in activeKeys do
+		if data.Tool == tool then
+			removePartKey(key)
+			return
+		end
 	end
 end
 
@@ -213,6 +228,8 @@ app.add_system("btools_server", function(_)
 
 		local function onBuildToolRemoved(tool)
 			if tool:IsA("Accessory") and CollectionService:HasTag(tool, "BuildTool") then
+				removeToolKey(tool)
+
 				CollectionService:RemoveTag(tool, toolName)
 				CollectionService:RemoveTag(tool, "BuildTool")
 
@@ -242,25 +259,38 @@ app.add_system("btools_server", function(_)
 		if request == "GetKey" then
 			local part, asClone = ...
 			assertClass(part, "BasePart")
+			local clonedPart
+
+			-- Reaching GetKey means the client is no longer operating its previous drag.
+			-- Recover here if that drag's cleanup was interrupted by the LocalScript or tool being destroyed.
+			local previousKey = playerToKey[player]
+			if previousKey then
+				removePartKey(previousKey)
+			end
+
+			-- Reject before cloning so a failed request cannot leave a descendant in Workspace.
+			if part.Locked or not player.Character then
+				return false
+			end
+
+			local toolName = if asClone then "Clone" else "GameTool"
+			local isUsingTool, equippedTool = playerIsUsingTool(player, toolName)
+			if not isUsingTool then
+				return false
+			end
 
 			if asClone then
-				if playerIsUsingTool(player, "Clone") then
-					local newPart = part:Clone()
-					newPart:BreakJoints()
-					newPart.Parent = workspace
+				clonedPart = part:Clone()
+				clonedPart:BreakJoints()
+				clonedPart.Parent = workspace
 
-					local copySound = Instance.new("Sound")
-					copySound.SoundId = "rbxasset://sounds/electronicpingshort.wav"
-					copySound.Parent = newPart
-					copySound.Archivable = false
-					copySound:Play()
+				local copySound = Instance.new("Sound")
+				copySound.SoundId = "rbxasset://sounds/electronicpingshort.wav"
+				copySound.Parent = clonedPart
+				copySound.Archivable = false
+				copySound:Play()
 
-					part = newPart
-				else
-					return false
-				end
-			elseif not playerIsUsingTool(player, "GameTool") then
-				return false
+				part = clonedPart
 			end
 
 			if canGiveKey(player, part) then
@@ -277,14 +307,26 @@ app.add_system("btools_server", function(_)
 					part:BreakJoints()
 					part.Anchored = true
 
-					activeKeys[key] = {
+					local keyData = {
 						Player = player,
 						Part = part,
 						Anchored = anchored,
+						Tool = equippedTool,
 					}
+					activeKeys[key] = keyData
+
+					keyData.ToolConnection = equippedTool.AncestryChanged:Connect(function()
+						if equippedTool.Parent ~= player.Character then
+							removePartKey(key)
+						end
+					end)
 
 					return true, key, part
 				end
+			end
+
+			if clonedPart then
+				clonedPart:Destroy()
 			end
 
 			return false
