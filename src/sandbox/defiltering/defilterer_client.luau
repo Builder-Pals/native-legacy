@@ -6,8 +6,7 @@ const net_locker = require("../../network/net_locker")
 const Action = require("@layer/util/Action")
 
 const UPDATE_RATE = 1 / 20
-
--- server property changes will be ignored for this period after we have touched the same property.
+-- server property changes will be ignored for this period after the lock is released.
 const NET_LOCK_DURATION = 0.1
 
 type Queue = { [Instance]: { [string]: unknown } }

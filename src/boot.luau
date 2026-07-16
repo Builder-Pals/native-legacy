@@ -2,6 +2,7 @@ local network = require("./network")
 local defiltering = require("./sandbox/defiltering")
 local app = require("@layer/app")
 local console = require("./console")
+local nl_constants = require("./nl_constants")
 
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
@@ -28,6 +29,8 @@ local function make_sandboxer(name: string)
 	-- Create a module underneath game that's easy to call from sandboxed scripts
 	local external_boot = external_boot_prefab:Clone()
 	external_boot.Name = name
+
+	external_boot:AddTag(nl_constants.RELOAD_PROTECTION)
 
 	local ref = Instance.new("ObjectValue")
 	ref.Value = script.Parent

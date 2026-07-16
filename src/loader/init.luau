@@ -1,8 +1,10 @@
 local AssetService = game:GetService("AssetService")
 local Players = game:GetService("Players")
+local StarterPack = game:GetService("StarterPack")
 local Teams = game:GetService("Teams")
 
 local player_relay = require("@layer/systems/default/Players/player_relay")
+local make_joints = require("./util/make_joints")
 local packager = require("./packager")
 local nl_constants = require("@layer/nl_constants")
 
@@ -54,6 +56,10 @@ local function clean_player(player: Player)
 end
 
 local function clear_safely(parent: Instance)
+	if parent:HasTag(nl_constants.RELOAD_PROTECTION) then
+		return
+	end
+
 	for _, child in parent:GetChildren() do
 		if child:IsA("Player") then
 			clean_player(child)
@@ -87,13 +93,23 @@ function loader.load_game(package_instance: Instance)
 
 	player_relay.mask_players()
 
-	clear_safely(Players)
+	for _, child in game:GetChildren() do
+		local ok, err = pcall(clear_safely, child)
+
+		if not ok then
+			print(`{child:GetFullName()} was not cleared: {err}`)
+		end
+	end
 
 	for _, service_info in package.services do
-		clear_safely(service_info.service)
 		print(`[load-game] unpacking {service_info.service}...`)
 		packager.game_packager.unpack_service(service_info)
 	end
+
+	-- workspace:MakeJoints() used to be called on game load, but this was changed as part of the 'Part Surface Trilogy'. This could be controlled with a setting for a short period,
+	-- which has since been hidden and will be overwritten by Roblox Studio.
+	-- Devforum post: https://devforum.roblox.com/t/changes-to-surface-based-welds-and-part-property-setters/155477
+	make_joints.make_joints(workspace)
 
 	print("[load-game] success!")
 

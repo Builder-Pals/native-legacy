@@ -1,6 +1,7 @@
 --!nonstrict
 local app = require("@layer/app")
 local nl_constants = require("@layer/nl_constants")
+local make_joints = require("../../../../util/make_joints")
 -------------------------------------------------------------------------------------------------------------------------
 -- @CloneTrooper1019, 2017-2018 <3
 -- ClassicBuildTools.lua
@@ -118,7 +119,7 @@ local function removePartKey(key)
 
 		if part then
 			-- Connect this part to a nearby surface
-			workspace:JoinToOutsiders({ part }, "Surface")
+			make_joints.make_joints(part)
 
 			part.Anchored = data.Anchored
 			claimAssembly(player, part)
