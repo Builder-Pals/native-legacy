@@ -110,6 +110,7 @@ local mouse
 local currentKey
 local down = false
 local debounce = false
+local button1Held = false
 
 local function onIdle()
 	if (not down) and mouse then
@@ -134,41 +135,66 @@ local function startDraggerAction(mPart)
 	local canDrag,dragKey,mousePart = gateway:InvokeServer("GetKey",mPart,mode == "Clone")
 
 	if canDrag then
+		-- Button1Up can fire while InvokeServer is yielding, before `down` becomes true.
+		-- Do not begin a drag after that release has already been observed.
+		if not button1Held or not mouse then
+			gateway:InvokeServer("ClearKey",dragKey)
+			return
+		end
+
 		selection.Adornee = mousePart
 		selection.Transparency = 0
 		down = true
 		currentKey = dragKey
-		mouse.Icon = getIcon("Grab")
-		Dragger:MouseDown(mousePart,pointOnMousePart,{mousePart})
-		
-		local lastSubmit = 0
-		while down do
-			local now = tick()
-			Dragger:MouseMove(mouse.UnitRay)
-			
-			local mousePart = selection.Adornee
-			if mousePart and currentKey then
-				if isKeyDown('R') then
-					Dragger:AxisRotate('Z')
-				elseif isKeyDown('T') then
-					Dragger:AxisRotate('X')
+
+		local success, errorMessage = xpcall(function()
+			mouse.Icon = getIcon("Grab")
+			Dragger:MouseDown(mousePart,pointOnMousePart,{mousePart})
+
+			local lastSubmit = 0
+			while down do
+				local now = tick()
+				Dragger:MouseMove(mouse.UnitRay)
+
+				local selectedPart = selection.Adornee
+				if selectedPart and currentKey then
+					if isKeyDown('R') then
+						Dragger:AxisRotate('Z')
+					elseif isKeyDown('T') then
+						Dragger:AxisRotate('X')
+					end
+					if now - lastSubmit > 0.03 then
+						submitUpdate:FireServer(currentKey,selectedPart.CFrame)
+						lastSubmit = now
+					end
 				end
-				if now - lastSubmit > 0.03 then
-					submitUpdate:FireServer(currentKey,mousePart.CFrame)
-					lastSubmit = now
-				end
+
+				RunService.RenderStepped:Wait()
 			end
-			
-			RunService.RenderStepped:Wait()
+		end, debug.traceback)
+
+		if down then
+			down = false
+			pcall(function()
+				Dragger:MouseUp()
+			end)
 		end
-		
+
 		selection.Transparency = 1
-		gateway:InvokeServer("ClearKey",dragKey)
+		pcall(function()
+			gateway:InvokeServer("ClearKey",dragKey)
+		end)
 		currentKey = nil
+
+		if not success then
+			warn("Build tool drag failed:\n" .. errorMessage)
+		end
 	end
 end
 
 local function onButton1Down()
+	button1Held = true
+
 	if not debounce then
 		debounce = true
 		local mousePart = selection.Adornee
@@ -180,6 +206,8 @@ local function onButton1Down()
 end
 
 local function onButton1Up()
+	button1Held = false
+
 	if down then
 		down = false
 		Dragger:MouseUp()
