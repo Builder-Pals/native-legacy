@@ -1,6 +1,13 @@
 -- shout out to pizzaboxer again!
 -- archive: github/pizzaboxer/rbxlinkedscripts
 
+-- Source - https://stackoverflow.com/a/27455195
+-- Posted by PersianGulf, modified by community. See post 'Timeline' for change history
+-- Retrieved 2026-07-16, License - CC BY-SA 4.0
+local function trim(str: string): string
+	return str:match("^%s*(.-)%s*$") or ""
+end
+
 local LINKED_SOURCE_MAPPING = {
 	["http://www.roblox.com/asset/?id=1014541"] = require("@layer/linked_sources/paintball_projectile"),
 	["http://www.roblox.com/asset/?id=1014542"] = require("@layer/linked_sources/paintball_launcher"),
@@ -22,7 +29,7 @@ local LINKED_SOURCE_MAPPING = {
 }
 
 local function from_url(url: string)
-    return LINKED_SOURCE_MAPPING[url]
+    return trim(LINKED_SOURCE_MAPPING[url]):lower()
 end
 
 return {
