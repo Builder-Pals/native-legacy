@@ -11,6 +11,7 @@ local nl_constants = require("@layer/nl_constants")
 local NEVER_CLEAN = {
 	StarterPlayerScripts = true,
 	StarterCharacterScripts = true,
+	Chat = true
 }
 
 local PLAYER_PROTECTED = {
@@ -56,7 +57,7 @@ local function clean_player(player: Player)
 end
 
 local function clear_safely(parent: Instance)
-	if parent:HasTag(nl_constants.RELOAD_PROTECTION) then
+	if parent:HasTag(nl_constants.RELOAD_PROTECTION) or NEVER_CLEAN[parent.ClassName] then
 		return
 	end
 
