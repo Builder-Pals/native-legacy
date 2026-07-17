@@ -98,9 +98,11 @@ local FACE_DEFINITIONS: { FaceDefinition } = {
 
 const IS_CLIENT = RunService:IsClient()
 
-const new_instance = if IS_CLIENT then function(class_name)
-	return app.context.client_pool(class_name)
-end else Instance.new
+const new_instance = if IS_CLIENT
+	then function(class_name)
+		return app.context.client_pool(class_name)
+	end
+	else Instance.new
 
 local make_joints = {}
 
@@ -334,7 +336,6 @@ local function index_existing_joints(parts: { BasePart }): { [BasePart]: { [Base
 end
 
 local function index_parts(parts: { BasePart }): { [BasePart]: boolean }
-
 	local indexed: { [BasePart]: boolean } = {}
 	for _, part in parts do
 		indexed[part] = true
@@ -357,7 +358,6 @@ local function make_joint(
 	end
 
 	local joint = new_instance(joint_class) :: JointInstance
-	joint.Archivable = false
 	local joint_position = if joint_class == "Rotate" or joint_class == "RotateV"
 		then face0.center
 		else (face0.center + face1.center) * 0.5
