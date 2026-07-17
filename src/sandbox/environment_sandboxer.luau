@@ -15,7 +15,6 @@ return function(app: sandbox_types.App)
 		local sandboxed_game = sandboxer.sandbox(app, game)
 
         environment.__STRDEC = function(x)
-            print("string detected:",x)
             return x
         end
 		

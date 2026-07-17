@@ -46,7 +46,6 @@ app.add_patch(
 )
 
 -- replicates CFrame/Size changes from successful calls to the BasePart:Resize function.
--- this causes some rubber-banding as the server sends Size requests back to the client, but its acceptable for now.
 app.add_patch(
 	`{NAME}_resize`,
 	patching.getter_patch {
@@ -73,6 +72,36 @@ app.add_patch(
 				end
 
 				return success
+			end
+		end,
+	}
+)
+
+-- replicates CFrame updates caused by  MoveTo
+app.add_patch(
+	`{NAME}_resize`,
+	patching.getter_patch {
+		types = { "Model" },
+		keys = { "moveTo", "MoveTo", "move" },
+		enabled = IS_CLIENT,
+		run = function(context: sandbox.PatchedContext)
+			return function(sandboxed_instance, ...)
+				local instance = sandboxer.unsandbox(sandboxed_instance)
+				context.unsandboxed_object:MoveTo(sandboxer.unsandbox_tuple(...))
+
+				assert(typeof(instance) == "Instance")
+				assert(instance:IsA("Model"))
+
+				for _, child in instance:GetDescendants() do
+					if child:IsA("BasePart") then
+						Action.invoke(
+							defiltering.events.send_property,
+							child,
+							"CFrame",
+							child.CFrame
+						)
+					end
+				end
 			end
 		end,
 	}

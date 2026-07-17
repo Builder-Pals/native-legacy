@@ -357,6 +357,7 @@ local function make_joint(
 	end
 
 	local joint = new_instance(joint_class) :: JointInstance
+	joint.Archivable = false
 	local joint_position = if joint_class == "Rotate" or joint_class == "RotateV"
 		then face0.center
 		else (face0.center + face1.center) * 0.5

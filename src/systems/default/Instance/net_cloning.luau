@@ -4,6 +4,7 @@ local app = require("@layer/app")
 local sandbox = require("@layer/sandbox")
 local patching = sandbox.patching
 local rbx_types = require("@layer/rbx_types")
+local net_locker = require("../../../network/net_locker")
 local network_properties = require("./network_properties")
 
 type ReflectedProperty = rbx_types.ReflectedProperty
@@ -77,7 +78,9 @@ app.add_patch(
 								-- their copied counterparts.
 								table.insert(refs_to_update, { copy, property.Name, value})
 							else
+								net_locker.disable_locking(copy)
 								network_properties.net_set(copy, property.Name, value)
+								net_locker.enable_locking(copy)
 							end
 						end)
 
@@ -98,14 +101,27 @@ app.add_patch(
 
 				-- make copies
 				for _, child in to_copy do
+					if child:IsA("Snap") then
+						if (child.Part0 and child.Part0:IsDescendantOf(unsandboxed) == false) or (child.Part1 and child.Part1:IsDescendantOf(unsandboxed) == false) then
+							continue
+						end
+					end
+
 					net_copies[child] = net_copy(child)
 				end
 
                 -- update Instance references
                 for _, ref_pack in refs_to_update do
                     local copy: Instance, property: string, value: any = unpack(ref_pack :: { any })
-					network_properties.net_set(copy, property, net_copies[value] or value)
-                end
+					net_locker.disable_locking(copy)
+					local ok, err = pcall(function()
+						network_properties.net_set(copy, property, net_copies[value] or value)
+					end)
+					if not ok then
+						warn(`failed to set {property} on {copy.ClassName}: {err}\n🧵{debug.traceback()}`)
+					end
+					net_locker.enable_locking(copy)
+				end
 
 				return net_copies[unsandboxed]
 			end

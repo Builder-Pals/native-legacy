@@ -16,6 +16,7 @@ type ReleasingLock = {
 	lock: Lock,
 }
 
+local LOCKING_DISABLED: { [Instance]: true } = {}
 local locks: { [Instance]: { [string]: Lock } } = {}
 
 local function instance_set(instance: Instance, property: string, value: unknown)
@@ -76,7 +77,7 @@ function net_locker.set(instance: Instance, property: string, value: unknown)
 	end
 
 	-- can't network functions
-	if typeof(value) == "function" then
+	if typeof(value) == "function" or LOCKING_DISABLED[instance] then
 		instance_set(instance, property, value)
 		return
 	end
@@ -122,7 +123,7 @@ function net_locker.set(instance: Instance, property: string, value: unknown)
 				return
 			end
 
-			if lock.rejects >= 200 then
+			if lock.rejects >= 50 then
 				warn(
 					`[net_locker] WARN: ak={lock.ak} rejected {instance}.{property} being set too many times!\n{debug.traceback()}`
 				)
@@ -173,6 +174,14 @@ function net_locker.release(ak: number)
 		set_client_value(entry.lock, entry.instance, entry.property, entry.lock.latest_client_value)
 		disconnect_lock(entry.instance, entry.property, entry.lock)
 	end
+end
+
+function net_locker.disable_locking(instance: Instance)
+	LOCKING_DISABLED[instance] = true
+end
+
+function net_locker.enable_locking(instance: Instance)
+	LOCKING_DISABLED[instance] = nil
 end
 
 return net_locker
