@@ -93,11 +93,12 @@ function loader.load_game(package_instance: Instance)
 
 	player_relay.mask_players()
 
-	for _, child in game:GetChildren() do
-		local ok, err = pcall(clear_safely, child)
+	for service_name in packager.game_packager.TARGET_SERVICES do
+		local service = game:GetService(service_name)
+		local ok, err = pcall(clear_safely, service)
 
 		if not ok then
-			print(`{child:GetFullName()} was not cleared: {err}`)
+			print(`{service:GetFullName()} was not cleared: {err}`)
 		end
 	end
 

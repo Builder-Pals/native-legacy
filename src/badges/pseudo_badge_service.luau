@@ -32,7 +32,7 @@ type BadgeInfo = {
 local function make_notification(player: Player, badge_info: BadgeInfo, badge_id: number?)
 	return {
 		Title = "Badge Awarded",
-		Text = `{player.Name} won {badge_info.Name}!`,
+		Text = `{player.Name} won "{badge_info.Name}"!`,
 		Icon = `rbxassetid://{badge_info.IconImageId}`,
 		Duration = 5,
 
