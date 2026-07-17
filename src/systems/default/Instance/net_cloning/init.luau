@@ -17,13 +17,14 @@ type PendingReference = {
 	value: Instance,
 }
 
-local PROP_SETS = {
+const PROP_SETS = {
 	ExcludeDisplay = true,
 	ExcludeInherited = false,
 }
 
-local ATTRIBUTE_PREFIX = "__a:"
-local TAG_PREFIX = "__t:"
+const ATTRIBUTE_PREFIX = "__a:"
+const TAG_PREFIX = "__t:"
+const SCRIPT_TYPES = { "LocalScript", "Script", "ModuleScript" }
 
 local prop_cache: { [string]: { ReflectedProperty } } = {}
 
@@ -117,6 +118,8 @@ app.add_patch(
 				local copies: { Instance } = {}
 				local copy_for: { [Instance]: Instance } = {}
 				local pending_references: { PendingReference } = {}
+				-- note: cant send instance keys over the network, so we use arrays
+				local scripts_to_fill: { { Instance } } = {}
 
 				local ok, result = xpcall(function()
 					-- Reserve every identity before applying references or hierarchy.
@@ -148,15 +151,19 @@ app.add_patch(
 						end
 
 						copy_metadata(original, copy)
+
+						if table.find(SCRIPT_TYPES, original.ClassName) then
+							table.insert(scripts_to_fill, { copy, original })
+						end
 					end
 
 					-- References are applied only after every counterpart exists.
 					for _, pending in pending_references do
 						network_properties.net_set_unlocked(
-								pending.copy,
-								pending.property,
-								copy_for[pending.value] or pending.value
-							)
+							pending.copy,
+							pending.property,
+							copy_for[pending.value] or pending.value
+						)
 					end
 
 					-- Parent last. The pool claim already keeps the root logically nil.
@@ -165,10 +172,16 @@ app.add_patch(
 							continue
 						end
 
+						if not original.Parent then
+							continue
+						end
+
 						local parent_copy = copy_for[original.Parent]
 						assert(parent_copy, `missing cloned parent for {original:GetFullName()}`)
 						network_properties.net_set(copy_for[original], "Parent", parent_copy)
 					end
+
+					network_properties.request_script_fill(scripts_to_fill)
 
 					return copy_for[original_root]
 				end, debug.traceback)

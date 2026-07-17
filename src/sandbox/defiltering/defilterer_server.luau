@@ -1,5 +1,6 @@
 local Debris = game:GetService("Debris")
 local network = require("@layer/network")
+local nl_constants = require("../../nl_constants")
 local remotes = network.remotes
 local defilter_serdes = require("./defilter_serdes")
 
@@ -49,4 +50,49 @@ return function()
 			Debris:AddItem(item, lifetime)
 		end
 	)
+
+	remotes.reliable.server.subscribe({}, remotes.ids.reliable.defiltering.request_script_fill, function(_, mapping)
+		assert(typeof(mapping) == "table")
+
+		for _, array: unknown in mapping do
+			if typeof(array) ~= "table" then
+				continue
+			end
+
+			local copy = (array :: { unknown })[1]
+			local original = (array :: { unknown })[2]
+
+			if typeof(copy) ~= "Instance" then
+				continue
+			end
+
+			if original == nil then
+				warn(`[defiltering_server] unknown script {copy:GetFullName()}`)
+				continue
+			end
+
+			if typeof(original) ~= "Instance" then
+				continue
+			end
+
+			if not copy:IsA("Script") and not copy:IsA("LocalScript") and not copy:IsA("ModuleScript") then
+				continue
+			end
+
+			if not original:IsA("ModuleScript") and not original:IsA("Script") and not original:IsA("LocalScript") then
+				continue
+			end
+
+			local clone = original:Clone()
+			clone.Name = "__nl"
+			clone:AddTag(nl_constants.POINTER_SCRIPT)
+			clone:AddTag(nl_constants.NL_HIDDEN)
+			clone.Enabled = copy.Enabled
+			clone.Parent = copy
+
+			copy:GetPropertyChangedSignal("Enabled"):Connect(function()
+				clone.Enabled = copy.Enabled
+			end)
+		end
+	end)
 end

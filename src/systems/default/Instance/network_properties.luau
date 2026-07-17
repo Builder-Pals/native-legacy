@@ -6,6 +6,10 @@ local sandbox = require("@layer/sandbox")
 local Action = require("@layer/util/Action")
 local defiltering = require("@layer/sandbox/defiltering")
 
+local network = require("@layer/network")
+local reliable = network.remotes.ids.reliable
+local reliable_client = network.remotes.reliable.client
+
 local patching = sandbox.patching
 local sandboxer = sandbox.sandboxer
 local replicated_nil = require("@layer/systems/default/replicated_nil")
@@ -18,7 +22,7 @@ local DONT_NETWORK = {
 	-- plus, they should only ever be present in a script
 	-- that already supports filtering enabled
 	RemoteFunction = true,
-	BindableEvent = true
+	BindableEvent = true,
 }
 
 -- client
@@ -78,35 +82,10 @@ app.add_patch(
 	}
 )
 
--- replicates CFrame updates caused by  MoveTo
-app.add_patch(
-	`{NAME}_resize`,
-	patching.getter_patch {
-		types = { "Model" },
-		keys = { "moveTo", "MoveTo", "move" },
-		enabled = IS_CLIENT,
-		run = function(context: sandbox.PatchedContext)
-			return function(sandboxed_instance, ...)
-				local instance = sandboxer.unsandbox(sandboxed_instance)
-				context.unsandboxed_object:MoveTo(sandboxer.unsandbox_tuple(...))
-
-				assert(typeof(instance) == "Instance")
-				assert(instance:IsA("Model"))
-
-				for _, child in instance:GetDescendants() do
-					if child:IsA("BasePart") then
-						Action.invoke(
-							defiltering.events.send_property,
-							child,
-							"CFrame",
-							child.CFrame
-						)
-					end
-				end
-			end
-		end,
-	}
-)
+--- Replicates a property to the server
+local function send_property(instance: Instance, property: string, value: any, options: any?)
+	Action.invoke(defiltering.events.send_property, instance, property, value, options)
+end
 
 -- client
 -- replicates calls to Debris:AddItem.
@@ -130,7 +109,7 @@ app.add_patch(
 				assert(typeof(instance) == "Instance", `invalid debris item {item} of type {typeof(item)}`)
 
 				instance.Destroying:Once(function()
-					Action.invoke(defiltering.events.send_property, instance, "__d", true)
+					send_property(instance, "__d", true)
 				end)
 
 				Action.invoke(defiltering.events.add_debris, instance, ...)
@@ -140,10 +119,30 @@ app.add_patch(
 	}
 )
 
---- Replicates a property to the server
-local function send_property(instance: Instance, property: string, value: any, options: any?)
-	Action.invoke(defiltering.events.send_property, instance, property, value, options)
-end
+-- replicates CFrame updates caused by  MoveTo
+app.add_patch(
+	`{NAME}_resize`,
+	patching.getter_patch {
+		types = { "Model" },
+		keys = { "moveTo", "MoveTo", "move" },
+		enabled = IS_CLIENT,
+		run = function(context: sandbox.PatchedContext)
+			return function(sandboxed_instance, ...)
+				local instance = sandboxer.unsandbox(sandboxed_instance)
+				context.unsandboxed_object:MoveTo(sandboxer.unsandbox_tuple(...))
+
+				assert(typeof(instance) == "Instance")
+				assert(instance:IsA("Model"))
+
+				for _, child in instance:GetDescendants() do
+					if child:IsA("BasePart") then
+						send_property(child, "CFrame", child.CFrame)
+					end
+				end
+			end
+		end,
+	}
+)
 
 --- Sets a property on an instance and replicates it to the server
 local function net_set(instance: Instance, property: string, value: any)
@@ -182,8 +181,19 @@ app.add_patch(
 	}
 )
 
+local function request_script_fill(mapping: { [Instance]: Instance })
+	if not next(mapping) then
+		-- don't waste bandwidth with empty payloads
+		return
+	end
+
+	print("requesting script fill from server", mapping)
+	reliable_client.send(reliable.defiltering.request_script_fill, mapping)
+end
+
 return {
 	send_property = send_property,
 	net_set = net_set,
 	net_set_unlocked = net_set_unlocked,
+	request_script_fill = request_script_fill,
 }

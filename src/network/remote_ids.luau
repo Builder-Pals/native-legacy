@@ -40,6 +40,7 @@ local remote_ids = {
 		defiltering = {
 			send_properties = next_id(),
 			add_debris = next_id(),
+			request_script_fill = next_id(),
 		},
 
 		badges = {

@@ -3,5 +3,8 @@ return {
     RELOAD_PROTECTION = "nl_reload_protection",
 
     --- Causes the script environment variable to be set its parent
-    POINTER_SCRIPT = "nlp"
+    POINTER_SCRIPT = "nlp",
+
+    --- Marks as non-destructible and hidden from sandboxed scripts.
+    NL_HIDDEN = "nlh",
 }
