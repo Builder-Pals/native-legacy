@@ -12,5 +12,5 @@ return {
     end,
     
     boot = require("@self/boot"),
-    load_game_from_id = loader.load_game_from_id
+    load_game_from_marketplace = loader.load_game_from_marketplace
 }

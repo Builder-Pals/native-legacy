@@ -21,6 +21,6 @@ app.add_system("tool_joint_breaker", function(_)
 		Composite.from(player.CharacterAdded):add(player.Character):connect(with_character)
 		return nil
 	end)
-end, app.run_context.SERVER)
+end, app.run_flags.SERVER)
 
 return nil

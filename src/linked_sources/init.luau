@@ -9,23 +9,25 @@ local function trim(str: string): string
 end
 
 local LINKED_SOURCE_MAPPING = {
-	["http://www.roblox.com/asset/?id=1014541"] = require("@layer/linked_sources/paintball_projectile"),
-	["http://www.roblox.com/asset/?id=1014542"] = require("@layer/linked_sources/paintball_launcher"),
-	["http://www.roblox.com/asset/?id=1014609"] = require("@layer/linked_sources/trowel_brick_cleanup"),
-	["http://www.roblox.com/asset/?id=1014610"] = require("@layer/linked_sources/trowel_gui"),
-	["http://www.roblox.com/asset/?id=1014611"] = require("@layer/linked_sources/trowel"),
-	["http://www.roblox.com/asset/?id=1014616"] = require("@layer/linked_sources/time_bomb"),
-	["http://www.roblox.com/asset/?id=1014617"] = require("@layer/linked_sources/time_bomb_gui"),
-	["http://www.roblox.com/asset/?id=1014618"] = require("@layer/linked_sources/time_bomb_plant"),
-	["http://www.roblox.com/asset/?id=1014631"] = require("@layer/linked_sources/superball_gui"),
-	["http://www.roblox.com/asset/?id=1014632"] = require("@layer/linked_sources/superball"),
-	["http://www.roblox.com/asset/?id=1014633"] = require("@layer/linked_sources/superball_launcher"),
-	["http://www.roblox.com/asset/?id=1014650"] = require("@layer/linked_sources/slingshot_gui"),
-	["http://www.roblox.com/asset/?id=1014651"] = require("@layer/linked_sources/slingshot"),
-	["http://www.roblox.com/asset/?id=1014652"] = require("@layer/linked_sources/slingshot_projectile"),
-	["http://www.roblox.com/asset/?id=1014653"] = require("@layer/linked_sources/rocket_launcher_gui"),
-	["http://www.roblox.com/asset/?id=1014654"] = require("@layer/linked_sources/rocket_launcher"),
-	["http://www.roblox.com/asset/?id=1014655"] = require("@layer/linked_sources/rocket_launcher_rocket"),
+	["http://www.roblox.com/asset/?id=1014541"] = require("@self/paintball_projectile"),
+	["http://www.roblox.com/asset/?id=1014542"] = require("@self/paintball_launcher"),
+	["http://www.roblox.com/asset/?id=1014609"] = require("@self/trowel_brick_cleanup"),
+	["http://www.roblox.com/asset/?id=1014610"] = require("@self/trowel_gui"),
+	["http://www.roblox.com/asset/?id=1014611"] = require("@self/trowel"),
+	["http://www.roblox.com/asset/?id=1014616"] = require("@self/time_bomb"),
+	["http://www.roblox.com/asset/?id=1014617"] = require("@self/time_bomb_gui"),
+	["http://www.roblox.com/asset/?id=1014618"] = require("@self/time_bomb_plant"),
+	["http://www.roblox.com/asset/?id=1014631"] = require("@self/superball_gui"),
+	["http://www.roblox.com/asset/?id=1014632"] = require("@self/superball"),
+	["http://www.roblox.com/asset/?id=1014633"] = require("@self/superball_launcher"),
+	["http://www.roblox.com/asset/?id=1014650"] = require("@self/slingshot_gui"),
+	["http://www.roblox.com/asset/?id=1014651"] = require("@self/slingshot"),
+	["http://www.roblox.com/asset/?id=1014652"] = require("@self/slingshot_projectile"),
+	["http://www.roblox.com/asset/?id=1014653"] = require("@self/rocket_launcher_gui"),
+	["http://www.roblox.com/asset/?id=1014654"] = require("@self/rocket_launcher"),
+	["http://www.roblox.com/asset/?id=1014655"] = require("@self/rocket_launcher_rocket"),
+	-- fun fact - this one still loads in 2026 for some reason!
+	["http://www.roblox.com/asset/?id=13326026"] = require("@self/badge_awarder")
 }
 
 local function from_url(url: string)

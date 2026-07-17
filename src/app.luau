@@ -23,7 +23,7 @@ local setup = {
 }
 
 local app = {
-	run_context = {
+	run_flags = {
 		CLIENT = RunService:IsClient(),
 		SERVER = RunService:IsServer(),
 	}

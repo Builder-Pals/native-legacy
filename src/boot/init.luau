@@ -8,7 +8,7 @@ local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
 local StarterPlayer = game:GetService("StarterPlayer")
 
-local external_boot_prefab = script.Parent.external_boot
+local external_boot_prefab = script:WaitForChild("external_boot")
 
 local IS_CLIENT = RunService:IsClient()
 

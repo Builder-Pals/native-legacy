@@ -41,6 +41,11 @@ local remote_ids = {
 			send_properties = next_id(),
 			add_debris = next_id(),
 		},
+
+		badges = {
+			notify = next_id(),
+			share = next_id()
+		}
 	},
 }
 

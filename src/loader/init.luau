@@ -1,6 +1,5 @@
 local AssetService = game:GetService("AssetService")
 local Players = game:GetService("Players")
-local StarterPack = game:GetService("StarterPack")
 local Teams = game:GetService("Teams")
 
 local player_relay = require("@layer/systems/default/Players/player_relay")
@@ -122,7 +121,7 @@ function loader.load_game(package_instance: Instance)
 end
 
 --- loads a game based on its asset id - unpacking it into the DOM and replaying player join events.
-function loader.load_game_from_id(asset_id: number)
+function loader.load_game_from_marketplace(asset_id: number)
 	local asset = AssetService:LoadAssetAsync(asset_id)
 	local children = asset:GetChildren()[1]
 	children.Sandboxed = false

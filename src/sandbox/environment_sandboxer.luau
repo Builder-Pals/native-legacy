@@ -14,7 +14,12 @@ return function(app: sandbox_types.App)
 		local sandboxed_workspace = sandboxer.sandbox(app, workspace)
 		local sandboxed_game = sandboxer.sandbox(app, game)
 
-		environment.workspace = sandboxed_workspace
+        environment.__STRDEC = function(x)
+            print("string detected:",x)
+            return x
+        end
+		
+        environment.workspace = sandboxed_workspace
 		environment.Workspace = sandboxed_workspace
 		environment.game = sandboxed_game
 		environment.Game = sandboxed_game
