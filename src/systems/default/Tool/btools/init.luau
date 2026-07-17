@@ -1,4 +1,6 @@
+local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
 local hopperbin_emu = require("./hopperbin_emu")
 local app = require("@layer/app")
 local routing = require("@layer/routing")
@@ -34,7 +36,6 @@ local function set_bin_type(tool: Instance, bin_type: Enum.BinType)
 	tool:SetAttribute("bin_type", bin_type.Value)
 end
 
--- server
 -- swaps btools out for recreations
 -- due to defiltering, we don't have to worry about the client creating tools that won't be
 -- detected by this check.
@@ -121,13 +122,27 @@ app.add_system("btools_server_swapper", function(_)
 		end
 
 		player.ChildAdded:Connect(with_player_child)
+		return nil
+	end)
+end, app.run_flags.SERVER)
+
+-- client
+-- resets the mouse when a btool accessory is removed from the character
+app.add_system("btools_mouse_resetter", function(_)
+	local player = Players.LocalPlayer
+	Composite.new():listen(player.CharacterAdded):add(player.Character):connect(function(character: Model)
+		character.ChildRemoved:Connect(function(child)
+			if child:HasTag("BuildTool") then
+				UserInputService.MouseIcon = ""
+			end
+		end)
 
 		return nil
 	end)
-end, RunService:IsServer())
+end, app.run_flags.CLIENT)
 
 -- shared
--- spoofs btools to have HopperBin as the class name 
+-- spoofs btools to have HopperBin as the class name
 app.add_patch(
 	"btools_class_spoofer",
 	patching.getter_patch {
@@ -142,18 +157,6 @@ app.add_patch(
 		end,
 	}
 )
-
--- todo
--- btools are always parented to the backpack.
--- app.add_patch(
--- 	"btools_parent_spoofer",
--- 	patching.getter_patch {
--- 		classes = { "Tool" },
--- 		keys = { "className", "ClassName" },
--- 		run = function(context)
--- 		end,
--- 	}
--- )
 
 -- patch to use the get_bin_type function for the BinType property
 app.add_patch(

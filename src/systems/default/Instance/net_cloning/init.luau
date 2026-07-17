@@ -28,6 +28,18 @@ const SCRIPT_TYPES = { "LocalScript", "Script", "ModuleScript" }
 
 local prop_cache: { [string]: { ReflectedProperty } } = {}
 
+local function is_snap_external(root: Instance, snap: Snap)
+	if snap.Part0 and not snap.Part0:IsDescendantOf(root) then
+		return true
+	end
+
+	if snap.Part1 and not snap.Part1:IsDescendantOf(root) then
+		return true
+	end
+
+	return false
+end
+
 local function filter_props(props: { ReflectedProperty }): { ReflectedProperty }
 	local output = {}
 
@@ -67,6 +79,10 @@ local function collect_archivable_graph(root: Instance): { Instance }
 				continue
 			end
 
+			if child:IsA("Snap") and is_snap_external(root, child) then
+				continue
+			end
+
 			table.insert(graph, child)
 			collect_children(child)
 		end
@@ -97,9 +113,9 @@ local function discard_all(context: sandbox.PatchedContext, copies: { Instance }
 	end
 end
 
--- Calls to Instance:Clone() on the client did replicate before FilteringEnabled.
--- Pooled server-backed identities preserve that behaviour, while this patch
--- reconstructs the native clone graph on the client before returning it.
+-- Calls to Instance:Clone() on the client used to replicate before FilteringEnabled.
+-- This patch restores that behaviour, with instance pooling and server-auth control over
+-- what sources can be copied.
 app.add_patch(
 	"net_copy",
 	patching.getter_patch {
@@ -120,6 +136,8 @@ app.add_patch(
 				local pending_references: { PendingReference } = {}
 				-- note: cant send instance keys over the network, so we use arrays
 				local scripts_to_fill: { { Instance } } = {}
+
+				print("a clone is in progress...")
 
 				local ok, result = xpcall(function()
 					-- Reserve every identity before applying references or hierarchy.
@@ -157,7 +175,7 @@ app.add_patch(
 						end
 					end
 
-					-- References are applied only after every counterpart exists.
+					-- only apply references after each instance has been created
 					for _, pending in pending_references do
 						network_properties.net_set_unlocked(
 							pending.copy,
@@ -166,7 +184,7 @@ app.add_patch(
 						)
 					end
 
-					-- Parent last. The pool claim already keeps the root logically nil.
+					-- apply parenting last (for performance, and to avoid firing off events)
 					for _, original in originals do
 						if original == original_root then
 							continue
@@ -190,6 +208,8 @@ app.add_patch(
 					discard_all(context, copies)
 					error(`failed to clone {original_root:GetFullName()}:\n{result}`, 0)
 				end
+
+				print("done!")
 
 				return result
 			end

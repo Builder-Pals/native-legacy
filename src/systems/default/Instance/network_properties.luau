@@ -181,7 +181,7 @@ app.add_patch(
 	}
 )
 
-local function request_script_fill(mapping: { [Instance]: Instance })
+local function request_script_fill(mapping: { { Instance } })
 	if not next(mapping) then
 		-- don't waste bandwidth with empty payloads
 		return

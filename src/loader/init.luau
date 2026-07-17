@@ -5,7 +5,7 @@ local Teams = game:GetService("Teams")
 local player_relay = require("@layer/systems/default/Players/player_relay")
 local make_joints = require("./util/make_joints")
 local packager = require("./packager")
-local nl_constants = require("@layer/nl_constants")
+local nl_tags = require("@layer/nl_tags")
 
 local NEVER_CLEAN = {
 	StarterPlayerScripts = true,
@@ -47,7 +47,7 @@ end
 
 local function clean_player(player: Player)
 	for _, child in player:GetChildren() do
-		if child:HasTag(nl_constants.RELOAD_PROTECTION) == false and not PLAYER_PROTECTED[child.ClassName] then
+		if child:HasTag(nl_tags.RELOAD_PROTECTION) == false and not PLAYER_PROTECTED[child.ClassName] then
 			if not pcall(child.Destroy, child) then
 				warn(`can't destroy {child:GetFullName()}`)
 			end
@@ -56,7 +56,7 @@ local function clean_player(player: Player)
 end
 
 local function clear_safely(parent: Instance)
-	if parent:HasTag(nl_constants.RELOAD_PROTECTION) or NEVER_CLEAN[parent.ClassName] then
+	if parent:HasTag(nl_tags.RELOAD_PROTECTION) or NEVER_CLEAN[parent.ClassName] then
 		return
 	end
 
@@ -67,7 +67,7 @@ local function clear_safely(parent: Instance)
 		end
 
 		if
-			child:HasTag(nl_constants.RELOAD_PROTECTION)
+			child:HasTag(nl_tags.RELOAD_PROTECTION)
 			or child == workspace.Terrain
 			or child == workspace.CurrentCamera
 			or NEVER_CLEAN[child.ClassName]

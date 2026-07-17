@@ -1,7 +1,7 @@
 local remotes = require("@layer/network/remotes")
 local server = remotes.reliable.server
 
-local nl_constants = require("@layer/nl_constants")
+local nl_tags = require("@layer/nl_tags")
 local Composite = require("@layer/util/Composite")
 
 local POOL_SIZE = 200
@@ -17,7 +17,7 @@ return function()
         warehouse.ResetOnSpawn = false
 		warehouse.Enabled = false -- stops ui objects in the pool from appearing on the screen lol
 		warehouse.Name = "_Warehouse" -- sync with client!
-		warehouse:AddTag(nl_constants.RELOAD_PROTECTION)
+		warehouse:AddTag(nl_tags.RELOAD_PROTECTION)
 		warehouse.Parent = player_gui
 		warehouses[player] = warehouse
 

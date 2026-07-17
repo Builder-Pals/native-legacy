@@ -1,4 +1,4 @@
-local nl_constants = require("../nl_constants")
+local nl_tags = require("../nl_tags")
 local env_symbols = require("./env_symbols")
 local pool = require("./pool")
 local patch_symbols = require("./patching/patch_symbols")
@@ -19,7 +19,7 @@ return function(app: sandbox_types.App)
             return x
         end
 
-        if environment.script:HasTag(nl_constants.POINTER_SCRIPT) then
+        if environment.script:HasTag(nl_tags.POINTER_SCRIPT) then
             environment.script = environment.script.Parent
         end
 		

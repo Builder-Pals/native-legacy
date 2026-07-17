@@ -1,6 +1,6 @@
 --!nonstrict
 local app = require("@layer/app")
-local nl_constants = require("@layer/nl_constants")
+local nl_tags = require("@layer/nl_tags")
 local make_joints = require("../../../../util/make_joints")
 -------------------------------------------------------------------------------------------------------------------------
 -- @CloneTrooper1019, 2017-2018 <3
@@ -26,7 +26,7 @@ local DraggerService = Instance.new("Folder")
 DraggerService:AddTag("nl_relaod_protection")
 DraggerService.Name = "DraggerService"
 DraggerService.Parent = ReplicatedStorage
-DraggerService:AddTag(nl_constants.RELOAD_PROTECTION)
+DraggerService:AddTag(nl_tags.RELOAD_PROTECTION)
 
 local DraggerGateway = Instance.new("RemoteFunction")
 DraggerGateway.Name = "DraggerGateway"

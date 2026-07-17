@@ -117,11 +117,11 @@ local function onIdle()
 		local mousePart = mouse.Target
 		if mousePart and not mousePart.Locked then
 			selection.Adornee = mousePart
-			mouse.Icon = getIcon("Hover")
+			UserInputService.MouseIcon = getIcon("Hover")
 			return
 		end
 		selection.Adornee = nil
-		mouse.Icon = getIcon("Idle")
+		UserInputService.MouseIcon = getIcon("Idle")
 	end
 end
 
@@ -148,7 +148,7 @@ local function startDraggerAction(mPart)
 		currentKey = dragKey
 
 		local success, errorMessage = xpcall(function()
-			mouse.Icon = getIcon("Grab")
+			UserInputService.MouseIcon = getIcon("Grab")
 			Dragger:MouseDown(mousePart,pointOnMousePart,{mousePart})
 
 			local lastSubmit = 0
@@ -251,9 +251,10 @@ end
 local function onUnequipped()
 	onButton1Up()
 	popConnections()
+	print("unequip")
 	selection.Adornee = nil
+	UserInputService.MouseIcon = nil
 	if mouse then
-		mouse.Icon = ""
 		mouse = nil
 	end
 end
@@ -264,15 +265,17 @@ local function with_ancestry()
 	if tool.Parent and tool.Parent:FindFirstChildWhichIsA("Humanoid") and not tool.Parent:IsA("Backpack") then
 		if not equipped then
 			equipped = true
+			print("equip")
 			onEquipped(player:GetMouse())
 		end
 	else
 		if equipped then
+			print("unequip")
 			equipped = false
 			onUnequipped()
 		end
 	end
 end
 
-tool.AncestryChanged:Connect(with_ancestry)
+tool:GetPropertyChangedSignal("Parent"):Connect(with_ancestry)
 with_ancestry()

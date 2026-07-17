@@ -1,6 +1,6 @@
 local Debris = game:GetService("Debris")
 local network = require("@layer/network")
-local nl_constants = require("../../nl_constants")
+local nl_tags = require("../../nl_tags")
 local remotes = network.remotes
 local defilter_serdes = require("./defilter_serdes")
 
@@ -83,10 +83,16 @@ return function()
 				continue
 			end
 
+			local existing = copy:FindFirstChild(nl_tags.POINTER_SCRIPT)
+
+			if existing then
+				existing:Destroy()
+			end
+
 			local clone = original:Clone()
 			clone.Name = "__nl"
-			clone:AddTag(nl_constants.POINTER_SCRIPT)
-			clone:AddTag(nl_constants.NL_HIDDEN)
+			clone:AddTag(nl_tags.POINTER_SCRIPT)
+			clone:AddTag(nl_tags.NL_HIDDEN)
 			clone.Enabled = copy.Enabled
 			clone.Parent = copy
 

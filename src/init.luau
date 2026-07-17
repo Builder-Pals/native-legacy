@@ -1,8 +1,8 @@
 local app = require("@self/app")
 local loader = require("@self/loader")
-local nl_constants = require("@self/nl_constants")
+local nl_tags = require("@self/nl_tags")
 
-script:AddTag(nl_constants.RELOAD_PROTECTION)
+script:AddTag(nl_tags.RELOAD_PROTECTION)
 
 return {
     --- pulls an environment into the sandbox.

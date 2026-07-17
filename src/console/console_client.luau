@@ -1,7 +1,7 @@
 local Players = game:GetService("Players")
 local TextChatService = game:GetService("TextChatService")
 
-local nl_constants = require("@layer/nl_constants")
+local nl_tags = require("@layer/nl_tags")
 local Iris = require("../packages/Iris")
 local network = require("@layer/network")
 
@@ -44,7 +44,7 @@ return function()
 
 	local gui = Instance.new("ScreenGui")
 	gui.Name = "NL Console"
-	gui:AddTag(nl_constants.RELOAD_PROTECTION)
+	gui:AddTag(nl_tags.RELOAD_PROTECTION)
 	gui.ResetOnSpawn = false
 	gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
 
