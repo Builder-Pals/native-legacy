@@ -8,6 +8,7 @@ local defiltering = require("@layer/sandbox/defiltering")
 
 local patching = sandbox.patching
 local sandboxer = sandbox.sandboxer
+local replicated_nil = require("@layer/systems/default/replicated_nil")
 
 local IS_CLIENT = RunService:IsClient()
 local NAME = `network_properties`
@@ -140,17 +141,49 @@ app.add_patch(
 )
 
 --- Replicates a property to the server
-local function send_property(instance: Instance, property: string, value: any)
-	Action.invoke(defiltering.events.send_property, instance, property, value)
+local function send_property(instance: Instance, property: string, value: any, options: any?)
+	Action.invoke(defiltering.events.send_property, instance, property, value, options)
 end
 
 --- Sets a property on an instance and replicates it to the server
 local function net_set(instance: Instance, property: string, value: any)
-	(instance :: any)[property] = value
-	send_property(instance, property, value)
+	if IS_CLIENT then
+		-- The client defilterer applies the predicted value immediately while
+		-- registering its acknowledgement lock. Writing before sending would let
+		-- an older lock reject this value before it can be superseded.
+		send_property(instance, property, value)
+	else
+		(instance :: any)[property] = value
+	end
 end
+
+--- Sets a construction-time property without creating an acknowledgement lock.
+--- Any older lock for the same property is cancelled before the value is set.
+local function net_set_unlocked(instance: Instance, property: string, value: any)
+	if IS_CLIENT then
+		send_property(instance, property, value, { locking = false })
+	else
+		(instance :: any)[property] = value
+	end
+end
+
+-- Server-backed client instances are staged beneath replicated_nil while their
+-- legacy-visible Parent is nil. Never expose that transport detail to sandboxed
+-- scripts if ancestry replication arrives after the prediction lock releases.
+app.add_patch(
+	`{NAME}_staged_parent`,
+	patching.getter_patch {
+		types = { "Instance" },
+		keys = { "Parent", "parent" },
+		enabled = IS_CLIENT,
+		run = function(context: sandbox.PatchedContext)
+			return if rawequal(context.unsandboxed, replicated_nil) then nil else context.snapshot
+		end,
+	}
+)
 
 return {
 	send_property = send_property,
 	net_set = net_set,
+	net_set_unlocked = net_set_unlocked,
 }

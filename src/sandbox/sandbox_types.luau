@@ -20,6 +20,7 @@ export type App = {
 	patches: { Patch },
 	systems: { AppSystemFn },
 	client_pool: ClientInstancePool,
+	discard_client_instance: (Instance) -> (),
 	bag: {
 		entries: BagEntries,
 		get: <T>(entry: { __T: (any) -> T }) -> T,

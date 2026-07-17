@@ -16,7 +16,6 @@ type ReleasingLock = {
 	lock: Lock,
 }
 
-local LOCKING_DISABLED: { [Instance]: true } = {}
 local locks: { [Instance]: { [string]: Lock } } = {}
 
 local function instance_set(instance: Instance, property: string, value: unknown)
@@ -77,7 +76,7 @@ function net_locker.set(instance: Instance, property: string, value: unknown)
 	end
 
 	-- can't network functions
-	if typeof(value) == "function" or LOCKING_DISABLED[instance] then
+	if typeof(value) == "function" then
 		instance_set(instance, property, value)
 		return
 	end
@@ -153,6 +152,23 @@ function net_locker.set(instance: Instance, property: string, value: unknown)
 	set_client_value(lock, instance, property, value)
 end
 
+function net_locker.set_unlocked(instance: Instance, property: string, value: unknown)
+	assert(IS_CLIENT)
+
+	if property:sub(1, 2) == "__" then
+		return
+	end
+
+	local lock_map = locks[instance]
+	local existing_lock = lock_map and lock_map[property]
+
+	if existing_lock then
+		disconnect_lock(instance, property, existing_lock)
+	end
+
+	instance_set(instance, property, value)
+end
+
 function net_locker.release(ak: number)
 	local releasing: { ReleasingLock } = {}
 
@@ -176,12 +192,26 @@ function net_locker.release(ak: number)
 	end
 end
 
-function net_locker.disable_locking(instance: Instance)
-	LOCKING_DISABLED[instance] = true
-end
+function net_locker.cancel(instance: Instance)
+	local lock_map = locks[instance]
 
-function net_locker.enable_locking(instance: Instance)
-	LOCKING_DISABLED[instance] = nil
+	if not lock_map then
+		return
+	end
+
+	local cancelling: { ReleasingLock } = {}
+
+	for property, lock in lock_map do
+		table.insert(cancelling, {
+			instance = instance,
+			property = property,
+			lock = lock,
+		})
+	end
+
+	for _, entry in cancelling do
+		disconnect_lock(entry.instance, entry.property, entry.lock)
+	end
 end
 
 return net_locker

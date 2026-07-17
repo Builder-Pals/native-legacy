@@ -80,8 +80,17 @@ return function()
 	warehouse.ChildAdded:Connect(on_folder_added)
 
 	local function pop_async(class: string): Instance
-		-- we use Instance.new here to throw an error if the class is invalid
-		if not warehouse_data[class] and Instance.new(class) then
+		if not warehouse_data[class] then
+			-- Validate through the engine so invalid and non-creatable classes fail
+			-- at the call site instead of waiting forever for a pool expansion.
+			local ok, validation_instance = pcall(Instance.new, class)
+
+			if not ok then
+				error(validation_instance, 2)
+			end
+
+			validation_instance:Destroy()
+
 			-- if there's a yielding_threads table for the class, we must have already requested
 			-- for the pool to be expanded. so don't spam the server :P
 			if not instance_tickets[class] then
@@ -99,12 +108,22 @@ return function()
 		end
 
 		-- make sure its parented elsewhere so that the server knows it's no longer in the pool.
-		Action.invoke(defiltering.events.send_property, poolee, "Parent", replicated_nil)
-
-		poolee.Parent = nil
+		Action.invoke(defiltering.events.send_property, poolee, "Parent", replicated_nil, {
+			local_value = nil,
+			use_local_value = true,
+		})
 
 		return poolee
 	end
 
-	return pop_async
+	local function discard(instance: Instance)
+		Action.invoke(defiltering.events.cancel_instance, instance)
+		Action.invoke(defiltering.events.send_property, instance, "__d", true)
+		instance:Destroy()
+	end
+
+	return {
+		pop = pop_async,
+		discard = discard,
+	}
 end

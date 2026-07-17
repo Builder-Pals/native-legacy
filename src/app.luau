@@ -103,7 +103,9 @@ function app.start()
 	sandbox.init()
 
 	if RunService:IsClient() then
-		app_context.client_pool = sandbox.pool.client_pool()
+		local client_pool = sandbox.pool.client_pool()
+		app_context.client_pool = client_pool.pop
+		app_context.discard_client_instance = client_pool.discard
 	end
 
 	bag.entries = BAG_ENTRIES

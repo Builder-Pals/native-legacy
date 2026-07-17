@@ -1,3 +1,4 @@
+local nl_constants = require("../nl_constants")
 local env_symbols = require("./env_symbols")
 local pool = require("./pool")
 local patch_symbols = require("./patching/patch_symbols")
@@ -16,6 +17,10 @@ return function(app: sandbox_types.App)
 
         environment.__STRDEC = function(x)
             return x
+        end
+
+        if environment.script:HasTag(nl_constants.POINTER_SCRIPT) then
+            environment.script = environment.script.Parent
         end
 		
         environment.workspace = sandboxed_workspace

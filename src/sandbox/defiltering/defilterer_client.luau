@@ -10,17 +10,30 @@ const UPDATE_RATE = 1 / 20
 const NET_LOCK_DURATION = 0.1
 
 type Queue = { [Instance]: { [string]: unknown } }
+type SendPropertyOptions = defilterer_events.SendPropertyOptions
 
 return function()
 	local queue: Queue = {}
 
-	Action.subscribe(defilterer_events.send_property, function(instance, property, value)
+	Action.subscribe(defilterer_events.send_property, function(instance, property, value, options: SendPropertyOptions?)
 		if not queue[instance] then
 			queue[instance] = {}
 		end
 
 		queue[instance][property] = if value == nil then {} else value
-		network.locker.set(instance, property, value)
+
+		local local_value = if options and options.use_local_value then options.local_value else value
+
+		if options and options.locking == false then
+			network.locker.set_unlocked(instance, property, local_value)
+		else
+			network.locker.set(instance, property, local_value)
+		end
+	end)
+
+	Action.subscribe(defilterer_events.cancel_instance, function(instance)
+		queue[instance] = nil
+		network.locker.cancel(instance)
 	end)
 
 	remotes.reliable.client.subscribe({}, remotes.ids.reliable.defiltering.send_properties, function(ak: number)

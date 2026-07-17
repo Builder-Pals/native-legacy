@@ -12,6 +12,10 @@ local function apply(instance: any, property: any, value: any)
 		instance.Parent = nil
 	elseif property == "__d" then
 		instance:Destroy()
+	elseif property:sub(1, 4) == "__a:" then
+		instance:SetAttribute(property:sub(5), value)
+	elseif property:sub(1, 4) == "__t:" then
+		instance:AddTag(property:sub(5))
 	else
 		instance[property] = value
 	end
