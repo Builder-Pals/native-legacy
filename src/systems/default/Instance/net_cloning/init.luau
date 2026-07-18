@@ -3,6 +3,7 @@ local RunService = game:GetService("RunService")
 
 local app = require("@layer/app")
 local sandbox = require("@layer/sandbox")
+local nl_tags = require("@layer/nl_tags")
 local rbx_types = require("@layer/rbx_types")
 local network_properties = require("./network_properties")
 
@@ -92,6 +93,18 @@ local function collect_archivable_graph(root: Instance): { Instance }
 	return graph
 end
 
+local function shift_scripts(graph: { Instance }): { [Instance]: Instance }
+	local remapping: { [Instance]: Instance } = {}
+
+	for _, item in graph do
+		if item:HasTag(nl_tags.POINTER_SCRIPT) and item.Parent then
+			remapping[item.Parent] = item
+		end
+	end
+
+	return remapping
+end
+
 local function copy_metadata(original: Instance, copy: Instance)
 	for name, value in original:GetAttributes() do
 		copy:SetAttribute(name, value)
@@ -131,13 +144,12 @@ app.add_patch(
 				end
 
 				local originals = collect_archivable_graph(original_root)
+				local script_remapping = shift_scripts(originals)
 				local copies: { Instance } = {}
 				local copy_for: { [Instance]: Instance } = {}
 				local pending_references: { PendingReference } = {}
 				-- note: cant send instance keys over the network, so we use arrays
 				local scripts_to_fill: { { Instance } } = {}
-
-				print("a clone is in progress...")
 
 				local ok, result = xpcall(function()
 					-- Reserve every identity before applying references or hierarchy.
@@ -149,6 +161,10 @@ app.add_patch(
 
 					for _, original in originals do
 						local copy = copy_for[original]
+
+						if script_remapping[original] then
+							network_properties.net_set_unlocked(copy, "Name", original.Name)
+						end
 
 						for _, property in get_props(original.ClassName) do
 							if not original:IsPropertyModified(property.Name) then
@@ -171,7 +187,7 @@ app.add_patch(
 						copy_metadata(original, copy)
 
 						if table.find(SCRIPT_TYPES, original.ClassName) then
-							table.insert(scripts_to_fill, { copy, original })
+							table.insert(scripts_to_fill, { copy, script_remapping[original] or original })
 						end
 					end
 
@@ -191,6 +207,7 @@ app.add_patch(
 						end
 
 						if not original.Parent then
+							warn(`[net_cloning] missing parent for {original:GetFullName()}`)
 							continue
 						end
 
@@ -208,8 +225,6 @@ app.add_patch(
 					discard_all(context, copies)
 					error(`failed to clone {original_root:GetFullName()}:\n{result}`, 0)
 				end
-
-				print("done!")
 
 				return result
 			end

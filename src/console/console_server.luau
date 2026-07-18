@@ -11,7 +11,7 @@ local server = network.remotes.reliable.server
 local REJECTED_GAMES = {}
 local debounce = false
 
-local function fetch_clone(source_asset_id: number): number
+local function fetch_clone(source_asset_id: number | string): number
 	if REJECTED_GAMES[source_asset_id] then
 		error(`game {source_asset_id} was already rejected by the server`)
 	end
@@ -25,7 +25,8 @@ return function()
 			return
 		end
 
-		assert(typeof(asset_id) == "number", "asset_id must be a number")
+		assert(type(asset_id) == "number" or type(asset_id) == "string", "asset_id must be a number or string")
+
 		print(`loading {asset_id}`)
 
 		debounce = true
@@ -41,6 +42,8 @@ return function()
 				REJECTED_GAMES[asset_id] = true
 			end)
 		else
+			assert(type(asset_id) == "number", "asset_id must be a number for regular assets")
+
 			xpcall(function()
 				loader.load_game_from_marketplace(asset_id)
 			end, function(err)

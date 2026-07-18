@@ -50,7 +50,7 @@ return function()
 
 	Iris.Init(gui, nil, false)
 
-	local function request(id: number, uncopylocked: boolean?)
+	local function request(id: string | number, uncopylocked: boolean?)
 		print(`requesting {id}}`)
 		workspace:AddTag("place_hopping")
 		client.send(network.remotes.ids.reliable.console.load_place, id, uncopylocked)
@@ -87,9 +87,9 @@ return function()
 				Iris.End()
 				Iris.CollapsingHeader({"Load Uncopylocked Place"})
 					Iris.TextWrapped { "[HIGHLY EXPERIMENTAL] Native Legacy will do its best to load this game within the compatibility layer. It may take a while to load. This feature does not support games uploaded after 2017." }
-					local input_2 = Iris.InputNum({ "ID" })
+					local input_2 = Iris.InputText({ "ID" })
 					if Iris.Button { "Load" }.clicked() then
-						request(input_2.state.number.value, true)
+						request(input_2.state.text.value, true)
 					end
 				Iris.End()
 				Iris.Separator()
