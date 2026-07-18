@@ -8,13 +8,13 @@ a backwards compatibility layer for Roblox that allows people to play their old 
 
 ## What?
 
-Native Legacy restores legacy engine behaivour on the modern Roblox client (hence the name) by modifying scripts and creating a sandbox.
+Native Legacy restores dated engine behaivour on the modern Roblox client, by modifying scripts and creating a sandbox.
 
 Examples of things NL does:
 
 - Grants access to some VIP rooms and admin features through Badge/Friend spoofing. 
-- Restores Flag functionality.
-- Fixes HopperBins.
+- Restores `Flag`/`FlagStand` functionality.
+- Fixes HopperBins, and restores server-sided mouse access.
 - Emulates the Sets API.
 - Redirects `InsertService` calls to `AssetService`.
 - Provides a pseudo version of `BadgeService`.
@@ -37,9 +37,9 @@ require(game:WaitForChild("native_legacy"))(getfenv());local MOUSE_ICON = __STRD
 local RELOADING_ICON = __STRDEC 'rbxasset://textures/GunWaitCursor.png'
 ```
 
-The required module replaces all data model references in the script's environment with sandboxed alternatives, and applies **patches** modify what happens when properties/methods are requested.
+The loader underneath game forces the environment into the sandbox, allowing Native Legacy to alter the script's behaviour through **patches**.
 
-If you've ever played Script Builder games, this is how they're able to keep you in the sandbox - accept in our case, sandbox escapes are an issue due to compatibility, not safety :P.
+If you've ever played Script Builder games, they generally function similarly - accept our primary case is for compatibility rather than restrictions.
 
 ## Licensing & Contributions
 
