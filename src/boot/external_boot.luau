@@ -23,7 +23,6 @@ return function(environment: any)
 		local linked_source_url = environment.script:GetAttribute("LinkedSource")
 
 		if linked_source_url then
-			print("LINKED SOURCE DETECTED", environment.script)
 			linked_source = linked_sources.from_url(linked_source_url)
 
 			if not linked_source then

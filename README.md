@@ -12,18 +12,20 @@ Native Legacy restores dated engine behaivour on the modern Roblox client, by mo
 
 Examples of things NL does:
 
+- Loads a giant library of uncopylocked & archived games.
 - Grants access to some VIP rooms and admin features through Badge/Friend spoofing. 
 - Restores `Flag`/`FlagStand` functionality.
 - Fixes HopperBins, and restores server-sided mouse access.
 - Emulates the Sets API.
 - Redirects `InsertService` calls to `AssetService`.
 - Provides a pseudo version of `BadgeService`.
+- Restores popular linked sources to fix Brickbattle tools.
 
 ## What Makes it Work?
 
 The scripts inside of games/models have an injector appended to the top of them. Example below.
 
-Before: 
+Before:
 
 ```lua
 local MOUSE_ICON = 'rbxasset://textures/GunCursor.png'
