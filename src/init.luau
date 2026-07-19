@@ -12,6 +12,6 @@ return {
     end,
     
     boot = require("@self/boot"),
-    load_game_from_marketplace = loader.load_game_from_marketplace,
+    load_game_from_marketplace_async = loader.load_game_from_marketplace_async,
     web = require("@self/web"),
 }

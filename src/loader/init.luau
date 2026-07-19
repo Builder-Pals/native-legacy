@@ -1,5 +1,5 @@
 local AssetService = game:GetService("AssetService")
-local Lighting = game:GetService("Lighting")
+local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
 
@@ -8,6 +8,9 @@ local lighting_remapper = require("./systems/default/Lighting/lighting_remapper"
 local make_joints = require("@layer/util/make_joints")
 local packager = require("@layer/packager")
 local nl_tags = require("@layer/nl_tags")
+
+const WHITELISTED_CREATOR_ID = 32019485
+const WHITELISTED_CREATOR_TYPE = Enum.CreatorType.Group
 
 local NEVER_CLEAN = {
 	StarterPlayerScripts = true,
@@ -133,8 +136,19 @@ function loader.load_game(package_instance: Instance)
 	end)
 end
 
+function loader.is_game_allowed(asset_id: number): boolean
+	local info = MarketplaceService:GetProductInfoAsync(asset_id)
+
+	if info.Creator.CreatorTargetId ~= WHITELISTED_CREATOR_ID or info.Creator.CreatorType ~= WHITELISTED_CREATOR_TYPE.Name then
+		print("fail", info.Creator)
+		return false
+	end
+
+	return true
+end
+
 --- loads a game based on its asset id - unpacking it into the DOM and replaying player join events.
-function loader.load_game_from_marketplace(asset_id: number)
+function loader.load_game_from_marketplace_async(asset_id: number)
 	local asset = AssetService:LoadAssetAsync(asset_id)
 	local child = asset:GetChildren()[1]
 	child.Sandboxed = false

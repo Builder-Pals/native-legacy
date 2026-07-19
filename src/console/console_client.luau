@@ -51,9 +51,9 @@ return function()
 	Iris.Init(gui, nil, false)
 
 	local function request(id: string | number, uncopylocked: boolean?)
-		print(`requesting {id}}`)
+		print(`requesting to play id={id}`)
 		workspace:AddTag("place_hopping")
-		client.send(network.remotes.ids.reliable.console.load_place, id, uncopylocked)
+		client.send(network.remotes.ids.reliable.console.load_place, id, uncopylocked == true)
 	end
 
 	local is_open = Iris.State(true)

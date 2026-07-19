@@ -54,8 +54,7 @@ local function brightness_processor(value: number)
 		remap_amount *= 1 - luminosity
 	end
 
-	if get_fallbackless_attribute("COlorShift_Bottom") == nil then
-		Lighting.FogEnd = 7000
+	if get_fallbackless_attribute("ColorShift_Bottom") == nil then
 		Lighting.ColorShift_Bottom = shadow_color
 	end
 
@@ -130,7 +129,6 @@ end
 app.add_system("lighting_remapper", function()
 	for property, processor in processors :: Processors do
 		Lighting:GetAttributeChangedSignal(property):Connect(function()
-			print("changed", property)
 			local value = get_lighting_attribute(property)
 			local mutated_value = processor(value);
 			(Lighting :: Lighting & {})[property] = mutated_value
