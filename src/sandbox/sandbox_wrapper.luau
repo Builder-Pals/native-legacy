@@ -134,7 +134,7 @@ function metatable:__newindex(key: any, value: any)
 	for _, patch in get_setter_patches(self) do
 		if should_run_on_key(patch, key, met_conditions) then
 			local context: sandbox_types.PatchedContext = {
-				snapshot = mutated_key,
+				snapshot = mutated_value,
 				unsandboxed = get_unsandboxed_object(self),
 				unsandboxed_object = unsandboxed_object,
 				sandbox_context = app,
@@ -151,7 +151,7 @@ function metatable:__newindex(key: any, value: any)
 	end
 
 	if mutated_key ~= nil then
-		if IS_CLIENT and typeof(unsandboxed_object) == "Instance" then
+		if IS_CLIENT and typeof(unsandboxed_object) == "Instance" and unsandboxed_object ~= workspace.CurrentCamera then
 			-- rather than directly setting the property, we'll delegate it to the networking
 			-- systems to handle it.
 			Action.invoke(
