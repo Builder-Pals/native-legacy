@@ -103,10 +103,6 @@ app.add_system("player_relay", function(context)
 	FakeSignal.bind(signals.Players.PlayerAdded, Players.PlayerAdded, player_added_processor)
 	FakeSignal.bind(signals.Players.ChildAdded, Players.ChildAdded, player_child_processor)
 	FakeSignal.bind(signals.Players.PlayerRemoving, Players.PlayerRemoving, player_removing_processor)
-
-	for _, player in Players:GetPlayers() do
-		handle_player_added(player)
-	end
 end)
 
 -- server/client
