@@ -11,7 +11,7 @@ return {
         environment_sandboxer.sandbox_environment(env)
     end,
     
-    boot = require("@self/boot"),
+    boot = require("@self/boot").boot,
     load_game_from_marketplace_async = loader.load_game_from_marketplace_async,
     web = require("@self/web"),
 }

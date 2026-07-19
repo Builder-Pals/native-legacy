@@ -50,10 +50,10 @@ return function()
 
 	Iris.Init(gui, nil, false)
 
-	local function request(id: string | number, uncopylocked: boolean?)
+	local function request(id: string | number)
 		print(`requesting to play id={id}`)
 		workspace:AddTag("place_hopping")
-		client.send(network.remotes.ids.reliable.console.load_place, id, uncopylocked == true)
+		client.send(network.remotes.ids.reliable.console.load_place, tostring(id))
 	end
 
 	local is_open = Iris.State(true)
@@ -89,7 +89,7 @@ return function()
 					Iris.TextWrapped { "[HIGHLY EXPERIMENTAL] Native Legacy will do its best to load this game within the compatibility layer. It may take a while to load. This feature does not support games uploaded after 2017." }
 					local input_2 = Iris.InputText({ "ID" })
 					if Iris.Button { "Load" }.clicked() then
-						request(input_2.state.text.value, true)
+						request(input_2.state.text.value)
 					end
 				Iris.End()
 				Iris.Separator()

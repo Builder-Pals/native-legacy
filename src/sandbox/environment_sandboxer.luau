@@ -5,6 +5,16 @@ local patch_symbols = require("./patching/patch_symbols")
 local sandbox_types = require("./sandbox_types")
 local sandboxer = require("./sandboxer")
 
+local function sandboxed_require(module_or_id)
+    local unsandboxed = sandboxer.unsandbox(module_or_id)
+
+    if typeof(unsandboxed) == "Instance" then
+        error("numeric requires are not supported!")
+    end
+
+    return require(unsandboxed :: any) :: any
+end
+
 return function(app: sandbox_types.App)
 	--[=[
         Pulls environments (generally grabbed with `getfenv()`) into the sandbox
@@ -28,6 +38,7 @@ return function(app: sandbox_types.App)
 		environment.game = sandboxed_game
 		environment.Game = sandboxed_game
 		environment.script = sandboxer.sandbox(app, environment.script)
+        environment.require = sandboxed_require
         environment[env_symbols.SOURCE_SCRIPT] = environment.script
         
         environment.typeof = function(x)

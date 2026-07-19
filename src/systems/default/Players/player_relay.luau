@@ -32,8 +32,6 @@ local key_map = {
 local function add_player(player: Player)
 	joined[player] = true
 
-	local was_character_loaded = player.Character ~= nil
-
 	-- reload the character
 	if player.Character then
 		player.Character:Destroy()
@@ -42,8 +40,7 @@ local function add_player(player: Player)
 	FakeSignal.fire(signals.Players.PlayerAdded, player)
 	FakeSignal.fire(signals.Players.ChildAdded, player)
 
-	-- respawn character to make sure OnCharacterAdded events fire
-	if was_character_loaded then
+	if Players.CharacterAutoLoads then
 		task.spawn(player.LoadCharacterAsync, player)
 	end
 end
@@ -106,6 +103,10 @@ app.add_system("player_relay", function(context)
 	FakeSignal.bind(signals.Players.PlayerAdded, Players.PlayerAdded, player_added_processor)
 	FakeSignal.bind(signals.Players.ChildAdded, Players.ChildAdded, player_child_processor)
 	FakeSignal.bind(signals.Players.PlayerRemoving, Players.PlayerRemoving, player_removing_processor)
+
+	for _, player in Players:GetPlayers() do
+		handle_player_added(player)
+	end
 end)
 
 -- server/client
@@ -138,24 +139,18 @@ app.add_patch(
 		keys = { "GetChildren", "getChildren", "children" },
 		run = function(context)
 			return function(_)
-				local players = {}
-
-				for player in joined do
-					table.insert(players, sandboxer.sandbox(context.sandbox_context, player))
-				end
-
 				-- return a table without the players we haven't registered yet
 				local children = context.unsandboxed_object:GetChildren()
 				local filtered_children = {}
 
 				for _, child in children do
 					if not child:IsA("Player") then
-						table.insert(filtered_children, child)
+						table.insert(filtered_children, sandboxer.sandbox(context.sandbox_context, child))
 						continue
 					end
 
-					if table.find(players, child) then
-						table.insert(filtered_children, child)
+					if joined[child] then
+						table.insert(filtered_children, sandboxer.sandbox(context.sandbox_context, child))
 					end
 				end
 

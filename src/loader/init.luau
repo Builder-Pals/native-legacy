@@ -1,21 +1,20 @@
 local AssetService = game:GetService("AssetService")
-local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
 
 local player_relay = require("@layer/systems/default/Players/player_relay")
+local booters = require("@layer/boot/booters")
 local lighting_remapper = require("./systems/default/Lighting/lighting_remapper")
 local make_joints = require("@layer/util/make_joints")
 local packager = require("@layer/packager")
 local nl_tags = require("@layer/nl_tags")
 
-const WHITELISTED_CREATOR_ID = 32019485
-const WHITELISTED_CREATOR_TYPE = Enum.CreatorType.Group
+const MAX_JOINTS_PER_TICK = 900
 
 local NEVER_CLEAN = {
 	StarterPlayerScripts = true,
 	StarterCharacterScripts = true,
-	Chat = true
+	Chat = true,
 }
 
 local PLAYER_PROTECTED = {
@@ -92,11 +91,37 @@ local function clear_safely(parent: Instance)
 	end
 end
 
+local function freeze_workspace()
+	local parts: { BasePart } = {}
+	local dirty: { BasePart } = {}
+
+	for _, part in workspace:GetDescendants() do
+		if part:IsA("BasePart") and not part:IsA("Terrain") then
+			if not part.Anchored then
+				part.Anchored = true
+				part.LocalTransparencyModifier = 1
+				table.insert(dirty, part)
+			end
+
+			table.insert(parts, part)
+		end
+	end
+
+	return parts, dirty
+end
+
+local function thaw_workspace(dirty: { BasePart })
+	for _, part in dirty do
+		part.LocalTransparencyModifier = 0
+		part.Anchored = false
+	end
+end
+
 local loader = {}
 
 function loader.load_game(package_instance: Instance)
 	local package = packager.game_packager.read(package_instance)
-	
+
 	if not package.read_ok then
 		warn(`[load-game] failed to load game '{package_instance}'! error: {package.error}\n{debug.traceback()}`)
 		return
@@ -113,19 +138,39 @@ function loader.load_game(package_instance: Instance)
 			print(`{service:GetFullName()} was not cleared: {err}`)
 		end
 	end
+	
+	booters.freeze()
 
 	for _, service_info in package.services do
 		print(`[load-game] unpacking {service_info.service}...`)
 		packager.game_packager.unpack_service(service_info)
 	end
 
-	lighting_remapper.make_lighting_effects()
-	lighting_remapper.run_remapper()
+	print("[load-game] unpack!")
 
 	-- workspace:MakeJoints() used to be called on game load, but this was changed as part of the 'Part Surface Trilogy'. This could be controlled with a setting for a short period,
 	-- which has since been hidden and will be overwritten by Roblox Studio.
 	-- Devforum post: https://devforum.roblox.com/t/changes-to-surface-based-welds-and-part-property-setters/155477
-	make_joints.make_joints(workspace)
+	local parts, dirty = freeze_workspace()
+
+	print("[load-game] frozen workspace")
+
+	for index, part in parts do
+		make_joints.make_joints(part)
+
+		if index%MAX_JOINTS_PER_TICK == 0 then
+			task.wait()
+		end
+	end
+
+	print("[load-game] made joints")
+
+	thaw_workspace(dirty)
+
+	lighting_remapper.make_lighting_effects()
+	lighting_remapper.run_remapper()
+
+	booters.thaw()
 
 	print("[load-game] success!")
 
@@ -134,17 +179,6 @@ function loader.load_game(package_instance: Instance)
 		auto_assign_teams()
 		player_relay.release_players()
 	end)
-end
-
-function loader.is_game_allowed(asset_id: number): boolean
-	local info = MarketplaceService:GetProductInfoAsync(asset_id)
-
-	if info.Creator.CreatorTargetId ~= WHITELISTED_CREATOR_ID or info.Creator.CreatorType ~= WHITELISTED_CREATOR_TYPE.Name then
-		print("fail", info.Creator)
-		return false
-	end
-
-	return true
 end
 
 --- loads a game based on its asset id - unpacking it into the DOM and replaying player join events.

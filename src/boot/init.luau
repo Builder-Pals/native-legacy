@@ -3,6 +3,7 @@ local defiltering = require("./sandbox/defiltering")
 local app = require("@layer/app")
 local console = require("./console")
 local nl_tags = require("./nl_tags")
+local booters = require("@layer/boot/booters")
 local lighting_remapper = require("./systems/default/Lighting/lighting_remapper")
 
 local RunService = game:GetService("RunService")
@@ -41,8 +42,8 @@ local function make_sandboxer(name: string)
 	external_boot.Parent = game
 end
 
---- fires up the layer. should be called once on the server, and once on all clients!
-return function()
+--- fires up the layer. should be called once on the server and once on all clients!
+local function boot()
 	print("----")
 	print("booting native legacy...")
 
@@ -65,11 +66,16 @@ return function()
 	end
 
 	-- Create a module underneath game that's easy to call from sandboxed scripts
-	make_sandboxer("native_legacy")
-	make_sandboxer("NostalgicScriptLoader") -- backwards compatibility!
+	booters.new("native_legacy")
+	booters.new("NostalgicScriptLoader") -- backwards compatibility!
 
 	lighting_remapper.run_remapper()
 
     print("nl is up!")
 	print("----")
 end
+
+return {
+	boot = boot,
+	booters = require("@self/booters"),
+}

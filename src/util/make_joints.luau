@@ -17,6 +17,9 @@ local Action = require("./Action")
 local CONTACT_TOLERANCE = 0.001
 local NORMAL_DOT_TOLERANCE = 0.9999
 local MIN_FACE_OVERLAP = 0.00001
+local ASYNC_WORK_SLICE_SECONDS = 1 / 120
+
+type YieldIfNeeded = (() -> ())?
 
 type JointClass = "Glue" | "Rotate" | "RotateV" | "Snap" | "Weld"
 
@@ -206,13 +209,29 @@ local function face_rectangles_overlap(face0: Face, face1: Face): boolean
 	return true
 end
 
-local function get_touching_faces(part0: BasePart, part1: BasePart): (Face?, Face?)
+local function get_touching_faces(
+	part0: BasePart,
+	part1: BasePart,
+	faces: { [BasePart]: { Face } }
+): (Face?, Face?)
 	local best_face0: Face? = nil
 	local best_face1: Face? = nil
 	local best_plane_distance = math.huge
+	local faces0 = faces[part0]
+	local faces1 = faces[part1]
 
-	for _, face0 in get_faces(part0) do
-		for _, face1 in get_faces(part1) do
+	if faces0 == nil then
+		faces0 = get_faces(part0)
+		faces[part0] = faces0
+	end
+
+	if faces1 == nil then
+		faces1 = get_faces(part1)
+		faces[part1] = faces1
+	end
+
+	for _, face0 in faces0 do
+		for _, face1 in faces1 do
 			if face0.normal:Dot(face1.normal) > -NORMAL_DOT_TOLERANCE then
 				continue
 			end
@@ -279,13 +298,17 @@ local function find_world_root(instance: Instance): WorldRoot?
 	return nil
 end
 
-local function collect_parts(subject: Instance): { BasePart }
+local function collect_parts(subject: Instance, yield_if_needed: YieldIfNeeded): { BasePart }
 	if subject:IsA("BasePart") then
 		return { subject }
 	end
 
 	local parts: { BasePart } = {}
 	for _, descendant in subject:GetDescendants() do
+		if yield_if_needed ~= nil then
+			yield_if_needed()
+		end
+
 		if descendant:IsA("BasePart") then
 			table.insert(parts, descendant)
 		end
@@ -315,11 +338,22 @@ local function already_paired(pairs: { [BasePart]: { [BasePart]: boolean } }, pa
 	return part0_pairs ~= nil and part0_pairs[part1] == true
 end
 
-local function index_existing_joints(parts: { BasePart }): { [BasePart]: { [BasePart]: boolean } }
+local function index_existing_joints(
+	parts: { BasePart },
+	yield_if_needed: YieldIfNeeded
+): { [BasePart]: { [BasePart]: boolean } }
 	local pairs: { [BasePart]: { [BasePart]: boolean } } = {}
 
 	for _, part in parts do
+		if yield_if_needed ~= nil then
+			yield_if_needed()
+		end
+
 		for _, joint in part:GetJoints() do
+			if yield_if_needed ~= nil then
+				yield_if_needed()
+			end
+
 			if not joint:IsA("JointInstance") then
 				continue
 			end
@@ -373,20 +407,30 @@ end
 local function make_surface_joints(
 	worldRoot: WorldRoot,
 	parts: { BasePart },
-	partsToExclude: { [BasePart]: boolean }?
+	partsToExclude: { [BasePart]: boolean }?,
+	yield_if_needed: YieldIfNeeded
 ): ()
-	local paired = index_existing_joints(parts)
+	local paired = index_existing_joints(parts, yield_if_needed)
+	local faces: { [BasePart]: { Face } } = {}
 	local overlap_params = OverlapParams.new()
 	overlap_params.MaxParts = 0
 	overlap_params.RespectCanCollide = false
 	overlap_params.Tolerance = CONTACT_TOLERANCE
 
 	for _, part0 in parts do
+		if yield_if_needed ~= nil then
+			yield_if_needed()
+		end
+
 		if part0:IsA("Terrain") then
 			continue
 		end
 
 		for _, part1 in worldRoot:GetPartsInPart(part0, overlap_params) do
+			if yield_if_needed ~= nil then
+				yield_if_needed()
+			end
+
 			if part1:IsA("Terrain") or (partsToExclude ~= nil and partsToExclude[part1]) then
 				continue
 			end
@@ -399,7 +443,7 @@ local function make_surface_joints(
 			-- even when its surfaces are not joinable.
 			remember_pair(paired, part0, part1)
 
-			local face0, face1 = get_touching_faces(part0, part1)
+			local face0, face1 = get_touching_faces(part0, part1, faces)
 			if face0 == nil or face1 == nil then
 				continue
 			end
@@ -412,19 +456,45 @@ local function make_surface_joints(
 	end
 end
 
+local function make_time_sliced_yielder(): () -> ()
+	local slice_started = os.clock()
+
+	return function()
+		if os.clock() - slice_started < ASYNC_WORK_SLICE_SECONDS then
+			return
+		end
+
+		task.wait()
+		slice_started = os.clock()
+	end
+end
+
+local function make_joints_impl(subject: Instance, yield_if_needed: YieldIfNeeded): ()
+	local world_root = if subject:IsA("WorldRoot") then subject else find_world_root(subject)
+	if world_root == nil then
+		return
+	end
+
+	local parts = collect_parts(subject, yield_if_needed)
+	make_surface_joints(world_root, parts, nil, yield_if_needed)
+end
+
 --[[
 	Creates legacy surface joints for a BasePart, or for every BasePart below a
 	container. Like Model:MakeJoints(), parts outside the subject may be joined
 	when they touch one of its parts.
 ]]
 function make_joints.make_joints(subject: Instance): ()
-	local world_root = if subject:IsA("WorldRoot") then subject else find_world_root(subject)
-	if world_root == nil then
-		return
-	end
+	make_joints_impl(subject, nil)
+end
 
-	local parts = collect_parts(subject)
-	make_surface_joints(world_root, parts, nil)
+--[[
+	Creates the same joints as make_joints, but yields between bounded chunks of
+	work. Use this for whole-place passes, where one uninterrupted scan can hit
+	Roblox's script execution timeout.
+]]
+function make_joints.make_joints_async(subject: Instance): ()
+	make_joints_impl(subject, make_time_sliced_yielder())
 end
 
 --[[
@@ -434,7 +504,7 @@ end
 function make_joints.break_joints(subject: Instance): ()
 	local joints: { [Instance]: boolean } = {}
 
-	for _, part in collect_parts(subject) do
+	for _, part in collect_parts(subject, nil) do
 		for _, joint in part:GetJoints() do
 			joints[joint] = true
 		end
@@ -473,7 +543,7 @@ function make_joints.join_to_outsiders(parts: { BasePart }): ()
 	end
 
 	for worldRoot, world_root_parts in parts_by_world_root do
-		make_surface_joints(worldRoot, world_root_parts, selected_parts)
+		make_surface_joints(worldRoot, world_root_parts, selected_parts, nil)
 	end
 end
 

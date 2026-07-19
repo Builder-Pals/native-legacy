@@ -1,13 +1,6 @@
 -- shout out to pizzaboxer again!
 -- archive: github/pizzaboxer/rbxlinkedscripts
 
--- Source - https://stackoverflow.com/a/27455195
--- Posted by PersianGulf, modified by community. See post 'Timeline' for change history
--- Retrieved 2026-07-16, License - CC BY-SA 4.0
-local function trim(str: string): string
-	return str:match("^%s*(.-)%s*$") or ""
-end
-
 local LINKED_SOURCE_MAPPING = {
 	["http://www.roblox.com/asset/?id=1014541"] = require("@self/paintball_projectile"),
 	["http://www.roblox.com/asset/?id=1014542"] = require("@self/paintball_launcher"),
@@ -26,12 +19,14 @@ local LINKED_SOURCE_MAPPING = {
 	["http://www.roblox.com/asset/?id=1014653"] = require("@self/rocket_launcher_gui"),
 	["http://www.roblox.com/asset/?id=1014654"] = require("@self/rocket_launcher"),
 	["http://www.roblox.com/asset/?id=1014655"] = require("@self/rocket_launcher_rocket"),
-	-- fun fact - this one still loads in 2026 for some reason!
+	["http://www.roblox.com/asset/?id=1014476"] = require("@self/sword_gui"),
+	["http://www.roblox.com/asset/?id=1014475"] = require("@self/sword"),
+	-- fun fact - this linked source still loads in 2026 for some reason!
 	["http://www.roblox.com/asset/?id=13326026"] = require("@self/badge_awarder")
 }
 
 local function from_url(url: string)
-    return trim(LINKED_SOURCE_MAPPING[url]):lower()
+    return LINKED_SOURCE_MAPPING[url:lower()]
 end
 
 return {
