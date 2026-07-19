@@ -1,0 +1,64 @@
+{
+	"app.add_system": {
+		"scope": "luau,lua",
+		"prefix": "app.add_system",
+		"description": "Insert an app.add_system boilerplate block",
+		"body": [
+			"app.add_system(\"${1:system_id}\", function(${2:_context})",
+			"\t${3:-- system logic}",
+			"end${4:, ${5:true}})"
+		]
+	},
+	"app.add_patch getter": {
+		"scope": "luau,lua",
+		"prefix": "app.add_patch.getter",
+		"description": "Insert an app.add_patch block for patching.getter_patch",
+		"body": [
+			"app.add_patch(",
+			"\t\"${1:patch_id}\",",
+			"\tpatching.getter_patch {",
+			"\t\tclasses = { \"${2:ClassName}\" },",
+			"\t\tkeys = { ${3:\"PropertyOrMethod\"} },",
+			"\t\trun = function(context, ${4:_key})",
+			"\t\t\treturn function(${5:_sandboxed_self}${6:, ...})",
+			"\t\t\t\t${7:-- patch logic}",
+			"\t\t\t\treturn ${8:_key}, ${9:_value}",
+			"\t\t\tend",
+			"\t\tend,",
+			"\t},",
+            "\ttrue",
+			")"
+		]
+	},
+	"app.add_patch setter": {
+		"scope": "luau,lua",
+		"prefix": "app.add_patch.setter",
+		"description": "Insert an app.add_patch block for patching.setter_patch",
+		"body": [
+			"app.add_patch(",
+			"\t\"${1:patch_id}\",",
+			"\tpatching.setter_patch {",
+			"\t\tclasses = { \"${2:ClassName}\" },",
+			"\t\tkeys = { ${3:\"PropertyOrMethod\"} },",
+			"\t\trun = function(context, ${4:key}, ${5:value})",
+			"\t\t\t${6:-- patch logic}",
+			"\t\t\treturn ${4:key}, ${5:value}",
+			"\t\tend,",
+			"\t},",
+            "\ttrue",
+			")"
+		]
+	},
+	"app.add_patch custom": {
+		"scope": "luau,lua",
+		"prefix": "app.add_patch",
+		"description": "Insert a generic app.add_patch wrapper around a patch value",
+		"body": [
+			"app.add_patch(",
+			"\t\"${1:patch_id}\",",
+			"\t${2:patch},",
+			"\t${3:true}",
+			")"
+		]
+	}
+}

@@ -17,6 +17,8 @@ local sets = require("@layer/sets")
 -- simulated delay from calls to the LuaWebService (Sets API)
 local API_CALL_DELAY = 0.1
 
+local CUTOFF_YEAR_UNIX = DateTime.fromUniversalTime(2019).UnixTimestamp
+
 local remote: RemoteFunction
 
 if RunService:IsClient() and RunService:IsRunning() then
@@ -37,9 +39,22 @@ app.add_system("insert_service_net", function(_)
 		local result = AssetService:LoadAssetAsync(asset_id)
 		result.Sandboxed = false
 
-		local owner = game:GetService("MarketplaceService"):GetProductInfoAsync(asset_id, Enum.InfoType.Asset)
+		local asset_info = game:GetService("MarketplaceService"):GetProductInfoAsync(asset_id, Enum.InfoType.Asset)
 
-		if owner.CreatorId == game.CreatorId then
+		if not asset_info.IsPublicDomain then
+			blocked[asset_id] = true
+			error("Private asset was blocked")
+			return result
+		end
+
+		local creation_date = DateTime.fromIsoDate(asset_info.Created)
+
+		if creation_date.UnixTimestamp > CUTOFF_YEAR_UNIX then
+			blocked[asset_id] = true
+			error("Asset was created too recently to use")
+		end
+
+		if asset_info.CreatorId == 40763226 then
 			blocked[asset_id] = true
 			error("Request was blocked for security reasons")
 		end

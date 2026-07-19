@@ -121,12 +121,13 @@ local function signal_fire(ctx: FakeSignalContext, ...)
 	ctx.remote:Fire(...)
 end
 
-local function new_signal()
+local function new_signal(pretend_to_be: RBXScriptSignal?)
 	local fake_signal: FakeSignalContext = {
 		connections = {},
 		processors = {},
 		signals = {},
-		remote = Instance.new("BindableEvent")
+		remote = Instance.new("BindableEvent"),
+		[sandbox.patching.symbols.UNSANDBOXED_OBJECT] = pretend_to_be
 	}
 
 	setmetatable(fake_signal, signal_mt)

@@ -18,7 +18,7 @@ type PendingReference = {
 	value: Instance,
 }
 
-const PROP_SETS = {
+const PROP_SETS: ReflectionMemberFilter = {
 	ExcludeDisplay = true,
 	ExcludeInherited = false,
 }
@@ -66,7 +66,7 @@ local function get_props(class: string): { ReflectedProperty }
 		error(`cannot reflect cloneable properties for {class}`, 2)
 	end
 
-	local filtered = filter_props(props)
+	local filtered = filter_props(props :: { ReflectedProperty })
 	prop_cache[class] = filtered
 	return filtered
 end
@@ -219,7 +219,7 @@ app.add_patch(
 					network_properties.request_script_fill(scripts_to_fill)
 
 					return copy_for[original_root]
-				end, debug.traceback)
+				end, debug.traceback :: (string) -> ())
 
 				if not ok then
 					discard_all(context, copies)

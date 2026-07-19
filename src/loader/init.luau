@@ -1,4 +1,5 @@
 local AssetService = game:GetService("AssetService")
+local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
 
@@ -91,6 +92,9 @@ function loader.load_game(package_instance: Instance)
 		return
 	end
 
+	-- some older games didn't have lighting data included, but we'll default to a nice morning time :)
+	Lighting.ClockTime = 7.8
+
 	player_relay.mask_players()
 
 	for service_name in packager.game_packager.TARGET_SERVICES do
@@ -124,9 +128,9 @@ end
 --- loads a game based on its asset id - unpacking it into the DOM and replaying player join events.
 function loader.load_game_from_marketplace(asset_id: number)
 	local asset = AssetService:LoadAssetAsync(asset_id)
-	local children = asset:GetChildren()[1]
-	children.Sandboxed = false
-	loader.load_game(children)
+	local child = asset:GetChildren()[1]
+	child.Sandboxed = false
+	loader.load_game(child)
 end
 
 return loader
