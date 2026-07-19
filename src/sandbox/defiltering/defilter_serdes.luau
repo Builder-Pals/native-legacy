@@ -1,4 +1,9 @@
-type DeserializedPayload = { [Instance]: { [string]: any } }
+export type PropertyOperation = {
+	instance: Instance,
+	property: string,
+	value: any,
+	active: boolean,
+}
 
 type SerializedPayload = { { any } | number }
 
@@ -17,18 +22,25 @@ end
 
 local defilter_serdes = {}
 
-function defilter_serdes.serialize_payload(payload: DeserializedPayload, ak: number): SerializedPayload
+function defilter_serdes.serialize_payload(payload: { PropertyOperation }, ak: number): SerializedPayload
 	local serialized: SerializedPayload = { ak }
+	local current_instance: Instance? = nil
+	local current_chunk: { any }? = nil
 
-	for instance, properties in payload do
-		local t: { any } = { instance }
-
-		for property, value in properties do
-			table.insert(t, property)
-			table.insert(t, pack_value(value))
+	for _, operation in payload do
+		if not operation.active then
+			continue
 		end
 
-		table.insert(serialized, t)
+		if current_instance ~= operation.instance then
+			current_instance = operation.instance
+			current_chunk = { operation.instance }
+			table.insert(serialized, current_chunk)
+		end
+
+		local chunk = current_chunk :: { any }
+		table.insert(chunk, operation.property)
+		table.insert(chunk, pack_value(operation.value))
 	end
 
 	return serialized
@@ -48,11 +60,12 @@ function defilter_serdes.deserialize_payload(
 		
 		local instance = chunk[1]
 
-		-- iterate backwards to preserve setting property order
-		-- probably doesn't matter, but better safe than sorry :P
-		for i = #chunk, 2, -2 do
-			local value = chunk[i]
-			local property = chunk[i - 1]
+		-- Property order is significant while constructing physical assemblies.
+		-- In particular, transforms must arrive before joint endpoints and the
+		-- completed root must not be exposed until its descendants are ready.
+		for i = 2, #chunk, 2 do
+			local property = chunk[i]
+			local value = chunk[i + 1]
 
 			if property == "a" then
 				ak = value

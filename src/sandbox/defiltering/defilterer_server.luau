@@ -4,6 +4,33 @@ local nl_tags = require("../../nl_tags")
 local remotes = network.remotes
 local defilter_serdes = require("./defilter_serdes")
 
+local function fill_script(copy: Instance, original: Instance)
+	if not copy:IsA("Script") and not copy:IsA("LocalScript") and not copy:IsA("ModuleScript") then
+		return
+	end
+
+	if not original:IsA("ModuleScript") and not original:IsA("Script") and not original:IsA("LocalScript") then
+		return
+	end
+
+	local existing = copy:FindFirstChild(nl_tags.POINTER_SCRIPT)
+
+	if existing then
+		existing:Destroy()
+	end
+
+	local clone = original:Clone()
+	clone.Name = "__nl"
+	clone:AddTag(nl_tags.POINTER_SCRIPT)
+	clone:AddTag(nl_tags.NL_HIDDEN)
+	clone.Enabled = copy.Enabled
+	clone.Parent = copy
+
+	copy:GetPropertyChangedSignal("Enabled"):Connect(function()
+		clone.Enabled = copy.Enabled
+	end)
+end
+
 local function apply(instance: any, property: any, value: any)
 	if not instance then
 		return
@@ -17,6 +44,8 @@ local function apply(instance: any, property: any, value: any)
 		instance:SetAttribute(property:sub(5), value)
 	elseif property:sub(1, 4) == "__t:" then
 		instance:AddTag(property:sub(5))
+	elseif property == "__s" and typeof(value) == "Instance" then
+		fill_script(instance, value)
 	else
 		instance[property] = value
 	end
@@ -83,22 +112,7 @@ return function()
 				continue
 			end
 
-			local existing = copy:FindFirstChild(nl_tags.POINTER_SCRIPT)
-
-			if existing then
-				existing:Destroy()
-			end
-
-			local clone = original:Clone()
-			clone.Name = "__nl"
-			clone:AddTag(nl_tags.POINTER_SCRIPT)
-			clone:AddTag(nl_tags.NL_HIDDEN)
-			clone.Enabled = copy.Enabled
-			clone.Parent = copy
-
-			copy:GetPropertyChangedSignal("Enabled"):Connect(function()
-				clone.Enabled = copy.Enabled
-			end)
+			fill_script(copy, original)
 		end
 	end)
 end

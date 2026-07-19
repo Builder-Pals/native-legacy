@@ -29,12 +29,12 @@ const SCRIPT_TYPES = { "LocalScript", "Script", "ModuleScript" }
 
 local prop_cache: { [string]: { ReflectedProperty } } = {}
 
-local function is_snap_external(root: Instance, snap: Snap)
-	if snap.Part0 and not snap.Part0:IsDescendantOf(root) then
+local function is_snap_external(cloneable: { [Instance]: true }, snap: Snap)
+	if snap.Part0 and not cloneable[snap.Part0] then
 		return true
 	end
 
-	if snap.Part1 and not snap.Part1:IsDescendantOf(root) then
+	if snap.Part1 and not cloneable[snap.Part1] then
 		return true
 	end
 
@@ -72,24 +72,41 @@ local function get_props(class: string): { ReflectedProperty }
 end
 
 local function collect_archivable_graph(root: Instance): { Instance }
-	local graph = { root }
+	local cloneable: { [Instance]: true } = { [root] = true }
 
-	local function collect_children(parent: Instance)
+	local function collect_cloneable(parent: Instance)
 		for _, child in parent:GetChildren() do
 			if not child.Archivable then
 				continue
 			end
 
-			if child:IsA("Snap") and is_snap_external(root, child) then
+			cloneable[child] = true
+			collect_cloneable(child)
+		end
+	end
+
+	collect_cloneable(root)
+
+	local graph = { root }
+
+	local function collect_filtered(parent: Instance)
+		for _, child in parent:GetChildren() do
+			if not cloneable[child] then
+				continue
+			end
+
+			-- Legacy Clone omitted Snap joints which crossed the cloned graph.
+			-- Other external Instance references intentionally remain intact.
+			if child:IsA("Snap") and is_snap_external(cloneable, child) then
 				continue
 			end
 
 			table.insert(graph, child)
-			collect_children(child)
+			collect_filtered(child)
 		end
 	end
 
-	collect_children(root)
+	collect_filtered(root)
 	return graph
 end
 

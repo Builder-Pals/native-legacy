@@ -6,10 +6,6 @@ local sandbox = require("@layer/sandbox")
 local Action = require("@layer/util/Action")
 local defiltering = require("@layer/sandbox/defiltering")
 
-local network = require("@layer/network")
-local reliable = network.remotes.ids.reliable
-local reliable_client = network.remotes.reliable.client
-
 local patching = sandbox.patching
 local sandboxer = sandbox.sandboxer
 local replicated_nil = require("@layer/systems/default/replicated_nil")
@@ -150,6 +146,7 @@ local function net_set(instance: Instance, property: string, value: any)
 		-- The client defilterer applies the predicted value immediately while
 		-- registering its acknowledgement lock. Writing before sending would let
 		-- an older lock reject this value before it can be superseded.
+		(instance :: any)[property] = value
 		send_property(instance, property, value)
 	else
 		(instance :: any)[property] = value
@@ -160,6 +157,7 @@ end
 --- Any older lock for the same property is cancelled before the value is set.
 local function net_set_unlocked(instance: Instance, property: string, value: any)
 	if IS_CLIENT then
+		(instance :: any)[property] = value
 		send_property(instance, property, value, { locking = false })
 	else
 		(instance :: any)[property] = value
@@ -182,13 +180,17 @@ app.add_patch(
 )
 
 local function request_script_fill(mapping: { { Instance } })
-	if not next(mapping) then
-		-- don't waste bandwidth with empty payloads
-		return
-	end
+	for _, pair in mapping do
+		local copy = pair[1]
+		local original = pair[2]
 
-	print("requesting script fill from server", mapping)
-	reliable_client.send(reliable.defiltering.request_script_fill, mapping)
+		if copy and original then
+			-- Script fill is part of clone construction. Queueing it as a symbolic
+			-- property keeps it behind hierarchy writes and ahead of any Parent set
+			-- performed by the caller after Clone returns.
+			send_property(copy, "__s", original, { locking = false })
+		end
+	end
 end
 
 return {
