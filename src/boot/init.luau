@@ -3,6 +3,7 @@ local defiltering = require("./sandbox/defiltering")
 local app = require("@layer/app")
 local console = require("./console")
 local nl_tags = require("./nl_tags")
+local lighting_remapper = require("./systems/default/Lighting/lighting_remapper")
 
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
@@ -66,6 +67,8 @@ return function()
 	-- Create a module underneath game that's easy to call from sandboxed scripts
 	make_sandboxer("native_legacy")
 	make_sandboxer("NostalgicScriptLoader") -- backwards compatibility!
+
+	lighting_remapper.run_remapper()
 
     print("nl is up!")
 	print("----")

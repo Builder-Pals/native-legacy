@@ -10,6 +10,7 @@ The primary implementation is in:
 
 - `src/systems/default/Instance/net_cloning/init.luau`
 - `src/systems/default/Instance/network_properties.luau`
+- `src/systems/default/Instance/legacy_grounded_velocity.luau`
 - `src/sandbox/pool/client_pool.luau`
 - `src/sandbox/defiltering/defilterer_client.luau`
 - `src/sandbox/defiltering/defilter_serdes.luau`
@@ -67,6 +68,18 @@ copy_for[source_reference] or source_reference
 
 That retention is a compatibility decision. If a caller later moves a clone whose weld still connects to an outside/source part, Roblox may move the connected source assembly. That is distinct from the construction-order bug: merely creating and exposing a correctly positioned clone must not move the source.
 
+## Grounded legacy velocity writes
+
+Roblox's deprecated `BasePart.Velocity` and `RotVelocity` properties now operate on the whole physical assembly. Assigning either property through an unanchored cloned part which is welded to an anchored external surface can therefore give the anchored root a non-zero velocity. A stationary anchored part with non-zero linear velocity behaves like a conveyor belt.
+
+The `legacy_grounded_velocity` setter patch sinks these legacy writes only when all of the following are true:
+
+- the target is a `BasePart`;
+- the target itself is unanchored; and
+- its current `AssemblyRootPart` is a different, anchored part.
+
+Do not replace this with a blanket velocity reset. An anchored surface may intentionally be a conveyor, and a free assembly must still accept legacy velocity writes. Writes made directly to the anchored root are also intentional and remain unchanged. Modern `AssemblyLinearVelocity` and `AssemblyAngularVelocity` assignments retain their explicit assembly-wide semantics.
+
 ## Symbolic defiltering properties
 
 The server defilterer recognizes properties that are transport commands rather than Roblox properties:
@@ -112,6 +125,9 @@ When modifying this system, verify all of the following:
 - Scripts are filled after their clone properties/hierarchy are queued.
 - Attributes and tags survive cloning.
 - An error discards every claimed pooled instance.
+- Legacy velocity writes through an unanchored part with an anchored assembly root do not change either part's velocity.
+- Legacy velocity writes still work on free assemblies and when made directly to an anchored root.
+- Explicit assembly-velocity writes retain modern assembly-wide behavior.
 
 ## Suggested runtime regression model
 

@@ -4,8 +4,9 @@ local Players = game:GetService("Players")
 local Teams = game:GetService("Teams")
 
 local player_relay = require("@layer/systems/default/Players/player_relay")
-local make_joints = require("./util/make_joints")
-local packager = require("./packager")
+local lighting_remapper = require("./systems/default/Lighting/lighting_remapper")
+local make_joints = require("@layer/util/make_joints")
+local packager = require("@layer/packager")
 local nl_tags = require("@layer/nl_tags")
 
 local NEVER_CLEAN = {
@@ -76,6 +77,12 @@ local function clear_safely(parent: Instance)
 			continue
 		end
 
+		for _, child in child:GetDescendants() do
+			if child:IsA("Sound") then
+				child.PlayOnRemove = false
+			end
+		end
+
 		if not pcall(child.Destroy, child) then
 			warn(`can't destroy {child:GetFullName()}`)
 		end
@@ -92,9 +99,7 @@ function loader.load_game(package_instance: Instance)
 		return
 	end
 
-	-- some older games didn't have lighting data included, but we'll default to a nice morning time :)
-	Lighting.ClockTime = 7.8
-
+	lighting_remapper.restore_defaults()
 	player_relay.mask_players()
 
 	for service_name in packager.game_packager.TARGET_SERVICES do
@@ -110,6 +115,9 @@ function loader.load_game(package_instance: Instance)
 		print(`[load-game] unpacking {service_info.service}...`)
 		packager.game_packager.unpack_service(service_info)
 	end
+
+	lighting_remapper.make_lighting_effects()
+	lighting_remapper.run_remapper()
 
 	-- workspace:MakeJoints() used to be called on game load, but this was changed as part of the 'Part Surface Trilogy'. This could be controlled with a setting for a short period,
 	-- which has since been hidden and will be overwritten by Roblox Studio.
