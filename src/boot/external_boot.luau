@@ -12,13 +12,6 @@ return function(environment: any)
 
 	local linked_source
 
-	print(
-		"[new script]",
-		environment.script,
-		environment.script:IsA("LuaSourceContainer"),
-		environment.script.LinkedSource
-	)
-
 	if typeof(environment.script) == "Instance" and environment.script:IsA("LuaSourceContainer") then
 		local linked_source_url = environment.script:GetAttribute("LinkedSource")
 

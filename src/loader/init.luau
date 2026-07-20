@@ -128,7 +128,7 @@ function loader.load_game(package_instance: Instance)
 	end
 
 	lighting_remapper.restore_defaults()
-	player_relay.mask_players()
+	local player_relay_generation = player_relay.mask_players()
 
 	for service_name in packager.game_packager.TARGET_SERVICES do
 		local service = game:GetService(service_name)
@@ -175,9 +175,18 @@ function loader.load_game(package_instance: Instance)
 	print("[load-game] success!")
 
 	task.delay(1, function()
+		if not player_relay.is_current_generation(player_relay_generation) then
+			return
+		end
+
 		print("[load-game] releasing players!")
-		auto_assign_teams()
-		player_relay.release_players()
+		local teams_ok, teams_error = pcall(auto_assign_teams)
+
+		if not teams_ok then
+			warn(`[load-game] failed to auto-assign teams: {teams_error}`)
+		end
+
+		player_relay.release_players(player_relay_generation)
 	end)
 end
 

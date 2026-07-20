@@ -33,6 +33,7 @@ export type FakeConnectionContext = {
 export type FakeSignalContext = {
 	signals: { RBXScriptSignal },
 	processors: { ProcessorFactory },
+	fire_processors: { ProcessorFactory },
 	remote: BindableEvent,
 	connections: { [AnyFn]: FakeConnectionContext },
 }
@@ -88,7 +89,13 @@ local function signal_connect(ctx: FakeSignalContext, callback)
 		table.insert(fake_connection.connections, event:Connect(fn))
 	end
 
-	local remote_connection = ctx.remote.Event:Connect(sink_processor(callback))
+	local fire_callback = callback
+
+	for _, processor in ctx.fire_processors do
+		fire_callback = processor(fire_callback)
+	end
+
+	local remote_connection = ctx.remote.Event:Connect(sink_processor(fire_callback))
 	table.insert(fake_connection.connections, remote_connection)
 
 	setmetatable(fake_connection, connection_mt)
@@ -117,6 +124,12 @@ local function signal_bind(ctx: FakeSignalContext, signal: RBXScriptSignal, proc
 	table.insert(ctx.processors, processor or sink_processor)
 end
 
+--[[
+	Sends data through the signal.
+
+	Note: The underlying callback uses a RBXScriptSignal for GC purposes - sandboxed objects will break down!
+	Use processors to mitigate.
+]]
 local function signal_fire(ctx: FakeSignalContext, ...)
 	ctx.remote:Fire(...)
 end
@@ -124,6 +137,7 @@ end
 local function new_signal(pretend_to_be: RBXScriptSignal?)
 	local fake_signal: FakeSignalContext = {
 		connections = {},
+		fire_processors = {},
 		processors = {},
 		signals = {},
 		remote = Instance.new("BindableEvent"),
@@ -144,6 +158,11 @@ local function signal_wipe_connections(signal: FakeSignalContext)
 	end
 
 	table.clear(signal.connections)
+end
+
+--- Adds middleware for values sent with `FakeSignal.fire`. Register processors before listeners connect.
+local function signal_add_processor(signal: FakeSignalContext, processor: ProcessorFactory)
+	table.insert(signal.fire_processors, processor)
 end
 
 connection_mt = {
@@ -173,5 +192,6 @@ return {
 	bind = signal_bind,
 	fire = signal_fire,
 	new_processor = new_processor,
+	add_processor = signal_add_processor,
 	wipe_connections = signal_wipe_connections,
 }
