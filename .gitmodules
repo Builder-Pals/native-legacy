@@ -2,5 +2,5 @@
 	path = Iris
 	url = https://github.com/SirMallard/Iris.git
 [submodule "src/packager"]
-	path = src/packager
+	path = src/deck/packager
 	url = https://github.com/Builder-Pals/native-packager.git

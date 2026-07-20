@@ -4,9 +4,9 @@ local Teams = game:GetService("Teams")
 
 local player_relay = require("@layer/systems/default/Players/player_relay")
 local booters = require("@layer/boot/booters")
-local lighting_remapper = require("./systems/default/Lighting/lighting_remapper")
+local lighting_remapper = require("@layer/systems/default/Lighting/lighting_remapper")
 local make_joints = require("@layer/util/make_joints")
-local packager = require("@layer/packager")
+local packager = require("./packager")
 local nl_tags = require("@layer/nl_tags")
 
 const MAX_JOINTS_PER_TICK = 900
@@ -117,9 +117,9 @@ local function thaw_workspace(dirty: { BasePart })
 	end
 end
 
-local loader = {}
+local unpacker = {}
 
-function loader.load_game(package_instance: Instance)
+function unpacker.unpack_game(package_instance: Instance)
 	local package = packager.game_packager.read(package_instance)
 
 	if not package.read_ok then
@@ -191,11 +191,11 @@ function loader.load_game(package_instance: Instance)
 end
 
 --- loads a game based on its asset id - unpacking it into the DOM and replaying player join events.
-function loader.load_game_from_marketplace_async(asset_id: number)
+function unpacker.unpack_from_marketplace_async(asset_id: number)
 	local asset = AssetService:LoadAssetAsync(asset_id)
 	local child = asset:GetChildren()[1]
 	child.Sandboxed = false
-	loader.load_game(child)
+	unpacker.unpack_game(child)
 end
 
-return loader
+return unpacker

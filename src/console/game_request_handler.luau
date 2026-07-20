@@ -1,6 +1,6 @@
 local MarketplaceService = game:GetService("MarketplaceService")
 
-local loader = require("@layer/loader")
+local deck = require("@layer/deck")
 local web = require("@layer/web")
 local market_safety = require("./market_safety")
 
@@ -42,7 +42,7 @@ function game_request_handler.handle_async(asset_id: string): boolean
 			store_creator_from_id_async(clone.source_place_id)
 		end
 
-		loader.load_game_from_marketplace_async(clone.sandboxed_asset_id)
+		deck.unpacker.unpack_from_marketplace_async(clone.sandboxed_asset_id)
 	else
 		print("[load-game] - id is a place/game (?)")
 		numerical_id = tonumber(asset_id)
@@ -63,11 +63,11 @@ function game_request_handler.handle_async(asset_id: string): boolean
 				store_creator_from_id_async(clone.source_place_id)
 			end
 
-			loader.load_game_from_marketplace_async(clone.sandboxed_asset_id)
+			deck.unpacker.unpack_from_marketplace_async(clone.sandboxed_asset_id)
 		elseif info.AssetTypeId == Enum.AssetType.Model.Value then
 			print("[load-game] - - id is a marketplace upload!")
 			store_creator_from_id_async(numerical_id)
-			loader.load_game_from_marketplace_async(numerical_id)
+			deck.unpacker.unpack_from_marketplace_async(numerical_id)
 		else
 			warn(`[load-game] - game id={asset_id} is not a valid place or model`)
 			return false

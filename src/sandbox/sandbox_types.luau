@@ -1,3 +1,5 @@
+local var_types = require("@layer/vars/var_types")
+
 export type OptionalSwitch = boolean?
 
 export type AppSystemFn = (x: App) -> ()
@@ -17,6 +19,7 @@ export type BagEntries = {
 
 --- Provides context & configuration for the runtime application.
 export type App = {
+	vars: var_types.VariableStore,
 	patches: { Patch },
 	systems: { AppSystemFn },
 	client_pool: ClientInstancePool,

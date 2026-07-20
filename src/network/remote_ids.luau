@@ -46,6 +46,11 @@ local remote_ids = {
 		badges = {
 			notify = next_id(),
 			share = next_id()
+		},
+
+		vars = {
+			pull_all = next_id(),
+			push_values = next_id()
 		}
 	},
 }

@@ -3,6 +3,7 @@ local sandbox_types = require("@layer/sandbox/sandbox_types")
 local routing = require("./routing")
 local patch_filter_selector = require("./sandbox/patching/patch_filter_selector")
 local sandbox = require("@layer/sandbox")
+local var_modifier = require("@self/vars/var_modifier")
 
 export type OptionalSwitch = boolean?
 
@@ -95,6 +96,7 @@ function app.start()
 	end
 
 	local app_context = {
+		vars = var_modifier.new(),
 		systems = setup.systems,
 		patches = patch_filter_selector.sort_patches(setup.patches),
 		bag = bag,

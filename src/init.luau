@@ -1,5 +1,5 @@
 local app = require("@self/app")
-local loader = require("@self/loader")
+local deck = require("@self/deck")
 local nl_tags = require("@self/nl_tags")
 
 script:AddTag(nl_tags.RELOAD_PROTECTION)
@@ -12,6 +12,6 @@ return {
     end,
     
     boot = require("@self/boot").boot,
-    load_game_from_marketplace_async = loader.load_game_from_marketplace_async,
+    unpack_from_marketplace_async = deck.unpacker.unpack_from_marketplace_async,
     web = require("@self/web"),
 }
