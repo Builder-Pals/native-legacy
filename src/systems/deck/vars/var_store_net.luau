@@ -47,7 +47,7 @@ function var_store_net.unpack_to(var_store: vars.VariableStore, payload: unknown
         local var_def = net_to_def[net]
         assert(var_def, `net id {net} is unrecognised`)
         vars.validator.assert_valid(var_def, value)
-        vars.modifier.set_var(var_store, var_def, value)
+        vars.modifier.set_var(var_store, var_def :: vars.Def, value)
     end
 end
 

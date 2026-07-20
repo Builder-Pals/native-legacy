@@ -20,6 +20,7 @@ const sv_vip_friends: t.SingletonDef<VipFriendsOption> = {
 
 	default = "everyone",
 	options = { "everyone", "owner", "nobody", "default" },
+	context = "server",
 }
 
 --[=[
@@ -35,6 +36,7 @@ const sv_vip_group_presence: t.SingletonDef<VipGroupPresenceOption> = {
 
 	default = "all",
 	options = { "all", "default" },
+	context = "server",
 }
 
 --[=[
@@ -50,6 +52,7 @@ const sv_vip_group_rank: t.SingletonDef<VipGroupRankOptin> = {
 
 	default = "owner",
 	options = { "owner", "default" },
+	context = "server",
 }
 
 --[=[
@@ -65,6 +68,7 @@ const sv_vip_unlock_badges: t.SingletonDef<VipUnlockBadgesOption> = {
 
 	default = "all",
 	options = { "all", "default" },
+	context = "server",
 }
 
 --[=[
@@ -79,6 +83,7 @@ const sv_timescale_freeze: t.BooleanDef = {
 	permissions = { "dev" },
 
 	default = false,
+	context = "server",
 }
 
 --[=[
@@ -90,6 +95,7 @@ const sv_timescale_run_service: t.FloatDef = {
 	permissions = { "dev" },
 
 	default = 1,
+	context = "server",
 }
 
 --[=[
@@ -101,6 +107,7 @@ const sv_timescale_wait: t.FloatDef = {
 	permissions = { "dev" },
 
 	default = 1,
+	context = "server",
 }
 
 local definitions = {
@@ -113,13 +120,13 @@ local definitions = {
 	sv_timescale_wait = sv_timescale_wait,
 }
 
-local def_array: { t.Def } = {}
+local def_array: { t.SomeDef } = {}
 
 for _, def in pairs(definitions :: { [string]: t.Def }) do
-    table.insert(def_array, def)
+	table.insert(def_array, def :: t.SomeDef)
 end
 
 return {
 	definitions = definitions,
-    definition_array = def_array,
+	definition_array = def_array,
 }

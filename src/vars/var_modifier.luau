@@ -21,7 +21,7 @@ function var_modifier.set_var<T>(variables: t.VariableStore, def: t.Def<T>, valu
     variables.dirty[def] = true
 end
 
-function var_modifier.get_var<T>(variables: t.VariableStore, def: t.Def<T>): T
+function var_modifier.get_var<T>(variables: t.VariableStore, def: t.SomeDef): T
     local value = variables.values[def.id]
 	assert(value ~= nil, `missing var {def.id}}`)
 	return value

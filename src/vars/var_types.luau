@@ -1,6 +1,6 @@
 export type VariableStore = {
 	read ["values"]: { [string]: unknown },
-    read ["dirty"]: { [Def]: boolean },
+    read ["dirty"]: { [SomeDef]: boolean },
 }
 
 export type Priviledge = "dev" | "server_admin"
@@ -9,6 +9,7 @@ export type Def<T=unknown> = {
 	id: string,
 	permissions: { Priviledge },
 	default: T,
+	context: "client" | "server" | "client_and_server"
 }
 
 export type SingletonDef<T> = Def<T> & {
@@ -25,6 +26,6 @@ export type FloatDef = Def<number> & {
     clamp: { min: number, max: number }?
 }
 
-export type SomeDef = SingletonDef<unknown> | BooleanDef | FloatDef
+export type SomeDef<T=unknown> = Def | Def<T> | SingletonDef<T> | BooleanDef | FloatDef
 
 return nil
