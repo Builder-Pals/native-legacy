@@ -168,8 +168,6 @@ end
 connection_mt = {
 	Disconnect = connection_disconnect,
 	disconnect = connection_disconnect,
-	Wait = signal_wait,
-	wait = signal_wait,
 	[patching.symbols.FAKE_TYPE] = "userdata",
 	[patching.symbols.FAKE_TYPEOF] = "RBXScriptConnection",
 }
@@ -180,6 +178,8 @@ signal_mt = {
 	connect = signal_connect,
 	Connect = signal_connect,
 	disconnect = signal_disconnect, -- only available in camelCase!
+	Wait = signal_wait,
+	wait = signal_wait,
 	[patching.symbols.FAKE_TYPE] = "userdata",
 	[patching.symbols.FAKE_TYPEOF] = "RBXScriptSignal",
 }

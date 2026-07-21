@@ -4,7 +4,6 @@ local pool = require("./pool")
 local patch_symbols = require("./patching/patch_symbols")
 local sandbox_types = require("./sandbox_types")
 local sandboxer = require("./sandboxer")
-local timescale = require("../util/timescale")
 local vars = require("../vars")
 
 local RunService = game:GetService("RunService")
@@ -75,7 +74,7 @@ return function(app: sandbox_types.App)
 			while vars.modifier.get_var(app.vars, vars.defs.sv_timescale_freeze) do
 				RunService.Heartbeat:Wait()
 			end
-			return task.wait(timescale.scale_duration(math.min(duration or 0, LEGACY_SPAWN_DELAY), wait_multiplier()))
+			return task.wait(math.max(duration or 0, LEGACY_SPAWN_DELAY) * wait_multiplier())
 		end
 
 		environment.delay = function(duration: number, callback: () -> ())
@@ -89,7 +88,7 @@ return function(app: sandbox_types.App)
 		end
 
 		environment.spawn = function(callback: () -> ())
-			return task.delay(timescale.scale_duration(LEGACY_SPAWN_DELAY, wait_multiplier()), callback)
+			return task.defer(callback)
 		end
 	end
 

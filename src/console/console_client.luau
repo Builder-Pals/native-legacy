@@ -6,6 +6,7 @@ local Iris = require("../packages/Iris")
 local network = require("@layer/network")
 local app = require("@layer/app")
 local vars = require("@layer/vars")
+local native_var_docs = require("../vars/native_var_docs")
 
 local client = network.remotes.reliable.client
 
@@ -40,9 +41,34 @@ local function apply_theme()
 	Iris.UpdateGlobalConfig(light_theme :: any)
 end
 
-local function set_from_widget(def: vars.Def<T>, value: T)
+local function set_from_widget<T>(def: vars.Def<T>, value: T)
 	vars.validator.assert_valid(def, value)
 	vars.modifier.set_var(app.context.vars, def, value)
+	print(`set {def.id} to {value}`)
+end
+
+local function try_document(def: vars.Def, current_value: unknown)
+	local docs = native_var_docs[def.id]
+
+	if docs then
+		Iris.PushConfig({ RichText = true })
+		local tip_builder = { docs.tooltip }
+
+		if next(docs.values) then
+			table.insert(tip_builder, "----------")
+		end
+
+		for key, value in docs.values do
+			if current_value == key then
+				table.insert(tip_builder, `<b>{key}</b> - {value}`)
+			else
+				table.insert(tip_builder, `{key}: {value}`)
+			end
+		end
+
+		Iris.Tooltip({ table.concat(tip_builder, "\n") })
+		Iris.PopConfig()
+	end
 end
 
 local function singleton_cheat(label: string, def: vars.SingletonDef)
@@ -55,6 +81,10 @@ local function singleton_cheat(label: string, def: vars.SingletonDef)
 		set_from_widget(def, state:get())
 	elseif not changed and state:get() ~= current_value then
 		state:set(current_value)
+	end
+	
+	if combo.hovered() then
+		try_document(def :: vars.Def, current_value)
 	end
 end
 
@@ -69,6 +99,10 @@ local function boolean_cheat(label: string, def: vars.BooleanDef)
 	elseif not changed and state:get() ~= current_value then
 		state:set(current_value)
 	end
+
+	if checkbox.hovered() then
+		try_document(def :: vars.Def, current_value)
+	end
 end
 
 local function float_cheat(label: string, def: vars.FloatDef)
@@ -79,12 +113,12 @@ local function float_cheat(label: string, def: vars.FloatDef)
 
 	if def.clamp then
 		input = Iris.InputNum(
-			{ label, 0.05, def.clamp.min, def.clamp.max, "%.2f", true },
+			{ label, 0.05, def.clamp.min, def.clamp.max, "%.3f", true },
 			{ number = state }
 		)
 	else
 		input = Iris.InputNum(
-			{ label, 0.05, 0, 0, "%.2f", true },
+			{ label, 0.05, 0, 0, "%.3f", true },
 			{ number = state }
 		)
 	end
@@ -95,6 +129,10 @@ local function float_cheat(label: string, def: vars.FloatDef)
 		set_from_widget(def, state:get())
 	elseif not changed and state:get() ~= current_value then
 		state:set(current_value)
+	end
+
+	if input.hovered() then
+		try_document(def :: vars.Def, current_value)
 	end
 end
 
@@ -122,7 +160,7 @@ local function render_place_loader()
 end
 
 local function render_cheats_menu()
-	Iris.Text { "cheats" }
+	Iris.Text { "fun" }
 	Iris.CollapsingHeader { "Free VIP" }
 		Iris.TextWrapped { "Spoof common friend, group, and badge checks used by classic VIP doors." }
 		singleton_cheat("Friends", vars.defs.sv_vip_friends)

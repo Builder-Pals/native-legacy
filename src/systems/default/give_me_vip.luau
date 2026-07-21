@@ -1,6 +1,7 @@
 local app = require("@layer/app")
 local pseudo_badge_service = require("@layer/badges/pseudo_badge_service")
 local sandbox = require("@layer/sandbox")
+local sandboxer = sandbox.sandboxer
 local vars = require("@layer/vars")
 local vip_cheat_rules = require("@layer/util/vip_cheat_rules")
 
@@ -21,10 +22,10 @@ app.add_patch(
 		classes = { "Player" },
 		keys = { "IsFriendsWith", "isFriendsWith", "IsBestFriendsWith", "isBestFriendsWith" },
 		run = function(context, _key)
-			local original = context.snapshot
+			local original = context.unsandboxed
 			return function(self, target_user_id: number)
-				-- Preserve validation, errors, and any simulated API delay.
-				local real_result = original(self, target_user_id)
+				-- run the original call for throwing errors and maintaining api call delays
+				local real_result = original(sandboxer.unsandbox(self), target_user_id)
 				local option = vars.modifier.get_var(context.sandbox_context.vars, vars.defs.sv_vip_friends)
 
 				return vip_cheat_rules.friend(option, real_result, target_user_id, creator_user_id())
@@ -39,9 +40,9 @@ app.add_patch(
 		classes = { "Player" },
 		keys = { "IsInGroup", "isInGroup" },
 		run = function(context, _key)
-			local original = context.snapshot
+			local original_method = context.unsandboxed
 			return function(self, group_id: number)
-				local real_result = original(self, group_id)
+				local real_result = original_method(sandboxer.unsandbox(self), group_id)
 				local option = vars.modifier.get_var(context.sandbox_context.vars, vars.defs.sv_vip_group_presence)
 
 				return vip_cheat_rules.group_presence(option, real_result)
@@ -56,9 +57,9 @@ app.add_patch(
 		classes = { "Player" },
 		keys = { "GetRankInGroup", "getRankInGroup" },
 		run = function(context, _key)
-			local original = context.snapshot
+			local original_method = context.unsandboxed
 			return function(self, group_id: number)
-				local real_rank = original(self, group_id)
+				local real_rank = original_method(sandboxer.unsandbox(self), group_id)
 				local variable_store = context.sandbox_context.vars
 				local option = vars.modifier.get_var(variable_store, vars.defs.sv_vip_group_rank)
 				local presence_option = vars.modifier.get_var(variable_store, vars.defs.sv_vip_group_presence)
@@ -75,9 +76,9 @@ app.add_patch(
 		classes = { "BadgeService" },
 		keys = { "UserHasBadge", "userHasBadge", "UserHasBadgeAsync", "userHasBadgeAsync" },
 		run = function(context, _key)
-			local original = context.snapshot
+			local original_method = context.unsandboxed
 			return function(self, user_id: number, badge_id: number)
-				local real_result = original(self, user_id, badge_id)
+				local real_result = original_method(sandboxer.unsandbox(self), user_id, badge_id)
 				local option = vars.modifier.get_var(context.sandbox_context.vars, vars.defs.sv_vip_unlock_badges)
 
 				return vip_cheat_rules.badge(

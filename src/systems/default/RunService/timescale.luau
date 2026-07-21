@@ -1,7 +1,6 @@
 local app = require("@layer/app")
 local FakeSignal = require("@layer/util/FakeSignal")
 local sandbox = require("@layer/sandbox")
-local timescale = require("@layer/util/timescale")
 local vars = require("@layer/vars")
 
 local patching = sandbox.patching
@@ -18,10 +17,11 @@ app.add_patch(
 				return cached_signal
 			end
 
-			local real_signal = context.snapshot
+			local real_signal = sandbox.sandboxer.unsandbox(context.unsandboxed)
+			assert(typeof(real_signal) == "RBXScriptSignal")
 			local fake_signal = FakeSignal.new(real_signal)
 
-			FakeSignal.bind(fake_signal, real_signal, function(callback)
+			FakeSignal.bind(fake_signal, real_signal :: RBXScriptSignal<...any>, function(callback)
 				return function(...)
 					local variable_store = context.sandbox_context.vars
 
@@ -30,13 +30,14 @@ app.add_patch(
 					end
 
 					local multiplier = vars.modifier.get_var(variable_store, vars.defs.sv_timescale_run_service)
+					local delta_scale = 1 / multiplier
 
 					if key == "Stepped" then
 						local elapsed_time, delta_time = ...
-						callback(elapsed_time, timescale.scale_delta_time(delta_time, multiplier))
+						callback(elapsed_time * delta_scale, delta_time * delta_scale)
 					else
 						local delta_time = ...
-						callback(timescale.scale_delta_time(delta_time, multiplier))
+						callback(delta_time * delta_scale)
 					end
 				end
 			end)
