@@ -44,12 +44,24 @@ end
 local pseudo_badge_service = {}
 pseudo_badge_service.get_bindable_function = get_remote
 
+local function badge_hash(user_id: number, badge_id: number): string
+	return `{user_id}|{badge_id}`
+end
+
+function pseudo_badge_service.has_pseudo_badge(user_id: number, badge_id: number): boolean
+	return award_logs[badge_hash(user_id, badge_id)] ~= nil
+end
+
+function pseudo_badge_service.record_pseudo_badge(user_id: number, badge_id: number)
+	award_logs[badge_hash(user_id, badge_id)] = UNSHARED
+end
+
 function pseudo_badge_service.client_share_award_notification(badge_id: number)
 	network.remotes.reliable.client.send(network.remotes.ids.reliable.badges.share, badge_id)
 end
 
 function pseudo_badge_service.server_share_award_notification(player: Player, badge_id: number)
-	local hash = `{player.UserId}|{badge_id}`
+	local hash = badge_hash(player.UserId, badge_id)
 
 	if award_logs[hash] ~= UNSHARED then
 		print(`ignoring share request - badge isn't marked as unshared`)
@@ -68,10 +80,12 @@ end
 function pseudo_badge_service.award_badge_async(user_id: number, badge_id: number)
 	if RunService:IsClient() then
 		remote = remote or get_remote()
-		return remote:InvokeServer(user_id, badge_id)
+		local result = remote:InvokeServer(user_id, badge_id)
+		pseudo_badge_service.record_pseudo_badge(user_id, badge_id)
+		return result
 	end
 
-	local hash = `{user_id}|{badge_id}`
+	local hash = badge_hash(user_id, badge_id)
 
 	if award_logs[hash] ~= nil then
 		return

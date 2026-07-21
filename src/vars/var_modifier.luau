@@ -12,18 +12,21 @@ function var_modifier.new(): t.VariableStore
 
 	return {
 		values = variables,
-		dirty = {}
+		dirty = {},
 	}
 end
 
-function var_modifier.set_var<T>(variables: t.VariableStore, def: t.Def<T>, value: T)
-    variables.values[def.id] = value
-    variables.dirty[def] = true
+function var_modifier.set_var<T>(variables: t.VariableStore, def: t.Def<T>, value: T, mark_dirty: boolean?)
+	variables.values[def.id] = value
+
+	if mark_dirty ~= false then
+		variables.dirty[def] = true
+	end
 end
 
-function var_modifier.get_var<T>(variables: t.VariableStore, def: t.SomeDef): T
-    local value = variables.values[def.id]
-	assert(value ~= nil, `missing var {def.id}}`)
+function var_modifier.get_var<T>(variables: t.VariableStore, def: t.Def<T>): T
+	local value = variables.values[def.id]
+	assert(value ~= nil, `missing var {def.id}`)
 	return value
 end
 

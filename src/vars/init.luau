@@ -5,11 +5,15 @@ local defs = require("@self/native_var_defs")
 export type VariableStore = types.VariableStore
 export type SomeDef = types.SomeDef
 export type Def<T=unknown> = types.Def<T>
+export type SingletonDef<T=any> = types.SingletonDef<T>
+export type BooleanDef = types.BooleanDef
+export type FloatDef = types.FloatDef
 
 -- export from defs
+
 export type VipFriendsOption = defs.VipFriendsOption
 export type VipGroupPresenceOption = defs.VipGroupPresenceOption
-export type VipGroupRankOptin = defs.VipGroupRankOptin
+export type VipGroupRankOption = defs.VipGroupRankOption
 export type VipUnlockBadgesOption = defs.VipUnlockBadgesOption
 
 return {

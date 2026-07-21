@@ -4,6 +4,14 @@ local pool = require("./pool")
 local patch_symbols = require("./patching/patch_symbols")
 local sandbox_types = require("./sandbox_types")
 local sandboxer = require("./sandboxer")
+local timescale = require("../util/timescale")
+local vars = require("../vars")
+
+local RunService = game:GetService("RunService")
+
+-- Legacy spawn resumed on the throttled scheduler, which ran at
+-- roughly 30 Hz
+const LEGACY_SPAWN_DELAY = 1 / 30
 
 local function sandboxed_require(module_or_id)
     local unsandboxed = sandboxer.unsandbox(module_or_id)
@@ -58,6 +66,31 @@ return function(app: sandbox_types.App)
         end
 
 		environment.Instance = pool.new_instance_lib(app)
+
+		local function wait_multiplier(): number
+			return 1 / vars.modifier.get_var(app.vars, vars.defs.sv_timescale_wait)
+		end
+
+		environment.wait = function(duration: number?)
+			while vars.modifier.get_var(app.vars, vars.defs.sv_timescale_freeze) do
+				RunService.Heartbeat:Wait()
+			end
+			return task.wait(timescale.scale_duration(math.min(duration or 0, LEGACY_SPAWN_DELAY), wait_multiplier()))
+		end
+
+		environment.delay = function(duration: number, callback: () -> ())
+            local timer = duration
+
+            while timer > 0 do
+                timer -= task.wait(LEGACY_SPAWN_DELAY) * wait_multiplier()
+            end
+
+			return task.spawn(callback)
+		end
+
+		environment.spawn = function(callback: () -> ())
+			return task.delay(timescale.scale_duration(LEGACY_SPAWN_DELAY, wait_multiplier()), callback)
+		end
 	end
 
 	return environment_sandboxer

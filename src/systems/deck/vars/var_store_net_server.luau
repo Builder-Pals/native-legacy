@@ -11,13 +11,18 @@ app.add_system("var_store_server", function(ctx)
 	server.subscribe({}, ids.reliable.vars.pull_all, function(player: Player)
 		server.send(ids.reliable.vars.pull_all, player, var_store_net.pack(ctx.vars))
 	end)
+	server.subscribe({}, ids.reliable.vars.push_values, function(_player: Player, data)
+		-- Permissions are intentionally out of scope for the cheats menu. The
+		-- server still validates every value before making it authoritative.
+		var_store_net.unpack_to(ctx.vars, data, true)
+	end)
 
 	local function net_pulse()
 		if not next(ctx.vars.dirty) then
 			return
 		end
 
-		local dirty = var_store_net.build_dirty_table(ctx.vars)
+		local dirty = var_store_net.take_dirty_table(ctx.vars)
 		server.send_all(ids.reliable.vars.push_values, dirty)
 	end
 

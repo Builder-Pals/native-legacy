@@ -4,6 +4,8 @@ local TextChatService = game:GetService("TextChatService")
 local nl_tags = require("@layer/nl_tags")
 local Iris = require("../packages/Iris")
 local network = require("@layer/network")
+local app = require("@layer/app")
+local vars = require("@layer/vars")
 
 local client = network.remotes.reliable.client
 
@@ -38,6 +40,113 @@ local function apply_theme()
 	Iris.UpdateGlobalConfig(light_theme :: any)
 end
 
+local function set_from_widget(def: vars.Def<T>, value: T)
+	vars.validator.assert_valid(def, value)
+	vars.modifier.set_var(app.context.vars, def, value)
+end
+
+local function singleton_cheat(label: string, def: vars.SingletonDef)
+	local current_value = app.context.vars.values[def.id]
+	local state = Iris.State(current_value)
+	local combo = Iris.ComboArray({ label }, { index = state }, def.options)
+	local changed = combo.changed()
+
+	if changed and state:get() ~= current_value then
+		set_from_widget(def, state:get())
+	elseif not changed and state:get() ~= current_value then
+		state:set(current_value)
+	end
+end
+
+local function boolean_cheat(label: string, def: vars.BooleanDef)
+	local current_value = app.context.vars.values[def.id]
+	local state = Iris.State(current_value)
+	local checkbox = Iris.Checkbox({ label }, { isChecked = state })
+	local changed = checkbox.checked() or checkbox.unchecked()
+
+	if changed and state:get() ~= current_value then
+		set_from_widget(def, state:get())
+	elseif not changed and state:get() ~= current_value then
+		state:set(current_value)
+	end
+end
+
+local function float_cheat(label: string, def: vars.FloatDef)
+	local current_value = app.context.vars.values[def.id]
+	local state = Iris.State(current_value)
+	
+	local input
+
+	if def.clamp then
+		input = Iris.InputNum(
+			{ label, 0.05, def.clamp.min, def.clamp.max, "%.2f", true },
+			{ number = state }
+		)
+	else
+		input = Iris.InputNum(
+			{ label, 0.05, 0, 0, "%.2f", true },
+			{ number = state }
+		)
+	end
+
+	local changed = input.numberChanged()
+
+	if changed and state:get() ~= current_value then
+		set_from_widget(def, state:get())
+	elseif not changed and state:get() ~= current_value then
+		state:set(current_value)
+	end
+end
+
+local function request_game(id: string | number)
+	print(`requesting to play id={id}`)
+	workspace:AddTag("place_hopping")
+	client.send(network.remotes.ids.reliable.console.load_place, tostring(id))
+end
+
+local function render_place_loader()
+	Iris.Text { "place loader" }
+	Iris.CollapsingHeader({"Load from Marketplace"})
+		local input_1 = Iris.InputNum({ "ID" })
+		if Iris.Button { "Load" }.clicked() then
+			request_game(input_1.state.number.value)
+		end
+	Iris.End()
+	Iris.CollapsingHeader({"Load Uncopylocked Place"})
+		Iris.TextWrapped { "[HIGHLY EXPERIMENTAL] Native Legacy will do its best to load this game within the compatibility layer. It may take a while to load. This feature does not support games uploaded after 2017." }
+		local input_2 = Iris.InputText({ "ID" })
+		if Iris.Button { "Load" }.clicked() then
+			request_game(input_2.state.text.value)
+		end
+	Iris.End()
+end
+
+local function render_cheats_menu()
+	Iris.Text { "cheats" }
+	Iris.CollapsingHeader { "Free VIP" }
+		Iris.TextWrapped { "Spoof common friend, group, and badge checks used by classic VIP doors." }
+		singleton_cheat("Friends", vars.defs.sv_vip_friends)
+		singleton_cheat("Group presence", vars.defs.sv_vip_group_presence)
+		singleton_cheat("Group rank", vars.defs.sv_vip_group_rank)
+		singleton_cheat("Unlock badges", vars.defs.sv_vip_unlock_badges)
+	Iris.End()
+	Iris.CollapsingHeader { "Timescale" }
+		Iris.TextWrapped { "Scale legacy scheduler waits and RunService delta time for sandboxed scripts." }
+		boolean_cheat("Freeze", vars.defs.sv_timescale_freeze)
+		float_cheat("RunService", vars.defs.sv_timescale_run_service)
+		float_cheat("wait / spawn / delay", vars.defs.sv_timescale_wait)
+	Iris.End()
+end
+
+local function render_featured_games()
+	Iris.Text { "featured games" }
+	for game_name, id in games do
+		if Iris.Button { game_name }.clicked() then
+			request_game(id)
+		end
+	end
+end
+
 return function()
 	apply_theme()
 	local command = make_command()
@@ -49,12 +158,6 @@ return function()
 	gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
 
 	Iris.Init(gui, nil, false)
-
-	local function request(id: string | number)
-		print(`requesting to play id={id}`)
-		workspace:AddTag("place_hopping")
-		client.send(network.remotes.ids.reliable.console.load_place, tostring(id))
-	end
 
 	local is_open = Iris.State(true)
 	local position = Iris.State(Vector2.new(16, 350))
@@ -77,27 +180,12 @@ return function()
 
 	local windows = {
 		[window_types.manager] = function()
-			Iris.Window({ "native legacy management" }, { isOpened = is_open, position = position, size = size })
-				Iris.Text { "place loader" }
-				Iris.CollapsingHeader({"Load from Marketplace"})
-					local input_1 = Iris.InputNum({ "ID" })
-					if Iris.Button { "Load" }.clicked() then
-						request(input_1.state.number.value)
-					end
-				Iris.End()
-				Iris.CollapsingHeader({"Load Uncopylocked Place"})
-					Iris.TextWrapped { "[HIGHLY EXPERIMENTAL] Native Legacy will do its best to load this game within the compatibility layer. It may take a while to load. This feature does not support games uploaded after 2017." }
-					local input_2 = Iris.InputText({ "ID" })
-					if Iris.Button { "Load" }.clicked() then
-						request(input_2.state.text.value)
-					end
-				Iris.End()
+			Iris.Window({ "native legacy demo" }, { isOpened = is_open, position = position, size = size })
+				render_place_loader()
 				Iris.Separator()
-				for game_name, id in games do
-					if Iris.Button { game_name }.clicked() then
-						request(id)
-					end
-				end
+				render_cheats_menu()
+				Iris.Separator()
+				render_featured_games()
 			Iris.End()
 		end,
 
@@ -106,7 +194,7 @@ return function()
 
 			Iris.Window({ "notice" }, { isOpened = is_open, position = position, size = window_size })
 				Iris.Text { "type /nl into chat to summon\nthis window whenever. have fun!" }
-				if Iris.Button { "OK" }.clicked() then
+				if Iris.Button { "cool, i read that" }.clicked() then
 					is_open:set(false)
 				end
 			Iris.End()

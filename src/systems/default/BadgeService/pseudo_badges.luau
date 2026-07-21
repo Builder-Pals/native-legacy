@@ -22,34 +22,35 @@ app.add_patch(
 )
 
 app.add_system("pseudo_badge_client_display", function()
-    network.remotes.reliable.client.subscribe({}, network.remotes.ids.reliable.badges.notify, function(notification_info)
-        local bind = Instance.new("BindableFunction")
+	network.remotes.reliable.client.subscribe({}, network.remotes.ids.reliable.badges.notify, function(notification_info)
+		pseudo_badge_service.record_pseudo_badge(notification_info.UserId, notification_info.BadgeId)
+		local bind = Instance.new("BindableFunction")
 
-        bind.OnInvoke = function()
-            pseudo_badge_service.client_share_award_notification(notification_info.BadgeId)
-        end
+		bind.OnInvoke = function()
+			pseudo_badge_service.client_share_award_notification(notification_info.BadgeId)
+		end
 
-        notification_info.Callback = bind
-        notification_info.Button1 = "Tell Everyone"
-        StarterGui:SetCore("SendNotification", notification_info)
-    end)
+		notification_info.Callback = bind
+		notification_info.Button1 = "Tell Everyone"
+		StarterGui:SetCore("SendNotification", notification_info)
+	end)
 
-    network.remotes.reliable.client.subscribe({}, network.remotes.ids.reliable.badges.share, function(notification_info)
-        print("received share", notification_info)
-        StarterGui:SetCore("SendNotification", notification_info)
-    end)
+	network.remotes.reliable.client.subscribe({}, network.remotes.ids.reliable.badges.share, function(notification_info)
+		print("received share", notification_info)
+		StarterGui:SetCore("SendNotification", notification_info)
+	end)
 end, app.run_flags.CLIENT)
 
 app.add_system("pseudo_badge_server_display", function()
-    pseudo_badge_service.get_bindable_function().OnServerInvoke = function(player, share_type, ...)
-        pseudo_badge_service.award_badge_async(...)
-    end
+	pseudo_badge_service.get_bindable_function().OnServerInvoke = function(_player, user_id, badge_id)
+		return pseudo_badge_service.award_badge_async(user_id, badge_id)
+	end
 
-    network.remotes.reliable.server.subscribe({}, network.remotes.ids.reliable.badges.share, function(player, badge_id)
-        assert(typeof(badge_id) == "number", "Expected number")
-        print(`badge is {badge_id}`)
-        pseudo_badge_service.server_share_award_notification(player, badge_id)
-    end)
+	network.remotes.reliable.server.subscribe({}, network.remotes.ids.reliable.badges.share, function(player, badge_id)
+		assert(typeof(badge_id) == "number", "Expected number")
+		print(`badge is {badge_id}`)
+		pseudo_badge_service.server_share_award_notification(player, badge_id)
+	end)
 end, app.run_flags.SERVER)
 
 return nil
