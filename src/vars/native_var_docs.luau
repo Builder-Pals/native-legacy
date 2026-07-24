@@ -49,7 +49,7 @@ docs[defs.sv_timescale_run_service.id] = {
 }
 
 docs[defs.sv_timescale_wait.id] = {
-    tooltip = "Yields all calls to `wait` and blocks `Stepped`/`RenderStepped`. This mainly affects game loop timers.",
+    tooltip = "Yields all calls to `wait` and blocks `Stepped`/`RenderStepped`. This mainly affects game loop timers and weapon cooldowns.",
     values = {}
 }
 

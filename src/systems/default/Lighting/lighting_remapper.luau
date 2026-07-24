@@ -3,7 +3,7 @@ const Lighting = game:GetService("Lighting") :: Lighting & {
 	ShadowColor: Color3,
 } & {}
 
-const BASE_SHADOW_COLOR = Lighting.ShadowColor
+const BASE_SHADOW_COLOR = Color3.new(0.7, 0.7, 0.72)
 
 const app = require("@layer/app")
 const sandbox = require("@layer/sandbox")
@@ -139,8 +139,14 @@ end, app.run_flags.CLIENT)
 local function restore_defaults()
 	Lighting.Brightness = 1
 	Lighting.Ambient = Color3.fromRGB(127, 127, 127)
+	Lighting.OutdoorAmbient = Color3.fromRGB(127, 127, 127)
+	Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
+	Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
 	Lighting.ShadowColor = BASE_SHADOW_COLOR
 	Lighting.ClockTime = 14
+	Lighting.FogColor = Color3.fromRGB(255, 255, 255)
+	Lighting.FogStart = 0
+	Lighting.FogEnd = 100000
 
 	for property in processors :: Processors do
 		set_lighting_attribute(property, nil)

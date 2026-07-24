@@ -113,12 +113,12 @@ local function float_cheat(label: string, def: vars.FloatDef)
 
 	if def.clamp then
 		input = Iris.InputNum(
-			{ label, 0.05, def.clamp.min, def.clamp.max, "%.3f", true },
+			{ label, 0.05, def.clamp.min, def.clamp.max, "%.3f×", true },
 			{ number = state }
 		)
 	else
 		input = Iris.InputNum(
-			{ label, 0.05, 0, 0, "%.3f", true },
+			{ label, 0.05, 0, 0, "%.3f×", true },
 			{ number = state }
 		)
 	end
@@ -161,27 +161,35 @@ end
 
 local function render_cheats_menu()
 	Iris.Text { "fun" }
-	Iris.CollapsingHeader { "Free VIP" }
-		Iris.TextWrapped { "Spoof common friend, group, and badge checks used by classic VIP doors." }
+	local vip_header = Iris.CollapsingHeader { "Free VIP" }
+	if vip_header.state.isUncollapsed then
+		Iris.TextWrapped { "get into vip rooms through modifying friend, group and badge checks used by classic vip doors and perks." }
 		singleton_cheat("Friends", vars.defs.sv_vip_friends)
 		singleton_cheat("Group presence", vars.defs.sv_vip_group_presence)
 		singleton_cheat("Group rank", vars.defs.sv_vip_group_rank)
 		singleton_cheat("Unlock badges", vars.defs.sv_vip_unlock_badges)
+	end
 	Iris.End()
-	Iris.CollapsingHeader { "Timescale" }
-		Iris.TextWrapped { "Scale legacy scheduler waits and RunService delta time for sandboxed scripts." }
+	local timescale_header = Iris.CollapsingHeader { "Timescale" }
+	if timescale_header.state.isUncollapsed then
+		Iris.TextWrapped { "change the timescales of sleeping inside of scripts. doesn't effect physics!" }
 		boolean_cheat("Freeze", vars.defs.sv_timescale_freeze)
 		float_cheat("RunService", vars.defs.sv_timescale_run_service)
-		float_cheat("wait / spawn / delay", vars.defs.sv_timescale_wait)
+		float_cheat("Wait", vars.defs.sv_timescale_wait)
+	end
 	Iris.End()
 end
 
 local function render_featured_games()
 	Iris.Text { "featured games" }
+	local game_num = 1
+
 	for game_name, id in games do
-		if Iris.Button { game_name }.clicked() then
+		if Iris.Button { `{game_num}. {game_name}` }.clicked() then
 			request_game(id)
 		end
+
+		game_num += 1
 	end
 end
 
