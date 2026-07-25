@@ -79,7 +79,7 @@ return function()
 
 	warehouse.ChildAdded:Connect(on_folder_added)
 
-	local function pop_async(class: string): Instance
+	local function resolve_async(class: string): Instance
 		if not warehouse_data[class] then
 			-- Validate through the engine so invalid and non-creatable classes fail
 			-- at the call site instead of waiting forever for a pool expansion.
@@ -107,13 +107,19 @@ return function()
 			return pool_yield(class)
 		end
 
+		return poolee
+	end
+
+	local function pop_async(class: string): Instance
+		local instance = resolve_async(class)
+	
 		-- make sure its parented elsewhere so that the server knows it's no longer in the pool.
-		Action.invoke(defiltering.events.send_property, poolee, "Parent", replicated_nil, {
+		Action.invoke(defiltering.events.send_property, instance, "Parent", replicated_nil, {
 			local_value = nil,
 			use_local_value = true,
 		})
 
-		return poolee
+		return instance
 	end
 
 	local function discard(instance: Instance)
