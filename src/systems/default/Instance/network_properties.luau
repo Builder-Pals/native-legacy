@@ -50,7 +50,7 @@ app.add_patch(
 app.add_patch(
 	`{NAME}_resize`,
 	patching.getter_patch {
-		types = { "BasePart" },
+		classes = { "BasePart" },
 		keys = { "Resize", "resize" },
 		enabled = IS_CLIENT,
 		run = function(context: sandbox.PatchedContext)
@@ -89,7 +89,7 @@ end
 app.add_patch(
 	`{NAME}_debris`,
 	patching.getter_patch {
-		types = { "Debris" },
+		classes = { "Debris" },
 		keys = { "AddItem", "addItem" },
 		enabled = IS_CLIENT,
 		run = function()
@@ -119,7 +119,7 @@ app.add_patch(
 app.add_patch(
 	`{NAME}_resize`,
 	patching.getter_patch {
-		types = { "Model" },
+		classes = { "Model" },
 		keys = { "moveTo", "MoveTo", "move" },
 		enabled = IS_CLIENT,
 		run = function(context: sandbox.PatchedContext)
@@ -128,7 +128,7 @@ app.add_patch(
 				context.unsandboxed_object:MoveTo(sandboxer.unsandbox_tuple(...))
 
 				assert(typeof(instance) == "Instance")
-				assert(instance:IsA("Model"))
+				assert(instance:IsA("Model"), `tried to call MoveTo on a non-Model instance {instance.ClassName} @ {instance:GetFullName()}`)
 
 				for _, child in instance:GetDescendants() do
 					if child:IsA("BasePart") then

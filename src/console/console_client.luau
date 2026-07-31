@@ -44,7 +44,7 @@ end
 local function set_from_widget<T>(def: vars.Def<T>, value: T)
 	vars.validator.assert_valid(def, value)
 	vars.modifier.set_var(app.context.vars, def, value)
-	print(`set {def.id} to {value}`)
+	print(`setting {def.id} to {value}`)
 end
 
 local function try_document(def: vars.Def, current_value: unknown)

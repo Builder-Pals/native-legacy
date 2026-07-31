@@ -60,7 +60,7 @@ function var_store_net.unpack_to(var_store: vars.VariableStore, payload: unknown
 	end
 end
 
---- Takes a snapshot of locally changed values and marks those values clean.
+--- [non-pure] pull all currently dirty values from the var store
 function var_store_net.take_dirty_table(var_store: vars.VariableStore): { [string]: unknown }
 	local dirty_values = var_store_net.build_dirty_table(var_store)
 	table.clear(var_store.dirty)

@@ -35,7 +35,7 @@ export type EnvironmentSandboxer = {
 }
 
 --- Instantiates a new networked Instance of `class` from a client
-export type ClientInstancePool = (class: string) -> (Instance)
+export type ClientInstancePool = (class: string) -> Instance
 
 export type PatchedContext<TObject = any> = {
 	--[=[
@@ -99,9 +99,25 @@ export type PatchGroup = {
 	patches: { Patch },
 }
 
+type PatchableType =
+	"boolean"
+	| "number"
+	| "string"
+	| "Vector2"
+	| "Vector3"
+	| "Color3"
+	| "CFrame"
+	| "UDim2"
+	| "Rect"
+	| "EnumItem"
+	| "Instance"
+	| "RBXScriptSignal"
+	| "RBXScriptConnection"
+	| "function"
+
 type PatchInfoBase = {
 	--- What types shouold the patch apply to?
-	types: { string }?,
+	types: { PatchableType }?,
 	--- What classes to the patch apply to?
 	classes: { string }?,
 	--- What keys to the patch apply to?

@@ -122,8 +122,7 @@ local definitions = {
 	sv_timescale_wait = sv_timescale_wait,
 }
 
--- Network IDs are derived from this array, so its order must be identical in
--- every VM. Iterating `definitions` with `pairs` does not guarantee that.
+-- having an array allows us to guarentee insertion order for networking
 local def_array: { t.SomeDef } = {
 	sv_vip_friends,
 	sv_vip_group_presence,

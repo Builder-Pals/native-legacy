@@ -66,10 +66,6 @@ return function(app: sandbox_types.App)
 
 		environment.Instance = pool.new_instance_lib(app)
 
-		local function wait_multiplier(): number
-			return 1 / vars.modifier.get_var(app.vars, vars.defs.sv_timescale_wait)
-		end
-
 		environment.wait = function(duration: number?)
 			while vars.modifier.get_var(app.vars, vars.defs.sv_timescale_freeze) do
 				RunService.Heartbeat:Wait()
@@ -79,17 +75,17 @@ return function(app: sandbox_types.App)
 			local timer = duration or 0
 
             repeat
-                timer -= task.wait(LEGACY_SPAWN_DELAY)
+                timer -= task.wait(LEGACY_SPAWN_DELAY) * vars.modifier.get_var(app.vars, vars.defs.sv_timescale_wait)
             until timer <= 0
 
 			return os.clock() - start, elapsedTime()
 		end
 
 		environment.delay = function(duration: number, callback: () -> ())
-			local timer = duration
+			local timer = math.max(duration, LEGACY_SPAWN_DELAY)
 
 			while timer > 0 do
-				timer -= task.wait(LEGACY_SPAWN_DELAY) * wait_multiplier()
+				timer -= task.wait(LEGACY_SPAWN_DELAY) * vars.modifier.get_var(app.vars, vars.defs.sv_timescale_wait)
 			end
 
 			return task.spawn(callback)

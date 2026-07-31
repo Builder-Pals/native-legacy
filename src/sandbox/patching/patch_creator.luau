@@ -1,8 +1,33 @@
 local sandbox_types = require("@layer/sandbox/sandbox_types")
 
+const PATCHABLE_TYPES = {
+    ["boolean"] = true,
+    ["number"] = true,
+    ["string"] = true,
+    ["Vector2"] = true,
+    ["Vector3"] = true,
+    ["Color3"] = true,
+    ["CFrame"] = true,
+    ["UDim2"] = true,
+    ["Rect"] = true,
+    ["EnumItem"] = true,
+    ["Instance"] = true,
+    ["RBXScriptSignal"] = true,
+    ["RBXScriptConnection"] = true,
+    ["function"] = true,
+}
+
 local patch_creator = {}
 
 function patch_creator.new_getter_patch(data: sandbox_types.GetterPatchInfo): sandbox_types.Patch
+    if data.types then
+        for _, type in data.types do
+            if not PATCHABLE_TYPES[type] then
+                error(`{type} is not a valid type for a patch! maybe you meant to use a 'classes' filter instead?`)
+            end
+        end
+    end
+    
     local patch = {
         type = "patch",
         kind = "getter_patch" :: "getter_patch",
