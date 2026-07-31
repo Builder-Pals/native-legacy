@@ -71,11 +71,17 @@ return function(app: sandbox_types.App)
 				RunService.Heartbeat:Wait()
 			end
 
+			if vars.modifier.get_var(app.vars, vars.defs.sv_timescale_wait) == 1 then
+				-- Some games rely on the legacy throttling behaviour to not run awfully!
+				-- Future: look into implementing this ourselves by using realtime physics fps.
+				return wait(duration)
+			end
+
             local start = os.clock()
-			local timer = duration or 0
+			local timer = math.max(duration or 0, LEGACY_SPAWN_DELAY)
 
             repeat
-                timer -= task.wait(LEGACY_SPAWN_DELAY) * vars.modifier.get_var(app.vars, vars.defs.sv_timescale_wait)
+                timer -= RunService.Heartbeat:Wait() * vars.modifier.get_var(app.vars, vars.defs.sv_timescale_wait)
             until timer <= 0
 
 			return os.clock() - start, elapsedTime()
@@ -84,9 +90,9 @@ return function(app: sandbox_types.App)
 		environment.delay = function(duration: number, callback: () -> ())
 			local timer = math.max(duration, LEGACY_SPAWN_DELAY)
 
-			while timer > 0 do
-				timer -= task.wait(LEGACY_SPAWN_DELAY) * vars.modifier.get_var(app.vars, vars.defs.sv_timescale_wait)
-			end
+			repeat
+				timer -= RunService.Heartbeat:Wait() * vars.modifier.get_var(app.vars, vars.defs.sv_timescale_wait)
+			until timer <= 0
 
 			return task.spawn(callback)
 		end

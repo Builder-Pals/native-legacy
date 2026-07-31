@@ -1,15 +1,19 @@
-local RunService = game:GetService("RunService")
-local patch_filter_selector = require("@layer/sandbox/patching/patch_filter_selector")
-local Action = require("@layer/util/Action")
-local defilterer_events = require("./defiltering/defilterer_events")
-local new_symbol = require("@layer/util/new_symbol")
-local patch_symbols = require("./patching/patch_symbols")
-local patch_utils = require("./patching/patch_utils")
-local sandbox_types = require("./sandbox_types")
-local sandboxer = require("./sandboxer")
-local script_stalling = require("./script_stalling")
+const RunService = game:GetService("RunService")
+const patch_filter_selector = require("@layer/sandbox/patching/patch_filter_selector")
+const Action = require("@layer/util/Action")
+const defilterer_events = require("./defiltering/defilterer_events")
+const new_symbol = require("@layer/util/new_symbol")
+const patch_symbols = require("./patching/patch_symbols")
+const patch_utils = require("./patching/patch_utils")
+const sandbox_types = require("./sandbox_types")
+const sandboxer = require("./sandboxer")
+const script_stalling = require("./script_stalling")
 
-local IS_CLIENT = RunService:IsClient()
+const IS_CLIENT = RunService:IsClient()
+const CACHE_CLEAR_RATE = 0.5
+
+const cache = {}
+local cache_last_clear = os.clock()
 
 --[=[
 	A generic wrapper for values that exist within the sandbox.
@@ -179,6 +183,10 @@ function metatable.__eq(a, b)
 end
 
 sandbox_wrapper = function(context: sandbox_types.App, value: any)
+	if cache[value] then
+		return cache[value]
+	end
+
 	if sandboxer.is_sandboxed(value) then
 		return value
 	end
@@ -191,6 +199,11 @@ sandbox_wrapper = function(context: sandbox_types.App, value: any)
 
 	if #filtered_patches == 0 then
 		return value
+	end
+
+	if os.clock() - cache_last_clear > CACHE_CLEAR_RATE then
+		table.clear(cache)
+		cache_last_clear = os.clock()
 	end
 
 	local setter_patches: { sandbox_types.SetterPatch } = {}
@@ -215,6 +228,8 @@ sandbox_wrapper = function(context: sandbox_types.App, value: any)
 	}
 
 	local new = setmetatable(sandboxed, metatable)
+	cache[value] = new
+
 	return new
 end
 
